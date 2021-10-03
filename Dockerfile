@@ -8,8 +8,8 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-w" -a -o /main .
 # React app
 FROM node:alpine AS node_builder
 COPY --from=builder /app/frontend ./
-RUN npm i
-RUN npm run build
+RUN yarn install
+RUN yarn run build
 
 # Final build
 FROM alpine:latest
