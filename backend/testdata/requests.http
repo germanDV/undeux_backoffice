@@ -1,0 +1,37 @@
+### GET /api/health
+GET http://localhost:8080/api/health
+
+### POST /api/login (bad credentials)
+POST http://localhost:8080/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "john@doe.io",
+  "password": "Password1!"
+}
+
+### POST /api/login (good credentials)
+POST http://localhost:8080/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "joe@doe.io",
+  "password": "Abc123456"
+}
+
+### Get /api/me (valid token)
+GET http://localhost:8080/api/me
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzMzNzc3ODksImZvbyI6ImJhciIsImlhdCI6MTYzMzI5MTM4OSwic3ViIjoxfQ.LCdrB7PNkYIlB1G_zkUW-oghIswdUG1LnFZD-drhONs
+
+### Get /api/me (expired token)
+GET http://localhost:8080/api/me
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzMyOTI4MDQsImZvbyI6ImJhciIsImlhdCI6MTYzMzI5Mjc4MCwic3ViIjoxfQ.N0E3S6N6SzdqlCjW05WuAwrDfY5wtzoYgs0vD1_4pEE
+
+### Get /api/me (invalid token)
+GET http://localhost:8080/api/me
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0NDQ0Nzg0MDB9.u1riaD1rW97opCoAuRCTy4w58Br-Zk-bh7vLiRIsrpU
