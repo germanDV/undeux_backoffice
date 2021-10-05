@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/golang-jwt/jwt"
+	"github.com/constructoraundeux/backoffice/auth"
+	"github.com/constructoraundeux/backoffice/config"
 	"github.com/julienschmidt/httprouter"
 	"io"
 	"log"
@@ -15,15 +16,18 @@ import (
 )
 
 func main() {
+	port := config.Config.Port
+	env := config.Config.Env
+
 	srv := &http.Server{
-		Addr: ":8080",
-		Handler: routes(),
-		IdleTimeout:  60*time.Second,
-		ReadTimeout:  10*time.Second,
-		WriteTimeout: 30*time.Second,
+		Addr:         fmt.Sprintf(":%d", port),
+		Handler:      routes(),
+		IdleTimeout:  60 * time.Second,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 30 * time.Second,
 	}
 
-	fmt.Println(fmt.Sprintf("starting server on %s", srv.Addr))
+	fmt.Println(fmt.Sprintf("starting server on %d - environment: %s.", port, env))
 	err := srv.ListenAndServe()
 	if err != nil {
 		log.Panicln(err)
@@ -50,14 +54,9 @@ func healthHandler(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, envelope{"status": "OK"}, http.StatusOK)
 }
 
-func pingHandler(w http.ResponseWriter, _ *http.Request) {
-	w.WriteHeader(200)
-	_, _ = w.Write([]byte("pong"))
-}
-
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		Email string `json:"email"`
+		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
 
@@ -67,13 +66,13 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if input.Email != "joe@doe.io" || input.Password != "Abc123456"{
+	if input.Email != "joe@doe.io" || input.Password != "Abc123456" {
 		http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 		return
 	}
 
 	userID := 1
-	token, err := createToken(userID)
+	token, err := auth.CreateToken(userID)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
@@ -89,52 +88,14 @@ func meHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := verifyToken(token)
+	user, err := auth.VerifyToken(token)
 	if err != nil {
+		fmt.Println(err)
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
-	writeJSON(w, envelope{"user": data}, http.StatusOK)
-}
-
-func createToken(userID int) (string, error) {
-	secret := []byte("my_very_secret_key")
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": userID,
-		"foo": "bar",
-		"exp": time.Now().Add(24*time.Hour).Unix(),
-		"iat": time.Now().Unix(),
-	})
-
-	return token.SignedString(secret)
-}
-
-func verifyToken(t string) (interface{}, error) {
-	secret := []byte("my_very_secret_key")
-
-	decoded, err := jwt.Parse(t, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return secret, nil
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	claims, ok := decoded.Claims.(jwt.MapClaims)
-	if !ok {
-		return nil, errors.New("unable to get claims from JWT")
-	}
-
-	if !decoded.Valid {
-		return nil, errors.New("invalid JWT")
-	}
-
-	return claims, nil
+	writeJSON(w, envelope{"user": user}, http.StatusOK)
 }
 
 type envelope map[string]interface{}

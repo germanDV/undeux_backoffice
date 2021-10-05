@@ -24,7 +24,7 @@ Content-Type: application/json
 ### Get /api/me (valid token)
 GET http://localhost:8080/api/me
 Accept: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzMzNzc3ODksImZvbyI6ImJhciIsImlhdCI6MTYzMzI5MTM4OSwic3ViIjoxfQ.LCdrB7PNkYIlB1G_zkUW-oghIswdUG1LnFZD-drhONs
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzM0NzgxMzIsImlhdCI6MTYzMzM5MTczMiwicm9sZSI6ImdvZCIsInN1YiI6MX0.ewk3OQ8RooGCVPfE4zsMbXL5IItpZGdQ6ICrXi4YMmw
 
 ### Get /api/me (expired token)
 GET http://localhost:8080/api/me
