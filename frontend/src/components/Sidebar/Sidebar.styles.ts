@@ -1,5 +1,6 @@
 import { CSSObject, styled, Theme } from '@mui/material/styles'
 import MuiDrawer, { DrawerProps as MuiDrawerProps } from '@mui/material/Drawer'
+import MuiListItemButton from '@mui/material/ListItemButton'
 
 interface DrawerProps extends MuiDrawerProps {
   drawerWidth: number;
@@ -52,3 +53,9 @@ export const Drawer = styled(MuiDrawer,
     }),
   }),
 )
+
+export const ListItem = styled(MuiListItemButton)(({ theme }) => ({
+  '&.Mui-selected': {
+    backgroundColor: theme.palette.primary.main,
+  },
+}))

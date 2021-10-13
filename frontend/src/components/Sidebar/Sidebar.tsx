@@ -7,11 +7,10 @@ import List from '@mui/material/List'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import AppsIcon from '@mui/icons-material/Apps'
 import ListItemText from '@mui/material/ListItemText'
-import ListItemButton from '@mui/material/ListItemButton'
 import TimelineIcon from '@mui/icons-material/Timeline'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { Drawer, DrawerHeader } from './Sidebar.styles'
+import { Drawer, DrawerHeader, ListItem } from './Sidebar.styles'
 
 interface Props {
   open: boolean;
@@ -36,33 +35,30 @@ const Sidebar = ({ open, handleClose, drawerWidth }: Props): JSX.Element => {
       </DrawerHeader>
       <Divider />
       <List component="nav">
-        <ListItemButton onClick={() => navigate("/")} selected={pathname === "/"}>
+        <ListItem onClick={() => navigate("/")} selected={pathname === "/"}>
           <ListItemIcon>
             <AppsIcon />
           </ListItemIcon>
           <ListItemText primary="Inicio" />
-        </ListItemButton>
-        <ListItemButton onClick={() => navigate("/other")} selected={pathname === "/other"}>
+        </ListItem>
+        <ListItem onClick={() => navigate("/other")} selected={pathname === "/other"}>
           <ListItemIcon>
             <TimelineIcon />
           </ListItemIcon>
           <ListItemText primary="Otros" />
-        </ListItemButton>
-      </List>
-      <Divider />
-      <List component="nav">
-        <ListItemButton onClick={() => navigate("/users")} selected={pathname === "/users"}>
+        </ListItem>
+        <ListItem onClick={() => navigate("/users")} selected={pathname === "/users"}>
           <ListItemIcon>
             <PeopleAltIcon />
           </ListItemIcon>
           <ListItemText primary="Usuarios" />
-        </ListItemButton>
-        <ListItemButton onClick={() => alert('Logging out...')}>
+        </ListItem>
+        <ListItem onClick={() => navigate('/login')}>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
           <ListItemText primary="Salir" />
-        </ListItemButton>
+        </ListItem>
       </List>
     </Drawer>
   )
