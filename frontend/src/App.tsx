@@ -1,8 +1,8 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import FullPageLoader from './components/Loader/FullPageLoader'
+import FullPageLoader from 'components/Loader/FullPageLoader'
 
-const Login = lazy(() => import('./screens/Login/Login'))
+const Login = lazy(() => import('screens/Login/Login'))
 const AuthenticatedApp = lazy(() => import('./AuthenticatedApp'))
 
 function App() {

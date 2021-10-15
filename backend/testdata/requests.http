@@ -17,8 +17,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "joe@doe.io",
-  "password": "Abc123456"
+  "email": "german@undeux.com",
+  "password": "Abc123456789"
 }
 
 ### Get /api/me (valid token)

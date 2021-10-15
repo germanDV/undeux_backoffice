@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/constructoraundeux/backoffice/auth"
 	"github.com/constructoraundeux/backoffice/config"
+	"github.com/constructoraundeux/backoffice/data"
 	"github.com/julienschmidt/httprouter"
 	"io"
 	"log"
@@ -66,19 +67,25 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if input.Email != "joe@doe.io" || input.Password != "Abc123456" {
-		http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+	if input.Email != "german@undeux.com" || input.Password != "Abc123456789" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
-	userID := 1
-	token, err := auth.CreateToken(userID)
+	user := data.User{
+		ID: 1,
+		Role: "god",
+		Name: "Natalia Natalia",
+		Email: input.Email,
+	}
+
+	token, err := auth.CreateToken(user.ID, user.Role)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
-	writeJSON(w, envelope{"token": token}, http.StatusOK)
+	writeJSON(w, envelope{"token": token, "user": user}, http.StatusOK)
 }
 
 func meHandler(w http.ResponseWriter, r *http.Request) {

@@ -13,7 +13,7 @@ func TestCreateAndValidateToken(t *testing.T) {
 	}
 
 	t.Run("Create token", func(t *testing.T) {
-		token, err = CreateToken(99)
+		token, err = CreateToken(99, "user")
 		if err != nil {
 			t.Fatalf("Expected no errors on token create, got %q.", err)
 		}

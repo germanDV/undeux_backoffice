@@ -1,8 +1,8 @@
 import React, { FC, useState, useLayoutEffect } from 'react'
 import Box from '@mui/material/Box'
-import Navbar from '../components/Navbar/Navbar'
-import Sidebar from '../components/Sidebar/Sidebar'
-import { DrawerHeader } from '../components/Sidebar/Sidebar.styles'
+import Navbar from 'components/Navbar/Navbar'
+import Sidebar from 'components/Sidebar/Sidebar'
+import { DrawerHeader } from 'components/Sidebar/Sidebar.styles'
 
 const DRAWER_WIDTH = 240;
 

@@ -1,11 +1,11 @@
 import React, { lazy, Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import Layout from './layouts/Layout'
-import FullPageLoader from './components/Loader/FullPageLoader'
+import Layout from 'layouts/Layout'
+import FullPageLoader from 'components/Loader/FullPageLoader'
 
-const Dashboard = lazy(() => import('./screens/Dashboard'))
-const Users = lazy(() => import('./screens/Users'))
-const Other = lazy(() => import('./screens/Other'))
+const Dashboard = lazy(() => import('screens/Dashboard/Dashboard'))
+const Users = lazy(() => import('screens/Users/Users'))
+const Other = lazy(() => import('screens/Other/Other'))
 
 const AuthenticatedApp = () => {
   // if (!auth) {

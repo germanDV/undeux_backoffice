@@ -10,11 +10,11 @@ import (
 )
 
 // CreateToken generates a signed JWT.
-func CreateToken(userID int) (string, error) {
+func CreateToken(userID int, role string) (string, error) {
 	secret := []byte(config.Config.Secret)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": userID,
-		"role": "god",
+		"role": role,
 		"exp": time.Now().Add(24*time.Hour).Unix(),
 		"iat": time.Now().Unix(),
 	})
