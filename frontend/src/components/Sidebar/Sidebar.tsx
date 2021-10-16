@@ -10,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText'
 import TimelineIcon from '@mui/icons-material/Timeline'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import LogoutIcon from '@mui/icons-material/Logout'
+import { useAuth } from 'lib/hooks/use-auth'
 import { Drawer, DrawerHeader, ListItem } from './Sidebar.styles'
 
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
 const Sidebar = ({ open, handleClose, drawerWidth }: Props): JSX.Element => {
   const history = useHistory()
   const { pathname } = useLocation()
+  const { logout } = useAuth()
 
   const navigate = (path: string) => {
     history.push(path)
@@ -53,7 +55,7 @@ const Sidebar = ({ open, handleClose, drawerWidth }: Props): JSX.Element => {
           </ListItemIcon>
           <ListItemText primary="Usuarios" />
         </ListItem>
-        <ListItem onClick={() => alert('En Construcción')}>
+        <ListItem onClick={() => logout()}>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>

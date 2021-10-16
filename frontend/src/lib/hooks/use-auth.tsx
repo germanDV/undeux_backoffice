@@ -7,21 +7,34 @@ import {
   useCallback,
   useEffect,
 } from 'react'
-import { User } from 'lib/models'
+import { User, Roles } from 'lib/models'
 import * as auth from 'lib/auth'
 import { me } from 'api'
 
+const anonymousUser: User = {
+  id: 0,
+  email: '',
+  name: '',
+  role: Roles.NN,
+}
+
 export type AuthCtxType = {
-  user: User | null
+  user: User
   login: (email: string, password: string) => Promise<User>
   logout: () => void
 }
 
-const AuthCtx = createContext<AuthCtxType | null>(null)
+const emptyCtx: AuthCtxType = {
+  user: anonymousUser,
+  login: (_email: string, _password: string) => Promise.resolve(anonymousUser),
+  logout: () => {},
+}
+
+const AuthCtx = createContext<AuthCtxType>(emptyCtx)
 AuthCtx.displayName = 'AuthContext'
 
 export const AuthProvider: FC = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User>(anonymousUser)
 
   useEffect(() => {
     async function loadUser(token: string) {
@@ -33,10 +46,7 @@ export const AuthProvider: FC = ({ children }) => {
 
     const token = auth.getToken()
     if (token) {
-      console.log('Found a token, fetching user data...')
       loadUser(token)
-    } else {
-      console.log('No token in localStorage')
     }
   }, [])
 
@@ -53,7 +63,7 @@ export const AuthProvider: FC = ({ children }) => {
 
   const logout = useCallback(() => {
     auth.logout()
-    setUser(null)
+    setUser(anonymousUser)
   }, [])
 
   const value = useMemo(() => {
@@ -74,4 +84,3 @@ export function useAuth() {
   }
   return ctx
 }
-

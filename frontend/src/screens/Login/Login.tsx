@@ -6,12 +6,12 @@ import TextField from '@mui/material/TextField'
 import LoginIcon from '@mui/icons-material/Login'
 import Alert from '@mui/material/Alert'
 import { loginValidationSchema, LoginValues } from 'lib/schemas'
-import { AuthCtxType, useAuth } from 'lib/hooks/use-auth'
+import { useAuth } from 'lib/hooks/use-auth'
 import { Container, FormWrapper, Form, Separator } from './Login.styles'
 
 const Login = (): JSX.Element => {
   const [error, setError] = useState('')
-  const { login } = useAuth() as AuthCtxType
+  const { login } = useAuth()
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
