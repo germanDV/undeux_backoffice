@@ -1,14 +1,8 @@
-export enum Roles {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-  NN = 'NN',
-}
-
 export type User = {
   id: number
   email: string
   name: string
-  role: Roles
+  role: 'admin' | 'user' | 'nn'
 }
 
 export type UserWithToken = {

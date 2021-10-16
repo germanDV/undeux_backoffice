@@ -7,7 +7,7 @@ import {
   useCallback,
   useEffect,
 } from 'react'
-import { User, Roles } from 'lib/models'
+import { User } from 'lib/models'
 import * as auth from 'lib/auth'
 import { me } from 'api'
 
@@ -15,7 +15,7 @@ const anonymousUser: User = {
   id: 0,
   email: '',
   name: '',
-  role: Roles.NN,
+  role: 'nn',
 }
 
 export type AuthCtxType = {

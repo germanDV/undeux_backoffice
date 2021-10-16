@@ -74,8 +74,8 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	user := data.User{
 		ID: 1,
-		Role: "god",
-		Name: "Natalia Natalia",
+		Role: "admin",
+		Name: "German",
 		Email: input.Email,
 	}
 
