@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { useFormik, FormikHelpers } from 'formik'
 import Typography from '@mui/material/Typography'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -7,12 +6,12 @@ import TextField from '@mui/material/TextField'
 import LoginIcon from '@mui/icons-material/Login'
 import Alert from '@mui/material/Alert'
 import { loginValidationSchema, LoginValues } from 'lib/schemas'
-import { login } from 'lib/auth'
+import { AuthCtxType, useAuth } from 'lib/hooks/use-auth'
 import { Container, FormWrapper, Form, Separator } from './Login.styles'
 
 const Login = (): JSX.Element => {
-  const history = useHistory()
   const [error, setError] = useState('')
+  const { login } = useAuth() as AuthCtxType
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -20,7 +19,6 @@ const Login = (): JSX.Element => {
     onSubmit: (values: LoginValues, { setSubmitting }: FormikHelpers<LoginValues>) => {
       setError('')
       login(values.email, values.password)
-        .then((u) => console.log(u))
         .catch(() => setError('Password y/o email incorrecto.'))
         .finally(() => setSubmitting(false))
     },

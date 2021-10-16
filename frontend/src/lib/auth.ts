@@ -6,7 +6,6 @@ const LS_KEY = '__auth_token__'
 export async function login(email: string, password: string): Promise<User> {
   const [data, err] = await apiLogin(email, password)
   if (err) {
-    console.error(err)
     throw new Error(err)
   }
 

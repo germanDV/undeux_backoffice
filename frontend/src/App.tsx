@@ -1,20 +1,17 @@
 import React, { lazy, Suspense } from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import FullPageLoader from 'components/Loader/FullPageLoader'
+import { useAuth, AuthCtxType } from 'lib/hooks/use-auth'
 
 const Login = lazy(() => import('screens/Login/Login'))
 const AuthenticatedApp = lazy(() => import('./AuthenticatedApp'))
 
 function App() {
+  const { user } = useAuth() as AuthCtxType
+
   return (
-    <BrowserRouter>
-      <Suspense fallback={<FullPageLoader />}>
-        <Switch>
-          <Route path="/login" exact component={Login} />
-          <Route path="/" component={AuthenticatedApp} />
-        </Switch>
-      </Suspense>
-    </BrowserRouter>
+    <Suspense fallback={<FullPageLoader />}>
+      {user?.id ? <AuthenticatedApp /> : <Login />}
+    </Suspense>
   )
 }
 

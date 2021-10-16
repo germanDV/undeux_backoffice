@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
-import { UserWithToken } from 'lib/models'
+import { UserWithToken, User } from 'lib/models'
 
 type ApiResponse<T> = [T, string]
 
@@ -20,9 +20,6 @@ async function client<T>(cfg: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return [resp.data, '']
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (error?.response?.status === 401 || error?.response?.status === 403) {
-        console.log('Log user out?')
-      }
       return [{} as T, error.message]
     } else {
       return [{} as T, 'Something went wrong.']
@@ -35,5 +32,15 @@ export async function login(email: string, password: string) {
     method: 'POST',
     url: 'api/login',
     data: { email, password },
+  })
+}
+
+export async function me(token: string) {
+  return client<{user: User}>({
+    method: 'GET',
+    url: 'api/me',
+    headers: {
+      Authorization: token,
+    },
   })
 }

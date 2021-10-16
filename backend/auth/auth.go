@@ -24,7 +24,6 @@ func CreateToken(userID int, role string) (string, error) {
 // VerifyToken validates a JWT and returns the decoded data.
 func VerifyToken(t string) (*data.User, error) {
 	secret := []byte(config.Config.Secret)
-	fmt.Printf("verifying with secret: %q\n", secret)
 
 	decoded, err := jwt.Parse(t, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -57,8 +56,8 @@ func VerifyToken(t string) (*data.User, error) {
 	}
 
 	user := &data.User{
-		Email: "working@on.it",
-		Name: "NN",
+		Email: "german@undeux.com",
+		Name: "German",
 		ID: int(id),
 		Role: role,
 	}

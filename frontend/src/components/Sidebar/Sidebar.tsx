@@ -53,7 +53,7 @@ const Sidebar = ({ open, handleClose, drawerWidth }: Props): JSX.Element => {
           </ListItemIcon>
           <ListItemText primary="Usuarios" />
         </ListItem>
-        <ListItem onClick={() => navigate('/login')}>
+        <ListItem onClick={() => alert('En Construcción')}>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
