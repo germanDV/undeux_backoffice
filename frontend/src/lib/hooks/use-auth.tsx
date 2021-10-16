@@ -22,12 +22,14 @@ export type AuthCtxType = {
   user: User
   login: (email: string, password: string) => Promise<User>
   logout: () => void
+  loading: boolean
 }
 
 const emptyCtx: AuthCtxType = {
   user: anonymousUser,
   login: (_email: string, _password: string) => Promise.resolve(anonymousUser),
   logout: () => {},
+  loading: true,
 }
 
 const AuthCtx = createContext<AuthCtxType>(emptyCtx)
@@ -35,18 +37,22 @@ AuthCtx.displayName = 'AuthContext'
 
 export const AuthProvider: FC = ({ children }) => {
   const [user, setUser] = useState<User>(anonymousUser)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function loadUser(token: string) {
       const [u, err] = await me(token)
       if (!err) {
         setUser(u.user)
+        setLoading(false)
       }
     }
 
     const token = auth.getToken()
     if (token) {
       loadUser(token)
+    } else {
+      setLoading(false)
     }
   }, [])
 
@@ -67,8 +73,8 @@ export const AuthProvider: FC = ({ children }) => {
   }, [])
 
   const value = useMemo(() => {
-    return { user, login, logout }
-  }, [user, login, logout])
+    return { user, login, logout, loading }
+  }, [user, login, logout, loading])
 
   return (
     <AuthCtx.Provider value={value}>
