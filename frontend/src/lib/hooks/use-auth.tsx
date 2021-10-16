@@ -1,13 +1,13 @@
 import {
-  useState,
-  useContext,
   createContext,
   FC,
-  useMemo,
   useCallback,
+  useContext,
   useEffect,
+  useMemo,
+  useState,
 } from 'react'
-import { User } from 'lib/models'
+import { Roles, User } from 'lib/models'
 import * as auth from 'lib/auth'
 import { me } from 'api'
 
@@ -15,7 +15,7 @@ const anonymousUser: User = {
   id: 0,
   email: '',
   name: '',
-  role: 'nn',
+  role: Roles.nn,
 }
 
 export type AuthCtxType = {
