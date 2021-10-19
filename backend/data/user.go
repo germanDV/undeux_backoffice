@@ -3,19 +3,26 @@ package data
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"github.com/go-playground/validator/v10"
 	"strings"
 	"time"
 )
 
 type User struct {
-	ID            int    `json:"id"`
+	ID            int       `json:"id"`
+	Email         string    `json:"email" validate:"required,email"`
+	Name          string    `json:"name" validate:"required,min=2,max=32"`
+	Role          string    `json:"role" validate:"required,role"`
+	Active        bool      `json:"active"`
+	PasswordPlain string    `json:"password,omitempty" validate:"required,min=12,max=32"`
+	PasswordHash  []byte    `json:"-"`
+	CreatedAt     time.Time `json:"createdAt"`
+}
+
+type UserLoginSubmission struct {
 	Email         string `json:"email" validate:"required,email"`
-	Name          string `json:"name" validate:"required,min=2,max=32"`
-	Role          string `json:"role" validate:"required,role"`
-	Active        bool   `json:"active"`
 	PasswordPlain string `json:"password,omitempty" validate:"required,min=12,max=32"`
-	PasswordHash  []byte `json:"-"`
 }
 
 func validateRole(fl validator.FieldLevel) bool {
@@ -32,8 +39,17 @@ func (u *User) Validate() error {
 	return validate.Struct(u)
 }
 
+func (uls *UserLoginSubmission) Validate() error {
+	validate := validator.New()
+	return validate.Struct(uls)
+}
+
 func (u *User) Save(db *sql.DB) error {
-	u.PasswordHash = []byte("working_on_it-" + u.PasswordPlain)
+	hashed, err := hash(u.PasswordPlain, 11)
+	if err != nil {
+		return err
+	}
+	u.PasswordHash = hashed
 
 	query := `
 		insert into users (name, email, password, role)
@@ -45,7 +61,7 @@ func (u *User) Save(db *sql.DB) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
-	err := db.QueryRowContext(ctx, query, args...).Scan(&u.ID)
+	err = db.QueryRowContext(ctx, query, args...).Scan(&u.ID)
 	if err != nil {
 		switch {
 		case err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"`:
@@ -56,4 +72,37 @@ func (u *User) Save(db *sql.DB) error {
 	}
 
 	return nil
+}
+
+func GetUserByEmail(db *sql.DB, email string) (*User, error) {
+	query := `
+		select id, created_at, name, email, role, password, active
+		from users
+		where email = $1
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	var user User
+	err := db.QueryRowContext(ctx, query, strings.ToLower(email)).Scan(
+		&user.ID,
+		&user.CreatedAt,
+		&user.Name,
+		&user.Email,
+		&user.Role,
+		&user.PasswordHash,
+		&user.Active,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+
+	return &user, nil
 }

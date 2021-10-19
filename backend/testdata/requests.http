@@ -8,17 +8,16 @@ Content-Type: application/json
 
 {
   "email": "john@doe.io",
-  "password": "Password1!"
+  "password": "Password1!once"
 }
 
 ### POST /api/login (good credentials)
 POST http://localhost:8080/api/login
-Accept: application/json
 Content-Type: application/json
 
 {
   "email": "german@undeux.com",
-  "password": "Abc123456789"
+  "password": "pondosclavosamisalas"
 }
 
 ### Get /api/me (valid token)
@@ -38,13 +37,12 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0
 
 ### POST /api/register
 POST http://localhost:8080/api/register
-Accept: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0NDQ0Nzg0MDB9.u1riaD1rW97opCoAuRCTy4w58Br-Zk-bh7vLiRIsrpU
 Content-Type: application/json
 
 {
-  "name": "Demo",
-  "email": "demo@undeux.com",
-  "password": "Abc123456789",
-  "role": "user"
+  "name": "German",
+  "email": "german@undeux.com",
+  "password": "pondosclavosamisalas",
+  "role": "admin"
 }
