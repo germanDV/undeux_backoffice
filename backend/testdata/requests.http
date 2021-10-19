@@ -24,7 +24,7 @@ Content-Type: application/json
 ### Get /api/me (valid token)
 GET http://localhost:8080/api/me
 Accept: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzM0NzgxMzIsImlhdCI6MTYzMzM5MTczMiwicm9sZSI6ImdvZCIsInN1YiI6MX0.ewk3OQ8RooGCVPfE4zsMbXL5IItpZGdQ6ICrXi4YMmw
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQ1MTIwNDksImlhdCI6MTYzNDQyNTY0OSwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.Kqr7EtlhFMJoqL2hLG_eE5PCHlXduutR4vorj7hAUok
 
 ### Get /api/me (expired token)
 GET http://localhost:8080/api/me
@@ -35,3 +35,16 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzMyOTI4MDQsImZv
 GET http://localhost:8080/api/me
 Accept: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0NDQ0Nzg0MDB9.u1riaD1rW97opCoAuRCTy4w58Br-Zk-bh7vLiRIsrpU
+
+### POST /api/register
+POST http://localhost:8080/api/register
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0NDQ0Nzg0MDB9.u1riaD1rW97opCoAuRCTy4w58Br-Zk-bh7vLiRIsrpU
+Content-Type: application/json
+
+{
+  "name": "Demo",
+  "email": "demo@undeux.com",
+  "password": "Abc123456789",
+  "role": "user"
+}

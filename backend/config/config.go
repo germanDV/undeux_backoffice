@@ -11,6 +11,7 @@ type config struct {
 	Secret string
 	Env string
 	Port uint
+	DatabaseDSN string
 }
 
 var Config config
@@ -37,5 +38,6 @@ func init() {
 		Secret: secret,
 		Env: env,
 		Port: uint(port),
+		DatabaseDSN: os.Getenv("DDBB_DSN"),
 	}
 }
