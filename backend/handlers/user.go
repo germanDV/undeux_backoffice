@@ -100,14 +100,13 @@ func (c Controller) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c Controller) Me(w http.ResponseWriter, r *http.Request) {
-	// TODO: update this endpoint to fetch the user by token and do what's required.
 	token := r.Header.Get("Authorization")
 	if token == "" {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
-	// TODO: VerifyToken should only return user ID, which should be used to fetch user from the DB.
+	// TODO: token verification and user retrieval must be done in a middleware
 	user, err := auth.VerifyToken(token)
 	if err != nil {
 		fmt.Println(err)
