@@ -1,16 +1,15 @@
-package auth
+package user
 
 import (
 	"errors"
 	"fmt"
 	"github.com/constructoraundeux/backoffice/config"
-	"github.com/constructoraundeux/backoffice/data"
 	"github.com/golang-jwt/jwt"
 	"time"
 )
 
-// CreateToken generates a signed JWT.
-func CreateToken(userID int, role string) (string, error) {
+// createToken generates a signed JWT.
+func createToken(userID int, role string) (string, error) {
 	secret := []byte(config.Config.Secret)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": userID,
@@ -21,8 +20,8 @@ func CreateToken(userID int, role string) (string, error) {
 	return token.SignedString(secret)
 }
 
-// VerifyToken validates a JWT and returns the decoded data.
-func VerifyToken(t string) (*data.User, error) {
+// verifyToken validates a JWT and returns the decoded data.
+func verifyToken(t string) (*User, error) {
 	secret := []byte(config.Config.Secret)
 
 	decoded, err := jwt.Parse(t, func(token *jwt.Token) (interface{}, error) {
@@ -55,7 +54,7 @@ func VerifyToken(t string) (*data.User, error) {
 		return nil, errors.New("cannot read `sub` from JWT")
 	}
 
-	user := &data.User{
+	user := &User{
 		Email: "german@undeux.com",
 		Name: "German",
 		ID: int(id),

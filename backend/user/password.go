@@ -1,4 +1,4 @@
-package data
+package user
 
 import (
 	"golang.org/x/crypto/bcrypt"
@@ -9,8 +9,8 @@ func hash(plain string, cost int) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(plain), cost)
 }
 
-// Matches checks whether the provided plaintext password matches the hashed password.
-func Matches(candidate string, hash []byte) bool {
+// matches checks whether the provided plaintext password matches the hashed password.
+func matches(candidate string, hash []byte) bool {
 	err := bcrypt.CompareHashAndPassword(hash, []byte(candidate))
 	if err != nil {
 		return false

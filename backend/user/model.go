@@ -1,9 +1,10 @@
-package data
+package user
 
 import (
 	"context"
 	"database/sql"
 	"errors"
+	"github.com/constructoraundeux/backoffice/errs"
 	"github.com/go-playground/validator/v10"
 	"strings"
 	"time"
@@ -25,6 +26,10 @@ type UserLoginSubmission struct {
 	PasswordPlain string `json:"password,omitempty" validate:"required,min=12,max=32"`
 }
 
+type userModel struct {
+	DB *sql.DB
+}
+
 func validateRole(fl validator.FieldLevel) bool {
 	value := strings.ToLower(fl.Field().String())
 	return value == "user" || value == "admin" || value == "god"
@@ -44,7 +49,7 @@ func (uls *UserLoginSubmission) Validate() error {
 	return validate.Struct(uls)
 }
 
-func (u *User) Save(db *sql.DB) error {
+func (um userModel) Save(u *User) error {
 	hashed, err := hash(u.PasswordPlain, 11)
 	if err != nil {
 		return err
@@ -61,11 +66,11 @@ func (u *User) Save(db *sql.DB) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
-	err = db.QueryRowContext(ctx, query, args...).Scan(&u.ID)
+	err = um.DB.QueryRowContext(ctx, query, args...).Scan(&u.ID)
 	if err != nil {
 		switch {
 		case err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"`:
-			return ErrDuplicateEmail
+			return errs.ErrDuplicateEmail
 		default:
 			return err
 		}
@@ -74,7 +79,7 @@ func (u *User) Save(db *sql.DB) error {
 	return nil
 }
 
-func GetUserByEmail(db *sql.DB, email string) (*User, error) {
+func (um userModel) GetByEmail(email string) (*User, error) {
 	query := `
 		select id, created_at, name, email, role, password, active
 		from users
@@ -85,7 +90,7 @@ func GetUserByEmail(db *sql.DB, email string) (*User, error) {
 	defer cancel()
 
 	var user User
-	err := db.QueryRowContext(ctx, query, strings.ToLower(email)).Scan(
+	err := um.DB.QueryRowContext(ctx, query, strings.ToLower(email)).Scan(
 		&user.ID,
 		&user.CreatedAt,
 		&user.Name,
@@ -98,7 +103,7 @@ func GetUserByEmail(db *sql.DB, email string) (*User, error) {
 	if err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):
-			return nil, ErrRecordNotFound
+			return nil, errs.ErrRecordNotFound
 		default:
 			return nil, err
 		}

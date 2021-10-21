@@ -1,15 +1,15 @@
-package data
+package user
 
 import "testing"
 
 func TestPasswordHashingAndMatching(t *testing.T) {
-	t.Run("Matches when same password is provided", func(t *testing.T) {
+	t.Run("matches when same password is provided", func(t *testing.T) {
 		pass := "Pakito1q2w3e4r"
 		hashed, err := hash(pass, 1)
 		if err != nil {
 			t.Fatal(err)
 		}
-		if !Matches("Pakito1q2w3e4r", hashed) {
+		if !matches("Pakito1q2w3e4r", hashed) {
 			t.Error("expected passwords to match.")
 		}
 	})
@@ -20,7 +20,7 @@ func TestPasswordHashingAndMatching(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if Matches("Elpatiodemicasaesparticular", hashed) {
+		if matches("Elpatiodemicasaesparticular", hashed) {
 			t.Error("expected passwords not to match.")
 		}
 	})

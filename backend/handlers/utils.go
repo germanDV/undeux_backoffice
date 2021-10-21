@@ -9,11 +9,11 @@ import (
 	"strings"
 )
 
-type envelope map[string]interface{}
+type Envelope map[string]interface{}
 
-// writeJSON sends the response in JSON format,
+// WriteJSON sends the response in JSON format,
 // if an encoding error occurs, it sends an empty 500 response.
-func writeJSON(w http.ResponseWriter, data envelope, status int) {
+func WriteJSON(w http.ResponseWriter, data Envelope, status int) {
 	jsn, err := json.Marshal(data)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -25,8 +25,8 @@ func writeJSON(w http.ResponseWriter, data envelope, status int) {
 	_, _ = w.Write(jsn)
 }
 
-// readJSON decodes r.Body into a destination and handles possible errors
-func readJSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
+// ReadJSON decodes r.Body into a destination and handles possible errors
+func ReadJSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
 	// Limit the size of the request body to 1MB to prevent malicious requests
 	maxBytes := 1_048_576
 	r.Body = http.MaxBytesReader(w, r.Body, int64(maxBytes))

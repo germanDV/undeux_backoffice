@@ -41,8 +41,8 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0
 Content-Type: application/json
 
 {
-  "name": "German",
-  "email": "german@undeux.com",
+  "name": "Javier",
+  "email": "javier@undeux.com",
   "password": "pondosclavosamisalas",
   "role": "admin"
 }
