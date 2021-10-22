@@ -8,9 +8,9 @@ import (
 )
 
 type config struct {
-	Secret string
-	Env string
-	Port uint
+	Secret      string
+	Env         string
+	Port        uint
 	DatabaseDSN string
 }
 
@@ -35,9 +35,9 @@ func init() {
 	}
 
 	Config = config{
-		Secret: secret,
-		Env: env,
-		Port: uint(port),
-		DatabaseDSN: os.Getenv("DDBB_DSN"),
+		Secret:      secret,
+		Env:         env,
+		Port:        uint(port),
+		DatabaseDSN: os.Getenv("DATABASE_URL"),
 	}
 }
