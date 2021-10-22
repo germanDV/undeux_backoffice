@@ -6,23 +6,25 @@ import (
 	"github.com/constructoraundeux/backoffice/user"
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
+	"log"
 	"net/http"
 	"path/filepath"
 )
 
-func routes(db *sql.DB) http.Handler {
+func routes(db *sql.DB, l *log.Logger) http.Handler {
 	// Create router
 	r := httprouter.New()
 
+	// Instantiate modules
+	handler := &handlers.Handler{L: l}
+	users := user.New(db, l)
+
 	// Create middleware chains
 	generalMdw := alice.New(
-		handlers.Logger,
-		handlers.SecurityHeaders,
-		handlers.RecoverPanic,
+		handler.Logger,
+		handler.SecurityHeaders,
+		handler.RecoverPanic,
 	)
-
-	// Instantiate modules
-	users := user.New(db)
 
 	// API Routes: Other
 	r.HandlerFunc(http.MethodGet, "/api/health", handlers.Health)

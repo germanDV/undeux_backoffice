@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"github.com/constructoraundeux/backoffice/errs"
 	"github.com/constructoraundeux/backoffice/handlers"
+	"log"
 	"net/http"
 	"strings"
 )
 
 type userController struct {
 	Model iModel
+	L *log.Logger
 }
 
 func (uc userController) Register(w http.ResponseWriter, r *http.Request) {

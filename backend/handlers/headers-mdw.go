@@ -3,7 +3,7 @@ package handlers
 import "net/http"
 
 // source: https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#security-headers
-func SecurityHeaders(next http.Handler) http.Handler {
+func (h *Handler) SecurityHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Prevent sensitive information from being cached.
 		w.Header().Set("Cache-Control", "no-store")

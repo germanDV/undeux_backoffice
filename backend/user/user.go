@@ -2,6 +2,7 @@ package user
 
 import (
 	"database/sql"
+	"log"
 	"net/http"
 )
 
@@ -21,9 +22,9 @@ type iModel interface {
 	GetByEmail(email string) (*User, error)
 }
 
-func New(db *sql.DB) *Module {
+func New(db *sql.DB, l *log.Logger) *Module {
 	model := userModel{DB: db}
-	controller := userController{Model: model}
+	controller := userController{Model: model, L: l}
 	return &Module{
 		Model: model,
 		Controller: controller,
