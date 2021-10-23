@@ -42,6 +42,11 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		"/api/register",
 		users.Controller.Auth("admin", users.Controller.Register),
 	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/users",
+		users.Controller.Auth("admin", users.Controller.All),
+	)
 
 	// Static assets
 	r.NotFound = http.FileServer(http.Dir(filepath.Join(".", "web")))

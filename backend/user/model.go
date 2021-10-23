@@ -143,3 +143,36 @@ func (um userModel) GetByID(id int) (*User, error) {
 
 	return &user, nil
 }
+
+func (um userModel) GetAll() ([]*User, error) {
+	query := `
+		select id, created_at, name, email, role, active
+		from users
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	rows, err := um.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []*User
+
+	for rows.Next() {
+		u := &User{}
+		err := rows.Scan(&u.ID, &u.CreatedAt, &u.Name, &u.Email, &u.Role, &u.Active)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, u)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}

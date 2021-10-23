@@ -113,3 +113,12 @@ func (uc userController) Me(w http.ResponseWriter, r *http.Request) {
 	}
 	handlers.WriteJSON(w, handlers.Envelope{"user": user}, http.StatusOK)
 }
+
+func (uc userController) All(w http.ResponseWriter, _ *http.Request) {
+	users, err := uc.Model.GetAll()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+	handlers.WriteJSON(w, handlers.Envelope{"users": users}, http.StatusOK)
+}

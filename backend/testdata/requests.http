@@ -37,10 +37,11 @@ Content-Type: application/json
   "role": "user"
 }
 
-### Test auth midleware (admin token)
-GET http://localhost:8080/api/admin
+### Fetch all users (admin token)
+GET http://localhost:8080/api/users
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzNDgsImlhdCI6MTYzNDk5Njk0OCwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fMswz5LnaHWUWzYNktuI9Ma2hwwIK7Ix0RCrUR2CceE
 
-### Test auth midleware (user token)
-GET http://localhost:8080/api/admin
+### Fetch all users (user token)
+GET http://localhost:8080/api/users
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODc3MTEsImlhdCI6MTYzNTAwMTMxMSwicm9sZSI6InVzZXIiLCJzdWIiOjh9.S7YyjBzf02z9k59ZSDVvHdjNzqAJ-1hwQuHDJRNDoe8
+
