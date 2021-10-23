@@ -2,13 +2,14 @@ package user
 
 import (
 	"context"
+	"fmt"
 	"github.com/constructoraundeux/backoffice/handlers"
 	"net/http"
 	"strings"
 )
 
-func (uc userController) Auth(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+func (uc userController) Auth(role string, next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Vary", "Authorization")
 		authHeader := r.Header.Get("Authorization")
 		headerParts := strings.Split(authHeader, " ")
@@ -28,8 +29,17 @@ func (uc userController) Auth(next http.Handler) http.Handler {
 			return
 		}
 
-		// Check if user has desired role (or do another mdw for that 🤔?)
-		// Role is available here before reading from the database in `partialUser.Role`
+		if partialUser.Role == "" {
+			msg := "no roles associated to your profile"
+			handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusForbidden)
+			return
+		}
+
+		if role == "admin" && partialUser.Role != "admin" {
+			msg := fmt.Sprintf("requires %q role, you are %q\n", role, partialUser.Role)
+			handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusForbidden)
+			return
+		}
 
 		user, err := uc.Model.GetByID(partialUser.ID)
 		if err != nil {
@@ -47,5 +57,5 @@ func (uc userController) Auth(next http.Handler) http.Handler {
 		ctx = context.WithValue(ctx, "undeuxUser", user)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
-	})
+	}
 }

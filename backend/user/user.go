@@ -15,7 +15,7 @@ type iController interface {
 	Login(w http.ResponseWriter, r *http.Request)
 	Register(w http.ResponseWriter, r *http.Request)
 	Me(w http.ResponseWriter, r *http.Request)
-	Auth(next http.Handler) http.Handler
+	Auth(role string, next http.HandlerFunc) http.HandlerFunc
 }
 
 type iModel interface {
@@ -27,6 +27,7 @@ type iModel interface {
 func New(db *sql.DB, l *log.Logger) *Module {
 	model := userModel{DB: db}
 	controller := userController{Model: model, L: l}
+
 	return &Module{
 		Model: model,
 		Controller: controller,

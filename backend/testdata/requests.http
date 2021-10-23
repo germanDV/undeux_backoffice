@@ -27,12 +27,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzN
 
 ### POST /api/register
 POST http://localhost:8080/api/register
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0NDQ0Nzg0MDB9.u1riaD1rW97opCoAuRCTy4w58Br-Zk-bh7vLiRIsrpU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzNDgsImlhdCI6MTYzNDk5Njk0OCwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fMswz5LnaHWUWzYNktuI9Ma2hwwIK7Ix0RCrUR2CceE
 Content-Type: application/json
 
 {
-  "name": "Javier",
-  "email": "javier@undeux.com",
+  "name": "Archu",
+  "email": "archu@undeux.com",
   "password": "pondosclavosamisalas",
-  "role": "admin"
+  "role": "user"
 }
+
+### Test auth midleware (admin token)
+GET http://localhost:8080/api/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzNDgsImlhdCI6MTYzNDk5Njk0OCwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fMswz5LnaHWUWzYNktuI9Ma2hwwIK7Ix0RCrUR2CceE
+
+### Test auth midleware (user token)
+GET http://localhost:8080/api/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODc3MTEsImlhdCI6MTYzNTAwMTMxMSwicm9sZSI6InVzZXIiLCJzdWIiOjh9.S7YyjBzf02z9k59ZSDVvHdjNzqAJ-1hwQuHDJRNDoe8

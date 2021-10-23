@@ -46,7 +46,12 @@ func (uc userController) Register(w http.ResponseWriter, r *http.Request) {
 	err = uc.Model.Save(u)
 	if err != nil {
 		msg := err.Error()
-		handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusInternalServerError)
+		switch {
+		case errors.Is(err, errs.ErrDuplicateEmail):
+			handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusBadRequest)
+		default:
+			handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusInternalServerError)
+		}
 		return
 	}
 
