@@ -9,6 +9,8 @@ export type User = {
   email: string
   name: string
   role: Roles
+  active: boolean
+  createdAt?: string
 }
 
 export type UserWithToken = {

@@ -16,6 +16,7 @@ const anonymousUser: User = {
   email: '',
   name: '',
   role: Roles.nn,
+  active: false,
 }
 
 export type AuthCtxType = {
@@ -41,9 +42,11 @@ export const AuthProvider: FC = ({ children }) => {
 
   useEffect(() => {
     async function loadUser() {
-      const [u, err] = await me()
-      if (!err) {
+      try {
+        const u = await me()
         setUser(u.user)
+      } catch (err) {
+        console.error(err)
       }
       setLoading(false)
     }

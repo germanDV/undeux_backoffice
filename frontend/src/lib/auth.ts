@@ -4,14 +4,14 @@ import { User } from 'lib/models'
 const LS_KEY = '__auth_token__'
 
 export async function login(email: string, password: string): Promise<User> {
-  const [data, err] = await apiLogin(email, password)
-  if (err) {
-    throw new Error(err)
+  try {
+    const data = await apiLogin(email, password)
+    const { token, user } = data
+    window.localStorage.setItem(LS_KEY, token)
+    return user
+  } catch (err) {
+    throw err
   }
-
-  const { token, user } = data
-  window.localStorage.setItem(LS_KEY, token)
-  return user
 }
 
 export function logout() {
