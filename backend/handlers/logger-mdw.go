@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"net/http"
 	"github.com/tomasen/realip"
+	"net/http"
 )
 
 func (h *Handler) Logger(next http.Handler) http.Handler {

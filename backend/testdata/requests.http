@@ -20,20 +20,10 @@ Content-Type: application/json
   "password": "pondosclavosamisalas"
 }
 
-### Get /api/me (valid token)
+### Get /api/me
 GET http://localhost:8080/api/me
 Accept: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQ1MTIwNDksImlhdCI6MTYzNDQyNTY0OSwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.Kqr7EtlhFMJoqL2hLG_eE5PCHlXduutR4vorj7hAUok
-
-### Get /api/me (expired token)
-GET http://localhost:8080/api/me
-Accept: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzMyOTI4MDQsImZvbyI6ImJhciIsImlhdCI6MTYzMzI5Mjc4MCwic3ViIjoxfQ.N0E3S6N6SzdqlCjW05WuAwrDfY5wtzoYgs0vD1_4pEE
-
-### Get /api/me (invalid token)
-GET http://localhost:8080/api/me
-Accept: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0NDQ0Nzg0MDB9.u1riaD1rW97opCoAuRCTy4w58Br-Zk-bh7vLiRIsrpU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzNDgsImlhdCI6MTYzNDk5Njk0OCwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fMswz5LnaHWUWzYNktuI9Ma2hwwIK7Ix0RCrUR2CceE
 
 ### POST /api/register
 POST http://localhost:8080/api/register

@@ -15,11 +15,13 @@ type iController interface {
 	Login(w http.ResponseWriter, r *http.Request)
 	Register(w http.ResponseWriter, r *http.Request)
 	Me(w http.ResponseWriter, r *http.Request)
+	Auth(next http.Handler) http.Handler
 }
 
 type iModel interface {
 	Save(user *User) error
 	GetByEmail(email string) (*User, error)
+	GetByID(id int) (*User, error)
 }
 
 func New(db *sql.DB, l *log.Logger) *Module {

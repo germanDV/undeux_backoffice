@@ -2,7 +2,6 @@ package user
 
 import (
 	"errors"
-	"fmt"
 	"github.com/constructoraundeux/backoffice/errs"
 	"github.com/constructoraundeux/backoffice/handlers"
 	"log"
@@ -101,19 +100,11 @@ func (uc userController) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uc userController) Me(w http.ResponseWriter, r *http.Request) {
-	token := r.Header.Get("Authorization")
-	if token == "" {
-		w.WriteHeader(http.StatusUnauthorized)
+	user, ok := r.Context().Value("undeuxUser").(*User)
+	if !ok {
+		msg := "no user has been found in the request context"
+		handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusUnauthorized)
 		return
 	}
-
-	// TODO: token verification and user retrieval must be done in a middleware
-	user, err := verifyToken(token)
-	if err != nil {
-		fmt.Println(err)
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-
 	handlers.WriteJSON(w, handlers.Envelope{"user": user}, http.StatusOK)
 }

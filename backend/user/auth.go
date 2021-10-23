@@ -55,8 +55,6 @@ func verifyToken(t string) (*User, error) {
 	}
 
 	user := &User{
-		Email: "german@undeux.com",
-		Name: "German",
 		ID: int(id),
 		Role: role,
 	}

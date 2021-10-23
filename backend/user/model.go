@@ -111,3 +111,35 @@ func (um userModel) GetByEmail(email string) (*User, error) {
 
 	return &user, nil
 }
+
+func (um userModel) GetByID(id int) (*User, error) {
+	query := `
+		select id, created_at, name, email, role, active
+		from users
+		where id = $1
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	var user User
+	err := um.DB.QueryRowContext(ctx, query, id).Scan(
+		&user.ID,
+		&user.CreatedAt,
+		&user.Name,
+		&user.Email,
+		&user.Role,
+		&user.Active,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, errs.ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+
+	return &user, nil
+}

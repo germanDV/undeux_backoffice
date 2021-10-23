@@ -20,11 +20,8 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	users := user.New(db, l)
 
 	// Create middleware chains
-	generalMdw := alice.New(
-		handler.Logger,
-		handler.SecurityHeaders,
-		handler.RecoverPanic,
-	)
+	generalMdw := alice.New(handler.Logger, handler.SecurityHeaders, handler.RecoverPanic)
+	authMdw := alice.New(users.Controller.Auth)
 
 	// API Routes: Other
 	r.HandlerFunc(http.MethodGet, "/api/health", handlers.Health)
@@ -32,7 +29,7 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	// API Routes: Auth
 	r.HandlerFunc(http.MethodPost, "/api/login", users.Controller.Login)
 	r.HandlerFunc(http.MethodPost, "/api/register", users.Controller.Register)
-	r.HandlerFunc(http.MethodGet, "/api/me", users.Controller.Me)
+	r.Handler(http.MethodGet, "/api/me", authMdw.ThenFunc(users.Controller.Me))
 
 	// Static assets
 	r.NotFound = http.FileServer(http.Dir(filepath.Join(".", "web")))
