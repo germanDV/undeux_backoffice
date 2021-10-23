@@ -40,20 +40,14 @@ export const AuthProvider: FC = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function loadUser(token: string) {
-      const [u, err] = await me(token)
+    async function loadUser() {
+      const [u, err] = await me()
       if (!err) {
         setUser(u.user)
-        setLoading(false)
       }
-    }
-
-    const token = auth.getToken()
-    if (token) {
-      loadUser(token)
-    } else {
       setLoading(false)
     }
+    loadUser()
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {

@@ -1,10 +1,12 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { UserWithToken, User } from 'lib/models'
+import * as auth from 'lib/auth'
 
 type ApiResponse<T> = [T, string]
 
 async function client<T>(cfg: AxiosRequestConfig): Promise<ApiResponse<T>> {
   const { method, url, headers, data, ...config } = cfg
+  const token = auth.getToken()
 
   try {
     const resp: AxiosResponse<T> = await axios({
@@ -12,6 +14,7 @@ async function client<T>(cfg: AxiosRequestConfig): Promise<ApiResponse<T>> {
       url,
       headers: {
         'Content-Type': 'application/json',
+        Authorization: token ? `Bearer ${token}` : '',
         ...headers,
       },
       data: ['POST', 'PUT', 'PATCH'].includes((method || '').toUpperCase()) ? data : null,
@@ -35,12 +38,16 @@ export async function login(email: string, password: string) {
   })
 }
 
-export async function me(token: string) {
+export async function me() {
   return client<{user: User}>({
     method: 'GET',
     url: 'api/me',
-    headers: {
-      Authorization: token,
-    },
+  })
+}
+
+export async function fetchUsers() {
+  return client<User[]>({
+    method: 'GET',
+    url: 'api/users',
   })
 }
