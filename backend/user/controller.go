@@ -24,7 +24,7 @@ func (uc userController) Register(w http.ResponseWriter, r *http.Request) {
 
 	err := handlers.ReadJSON(w, r, &input)
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
 		return
 	}
 
@@ -63,7 +63,7 @@ func (uc userController) Login(w http.ResponseWriter, r *http.Request) {
 
 	err := handlers.ReadJSON(w, r, &input)
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
 		return
 	}
 
@@ -97,7 +97,7 @@ func (uc userController) Login(w http.ResponseWriter, r *http.Request) {
 
 	token, err := createToken(user.ID, user.Role)
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
 		return
 	}
 
@@ -130,13 +130,13 @@ func (uc userController) Upgrade(w http.ResponseWriter, r *http.Request) {
 
 	err := handlers.ReadJSON(w, r, &input)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
 		return
 	}
 
 	err = uc.Model.MakeAdmin(input.UserID)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
 		return
 	}
 
@@ -151,13 +151,24 @@ func (uc userController) ChangeStatus(w http.ResponseWriter, r *http.Request) {
 
 	err := handlers.ReadJSON(w, r, &input)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	user, err := uc.Model.GetByID(input.UserID)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+	if user.Role != "user" {
+		msg := "can only update accounts with role `user`"
+		handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusForbidden)
 		return
 	}
 
 	err = uc.Model.ChangeActiveStatus(input.UserID, input.Active)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
 		return
 	}
 
