@@ -122,3 +122,23 @@ func (uc userController) All(w http.ResponseWriter, _ *http.Request) {
 	}
 	handlers.WriteJSON(w, handlers.Envelope{"users": users}, http.StatusOK)
 }
+
+func (uc userController) Upgrade(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		UserID int `json:"userId"`
+	}
+
+	err := handlers.ReadJSON(w, r, &input)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = uc.Model.MakeAdmin(input.UserID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	handlers.WriteJSON(w, handlers.Envelope{"message": "OK"}, http.StatusOK)
+}

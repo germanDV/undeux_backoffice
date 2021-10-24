@@ -45,3 +45,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzN
 GET http://localhost:8080/api/users
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODc3MTEsImlhdCI6MTYzNTAwMTMxMSwicm9sZSI6InVzZXIiLCJzdWIiOjh9.S7YyjBzf02z9k59ZSDVvHdjNzqAJ-1hwQuHDJRNDoe8
 
+### Make admin
+PUT http://localhost:8080/api/users/upgrade
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTA1MzcsImlhdCI6MTYzNTEwNDEzNywicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.iwSGkQXppZIm9LgmprSDjp35FKGZQ8bhfR1y8RlWBDA
+Content-Type: application/json
+
+{
+  "userId": 8
+}

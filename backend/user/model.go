@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"github.com/constructoraundeux/backoffice/errs"
 	"github.com/go-playground/validator/v10"
 	"strings"
@@ -175,4 +176,30 @@ func (um userModel) GetAll() ([]*User, error) {
 	}
 
 	return users, nil
+}
+
+func (um userModel) MakeAdmin(id int) error {
+	query := `
+		update users set role = 'admin'
+		where id = $1
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	result, err := um.DB.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if affected != 1 {
+		return errors.New(fmt.Sprintf("expected 1 row to be affected, actually affected: %d", affected))
+	}
+
+	return nil
 }

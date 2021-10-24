@@ -17,6 +17,7 @@ type iController interface {
 	Me(w http.ResponseWriter, r *http.Request)
 	Auth(role string, next http.HandlerFunc) http.HandlerFunc
 	All(w http.ResponseWriter, r *http.Request)
+	Upgrade(w http.ResponseWriter, r *http.Request)
 }
 
 type iModel interface {
@@ -24,6 +25,7 @@ type iModel interface {
 	GetByEmail(email string) (*User, error)
 	GetByID(id int) (*User, error)
 	GetAll() ([]*User, error)
+	MakeAdmin(id int) error
 }
 
 func New(db *sql.DB, l *log.Logger) *Module {
