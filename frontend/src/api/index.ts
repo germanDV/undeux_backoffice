@@ -45,3 +45,19 @@ export async function fetchUsers() {
     url: 'api/users',
   })
 }
+
+export async function changeUserStatus(payload: { userId: number, active: boolean }) {
+  return client<{message: string}>({
+    method: 'PUT',
+    url: 'api/users/status',
+    data: payload,
+  })
+}
+
+export async function makeAdmin(userId: number) {
+  return client<{message: string}>({
+    method: 'PUT',
+    url: 'api/users/upgrade',
+    data: { userId },
+  })
+}

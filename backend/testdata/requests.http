@@ -57,19 +57,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODc3M
 
 ### Make admin
 PUT http://localhost:8080/api/users/upgrade
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTA1MzcsImlhdCI6MTYzNTEwNDEzNywicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.iwSGkQXppZIm9LgmprSDjp35FKGZQ8bhfR1y8RlWBDA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTkwMzUsImlhdCI6MTYzNTExMjYzNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.hY3EEJyBU50az4wAQovxaOHTWtogYXdlLA1umxiXy2M
 Content-Type: application/json
 
 {
-  "userId": 8
+  "userId": 13
 }
 
 ### Reactivate/Deactivate
 PUT http://localhost:8080/api/users/status
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTA1MzcsImlhdCI6MTYzNTEwNDEzNywicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.iwSGkQXppZIm9LgmprSDjp35FKGZQ8bhfR1y8RlWBDA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTkwMzUsImlhdCI6MTYzNTExMjYzNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.hY3EEJyBU50az4wAQovxaOHTWtogYXdlLA1umxiXy2M
 Content-Type: application/json
 
 {
   "userId": 13,
-  "active": true
+  "active": false
 }
