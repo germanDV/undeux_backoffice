@@ -170,6 +170,7 @@ func (um userModel) GetAll() ([]*User, error) {
 	query := `
 		select id, created_at, name, email, role, active
 		from users
+		order by created_at asc 
 	`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
