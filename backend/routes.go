@@ -57,11 +57,11 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		"/api/users/status",
 		users.Controller.Auth("admin", users.Controller.ChangeStatus),
 	)
-	// r.HandlerFunc(
-	// 	http.MethodPut,
-	// 	"/api/users/change-user-password",
-	// 	users.Controller.Auth("admin", users.Controller.ChangeUserPassword),
-	// )
+	r.HandlerFunc(
+		http.MethodPut,
+		"/api/users/change-user-password",
+		users.Controller.Auth("admin", users.Controller.ChangeUserPassword),
+	)
 	r.HandlerFunc(
 		http.MethodPut,
 		"/api/users/change-my-password",

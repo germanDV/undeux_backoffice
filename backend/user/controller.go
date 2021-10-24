@@ -157,7 +157,12 @@ func (uc userController) ChangeStatus(w http.ResponseWriter, r *http.Request) {
 
 	user, err := uc.Model.GetByID(input.UserID)
 	if err != nil {
-		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		switch {
+		case errors.Is(err, errs.ErrRecordNotFound):
+			handlers.WriteJSON(w, handlers.Envelope{"error": "user not found"}, http.StatusNotFound)
+		default:
+			handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		}
 		return
 	}
 	if user.Role != "user" {
@@ -204,6 +209,46 @@ func (uc userController) ChangeMyPassword(w http.ResponseWriter, r *http.Request
 	}
 
 	err = uc.Model.ChangePassword(user.ID, input.NewPasswordPlain)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	handlers.WriteJSON(w, handlers.Envelope{"message": "OK"}, http.StatusOK)
+}
+
+func (uc userController) ChangeUserPassword(w http.ResponseWriter, r *http.Request) {
+	var input UserPasswordChangeSubmission
+
+	err := handlers.ReadJSON(w, r, &input)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	err = input.Validate()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	user, err := uc.Model.GetByID(input.ID)
+	if err != nil {
+		switch {
+		case errors.Is(err, errs.ErrRecordNotFound):
+			handlers.WriteJSON(w, handlers.Envelope{"error": "user not found"}, http.StatusNotFound)
+		default:
+			handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		}
+		return
+	}
+	if user.Role != "user" {
+		msg := "can only update accounts with role `user`"
+		handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusForbidden)
+		return
+	}
+
+	err = uc.Model.ChangePassword(input.ID, input.NewPasswordPlain)
 	if err != nil {
 		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
 		return

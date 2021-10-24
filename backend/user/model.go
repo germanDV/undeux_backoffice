@@ -32,6 +32,11 @@ type OwnPasswordChangeSubmission struct {
 	NewPasswordPlain string `json:"newPassword,omitempty" validate:"required,min=12,max=32"`
 }
 
+type UserPasswordChangeSubmission struct {
+	ID               int    `json:"id" validate:"required,number,min=1"`
+	NewPasswordPlain string `json:"password,omitempty" validate:"required,min=12,max=32"`
+}
+
 type userModel struct {
 	DB *sql.DB
 }
@@ -58,6 +63,11 @@ func (uls *UserLoginSubmission) Validate() error {
 func (opcs *OwnPasswordChangeSubmission) Validate() error {
 	validate := validator.New()
 	return validate.Struct(opcs)
+}
+
+func (upcs *UserPasswordChangeSubmission) Validate() error {
+	validate := validator.New()
+	return validate.Struct(upcs)
 }
 
 func (um userModel) Save(u *User) error {

@@ -20,6 +20,7 @@ type iController interface {
 	Upgrade(w http.ResponseWriter, r *http.Request)
 	ChangeStatus(w http.ResponseWriter, r *http.Request)
 	ChangeMyPassword(w http.ResponseWriter, r *http.Request)
+	ChangeUserPassword(w http.ResponseWriter, r *http.Request)
 }
 
 type iModel interface {

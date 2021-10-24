@@ -20,6 +20,16 @@ Content-Type: application/json
   "newPassword": "pondosclavosamisalas"
 }
 
+### Change other user password
+PUT http://localhost:8080/api/users/change-user-password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTkwMzUsImlhdCI6MTYzNTExMjYzNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.hY3EEJyBU50az4wAQovxaOHTWtogYXdlLA1umxiXy2M
+Content-Type: application/json
+
+{
+  "id": 13,
+  "password": "pondosclavosamisalas"
+}
+
 ### Me
 GET http://localhost:8080/api/me
 Accept: application/json
