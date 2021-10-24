@@ -62,11 +62,11 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	// 	"/api/users/change-user-password",
 	// 	users.Controller.Auth("admin", users.Controller.ChangeUserPassword),
 	// )
-	// r.HandlerFunc(
-	// 	http.MethodPut,
-	// 	"/api/users/change-my-password",
-	// 	users.Controller.Auth("user", users.Controller.ChangeMyPassword),
-	// )
+	r.HandlerFunc(
+		http.MethodPut,
+		"/api/users/change-my-password",
+		users.Controller.Auth("user", users.Controller.ChangeMyPassword),
+	)
 
 	// Static assets
 	r.NotFound = http.FileServer(http.Dir(filepath.Join(".", "web")))

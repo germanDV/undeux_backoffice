@@ -174,3 +174,40 @@ func (uc userController) ChangeStatus(w http.ResponseWriter, r *http.Request) {
 
 	handlers.WriteJSON(w, handlers.Envelope{"message": "OK"}, http.StatusOK)
 }
+
+func (uc userController) ChangeMyPassword(w http.ResponseWriter, r *http.Request) {
+	user, ok := r.Context().Value("undeuxUser").(*User)
+	if !ok {
+		msg := "no user has been found in the request context"
+		handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusUnauthorized)
+		return
+	}
+
+	var input OwnPasswordChangeSubmission
+
+	err := handlers.ReadJSON(w, r, &input)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	err = input.Validate()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	// Check that old password is correct
+	if !matches(input.OldPasswordPlain, user.PasswordHash) {
+		handlers.WriteJSON(w, handlers.Envelope{"error": "incorrect old password"}, http.StatusUnauthorized)
+		return
+	}
+
+	err = uc.Model.ChangePassword(user.ID, input.NewPasswordPlain)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	handlers.WriteJSON(w, handlers.Envelope{"message": "OK"}, http.StatusOK)
+}

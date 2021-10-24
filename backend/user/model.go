@@ -27,6 +27,11 @@ type UserLoginSubmission struct {
 	PasswordPlain string `json:"password,omitempty" validate:"required,min=12,max=32"`
 }
 
+type OwnPasswordChangeSubmission struct {
+	OldPasswordPlain string `json:"oldPassword,omitempty" validate:"required,min=12,max=32"`
+	NewPasswordPlain string `json:"newPassword,omitempty" validate:"required,min=12,max=32"`
+}
+
 type userModel struct {
 	DB *sql.DB
 }
@@ -48,6 +53,11 @@ func (u *User) Validate() error {
 func (uls *UserLoginSubmission) Validate() error {
 	validate := validator.New()
 	return validate.Struct(uls)
+}
+
+func (opcs *OwnPasswordChangeSubmission) Validate() error {
+	validate := validator.New()
+	return validate.Struct(opcs)
 }
 
 func (um userModel) Save(u *User) error {
@@ -115,7 +125,7 @@ func (um userModel) GetByEmail(email string) (*User, error) {
 
 func (um userModel) GetByID(id int) (*User, error) {
 	query := `
-		select id, created_at, name, email, role, active
+		select id, created_at, name, email, role, password, active
 		from users
 		where id = $1
 	`
@@ -130,6 +140,7 @@ func (um userModel) GetByID(id int) (*User, error) {
 		&user.Name,
 		&user.Email,
 		&user.Role,
+		&user.PasswordHash,
 		&user.Active,
 	)
 
@@ -214,6 +225,37 @@ func (um userModel) ChangeActiveStatus(id int, active bool) error {
 	defer cancel()
 
 	result, err := um.DB.ExecContext(ctx, query, active, id)
+	if err != nil {
+		return err
+	}
+
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if affected != 1 {
+		return errors.New(fmt.Sprintf("expected 1 row to be affected, actually affected: %d", affected))
+	}
+
+	return nil
+}
+
+func (um userModel) ChangePassword(id int, password string) error {
+	hashed, err := hash(password, 11)
+	if err != nil {
+		return err
+	}
+
+	query := `
+		update users set password = $1
+		where id = $2
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	result, err := um.DB.ExecContext(ctx, query, hashed, id)
 	if err != nil {
 		return err
 	}

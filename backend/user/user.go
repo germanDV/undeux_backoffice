@@ -19,6 +19,7 @@ type iController interface {
 	All(w http.ResponseWriter, r *http.Request)
 	Upgrade(w http.ResponseWriter, r *http.Request)
 	ChangeStatus(w http.ResponseWriter, r *http.Request)
+	ChangeMyPassword(w http.ResponseWriter, r *http.Request)
 }
 
 type iModel interface {
@@ -28,6 +29,7 @@ type iModel interface {
 	GetAll() ([]*User, error)
 	MakeAdmin(id int) error
 	ChangeActiveStatus(id int, active bool) error
+	ChangePassword(id int, password string) error
 }
 
 func New(db *sql.DB, l *log.Logger) *Module {

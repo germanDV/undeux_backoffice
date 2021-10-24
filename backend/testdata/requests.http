@@ -1,17 +1,7 @@
-### GET /api/health
+### Health
 GET http://localhost:8080/api/health
 
-### POST /api/login (bad credentials)
-POST http://localhost:8080/api/login
-Accept: application/json
-Content-Type: application/json
-
-{
-  "email": "john@doe.io",
-  "password": "Password1!once"
-}
-
-### POST /api/login (good credentials)
+### Login
 POST http://localhost:8080/api/login
 Content-Type: application/json
 
@@ -20,12 +10,22 @@ Content-Type: application/json
   "password": "pondosclavosamisalas"
 }
 
-### Get /api/me
+### Change own password
+PUT http://localhost:8080/api/users/change-my-password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTc4NjksImlhdCI6MTYzNTExMTQ2OSwicm9sZSI6InVzZXIiLCJzdWIiOjEzfQ.SsApELX5_MwspyMYVNZ3pxFzrwhdvm_IGBNNLrsYkbo
+Content-Type: application/json
+
+{
+  "oldPassword": "Abc123456789",
+  "newPassword": "pondosclavosamisalas"
+}
+
+### Me
 GET http://localhost:8080/api/me
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzNDgsImlhdCI6MTYzNDk5Njk0OCwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fMswz5LnaHWUWzYNktuI9Ma2hwwIK7Ix0RCrUR2CceE
 
-### POST /api/register
+### Register
 POST http://localhost:8080/api/register
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzNDgsImlhdCI6MTYzNDk5Njk0OCwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fMswz5LnaHWUWzYNktuI9Ma2hwwIK7Ix0RCrUR2CceE
 Content-Type: application/json
