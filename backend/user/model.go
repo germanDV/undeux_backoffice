@@ -184,10 +184,36 @@ func (um userModel) MakeAdmin(id int) error {
 		where id = $1
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
 	result, err := um.DB.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if affected != 1 {
+		return errors.New(fmt.Sprintf("expected 1 row to be affected, actually affected: %d", affected))
+	}
+
+	return nil
+}
+
+func (um userModel) ChangeActiveStatus(id int, active bool) error {
+	query := `
+		update users set active = $1
+		where id = $2
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	result, err := um.DB.ExecContext(ctx, query, active, id)
 	if err != nil {
 		return err
 	}

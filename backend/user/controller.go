@@ -142,3 +142,24 @@ func (uc userController) Upgrade(w http.ResponseWriter, r *http.Request) {
 
 	handlers.WriteJSON(w, handlers.Envelope{"message": "OK"}, http.StatusOK)
 }
+
+func (uc userController) ChangeStatus(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		UserID int `json:"userId"`
+		Active bool `json:"active"`
+	}
+
+	err := handlers.ReadJSON(w, r, &input)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = uc.Model.ChangeActiveStatus(input.UserID, input.Active)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	handlers.WriteJSON(w, handlers.Envelope{"message": "OK"}, http.StatusOK)
+}
