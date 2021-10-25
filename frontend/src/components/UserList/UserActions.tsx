@@ -1,5 +1,5 @@
 import React from 'react'
-import { useChangeUserStatus, useMakeAdmin } from 'lib/hooks/user'
+import { useSnackbar } from 'notistack'
 import Stack from '@mui/material/Stack'
 import IconButton from '@mui/material/IconButton'
 import UpgradeIcon from '@mui/icons-material/Upgrade'
@@ -7,6 +7,7 @@ import PasswordIcon from '@mui/icons-material/Password'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CircularProgress from '@mui/material/CircularProgress'
+import { useChangeUserStatus, useMakeAdmin } from 'lib/hooks/user'
 
 interface Props {
   userId: number
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const UserActions = ({ userId, isAdmin, active }: Props): JSX.Element | null => {
+  const { enqueueSnackbar } = useSnackbar()
   const userStatusMutation = useChangeUserStatus()
   const makeAdminMutation = useMakeAdmin()
 
@@ -36,9 +38,17 @@ const UserActions = ({ userId, isAdmin, active }: Props): JSX.Element | null => 
 
   if (isAdmin) return null
 
-  // TODO: show these in a notification
-  if (userStatusMutation.isError) console.log(userStatusMutation.error)
-  if (makeAdminMutation.isError) console.log(makeAdminMutation.error)
+  if (userStatusMutation.isError) {
+    enqueueSnackbar(`Error actualizando usuario ${userId}`, {
+      variant: 'error',
+    })
+  }
+
+  if (makeAdminMutation.isError) {
+    enqueueSnackbar('Error convirtiendo usuario a `admin`.', {
+      variant: 'error',
+    })
+  }
 
   return (
     <Stack direction="row" spacing={.5}>
