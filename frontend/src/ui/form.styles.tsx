@@ -1,12 +1,18 @@
 import { styled } from '@mui/material/styles'
 import MuiPaper from '@mui/material/Paper';
 
-export const Container = styled('div')(({ theme }) => ({
+export const FullPageContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100vh',
   minWidth: '100%',
   justifyContent: 'center',
   alignItems: 'center',
+}))
+
+export const Container = styled('div')(({ theme }) => ({
+  display: 'flex',
+  minWidth: '100%',
+  justifyContent: 'center',
 }))
 
 export const FormWrapper = styled(MuiPaper)(({ theme }) => ({

@@ -7,7 +7,7 @@ import LoginIcon from '@mui/icons-material/Login'
 import Alert from '@mui/material/Alert'
 import { loginValidationSchema, LoginValues } from 'lib/schemas'
 import { useAuth } from 'lib/hooks/use-auth'
-import { Container, FormWrapper, Form, Separator } from './Login.styles'
+import { FullPageContainer, FormWrapper, Form, Separator } from 'ui/form.styles'
 
 const Login = (): JSX.Element => {
   const [error, setError] = useState('')
@@ -25,7 +25,7 @@ const Login = (): JSX.Element => {
   });
 
   return (
-    <Container>
+    <FullPageContainer>
       <FormWrapper elevation={3}>
         <Form onSubmit={formik.handleSubmit}>
           <Typography variant="h4" align="center">
@@ -84,7 +84,7 @@ const Login = (): JSX.Element => {
           </Typography>
         </Form>
       </FormWrapper>
-    </Container>
+    </FullPageContainer>
   )
 }
 
