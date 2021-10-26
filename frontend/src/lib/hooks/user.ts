@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { fetchUsers, changeUserStatus, makeAdmin } from 'api'
 import { User } from '../models'
+import {
+  fetchUsers,
+  changeUserStatus,
+  makeAdmin,
+  register,
+} from 'api'
 
 export function useUsers() {
   return useQuery<{users: User[]}, Error>('users', fetchUsers)
@@ -22,4 +27,8 @@ export function useMakeAdmin() {
       queryClient.invalidateQueries('users')
     },
   })
+}
+
+export function useCreateUser() {
+  return useMutation(register)
 }

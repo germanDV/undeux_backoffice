@@ -1,6 +1,6 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { ChangeEvent } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useFormik, FormikHelpers } from 'formik'
+import { useFormik } from 'formik'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -11,12 +11,13 @@ import Switch from '@mui/material/Switch'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { registrationValidationSchema, RegistrationValues } from 'lib/schemas'
 import { Roles } from 'lib/models'
-import { register } from 'api'
+import { useCreateUser } from 'lib/hooks/user'
+import { translateErr } from 'lib/helpers'
 import { Container, FormWrapper, Form, Separator } from 'ui/form.styles'
 
 const NewUser = (): JSX.Element => {
   const history = useHistory()
-  const [error, setError] = useState('')
+  const mutation = useCreateUser()
 
   const formik = useFormik({
     initialValues: {
@@ -27,21 +28,18 @@ const NewUser = (): JSX.Element => {
       role: Roles.user,
     },
     validationSchema: registrationValidationSchema,
-    onSubmit: (values: RegistrationValues, { setSubmitting }: FormikHelpers<RegistrationValues>) => {
-      setError('')
-      const { name, email, password, role } = values
-
-      register({ name, email, password, role })
-        .then(({ id }) => {
-          formik.resetForm()
-          history.push(`/users?newuser=${id}`)
-        })
-        .catch((err) => {
-          setError(err.message === 'duplicate email' ? 'Email ya existe.' : 'Error creando usuario.')
-        })
-        .finally(() => setSubmitting(false))
+    onSubmit: ({ name, email, password, role }: RegistrationValues) => {
+      mutation.mutate({ name, email, password, role })
     },
   });
+
+  if (formik.isSubmitting && (mutation.isError || mutation.isSuccess)) {
+    formik.setSubmitting(false)
+  }
+
+  if (mutation.isSuccess) {
+    history.push(`/users?newuser=${mutation.data.id}`)
+  }
 
   const handleRoleSwitch = (ev: ChangeEvent<HTMLInputElement>) => {
     formik.setFieldValue('role', ev.target.checked ? Roles.admin : Roles.user)
@@ -133,9 +131,11 @@ const NewUser = (): JSX.Element => {
           </LoadingButton>
           <Separator />
 
-          {error && (
+          {mutation.isError && (
             <div>
-              <Alert severity="error">{error}</Alert>
+              <Alert severity="error">
+                {translateErr(mutation.error as Error)}
+              </Alert>
               <Separator />
             </div>
           )}
