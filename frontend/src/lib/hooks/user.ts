@@ -5,6 +5,7 @@ import {
   changeUserStatus,
   makeAdmin,
   register,
+  changeUserPassword,
 } from 'api'
 
 export function useUsers() {
@@ -31,4 +32,8 @@ export function useMakeAdmin() {
 
 export function useCreateUser() {
   return useMutation(register)
+}
+
+export function useChangeUserPassword() {
+  return useMutation(changeUserPassword)
 }

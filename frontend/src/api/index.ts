@@ -76,3 +76,11 @@ export async function makeAdmin(userId: number) {
     data: { userId },
   })
 }
+
+export async function changeUserPassword(payload: { id: number, password: string }) {
+  return client<{message: string}>({
+    method: 'PUT',
+    url: 'api/users/change-user-password',
+    data: payload,
+  })
+}

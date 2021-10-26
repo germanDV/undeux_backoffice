@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSnackbar } from 'notistack'
 import Stack from '@mui/material/Stack'
 import IconButton from '@mui/material/IconButton'
@@ -8,21 +8,20 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CircularProgress from '@mui/material/CircularProgress'
 import { useChangeUserStatus, useMakeAdmin } from 'lib/hooks/user'
+import PasswordChange from '../PasswordChange/PasswordChange'
 
 interface Props {
   userId: number
+  email: string
   isAdmin: boolean
   active: boolean
 }
 
-const UserActions = ({ userId, isAdmin, active }: Props): JSX.Element | null => {
+const UserActions = ({ userId, email, isAdmin, active }: Props): JSX.Element | null => {
+  const [open, setOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const userStatusMutation = useChangeUserStatus()
   const makeAdminMutation = useMakeAdmin()
-
-  const changePassword = () => {
-    alert(`Mostrar formulario para cambiar password del usuario ${userId}`)
-  }
 
   const makeAdmin = () => {
     makeAdminMutation.mutate(userId)
@@ -34,6 +33,15 @@ const UserActions = ({ userId, isAdmin, active }: Props): JSX.Element | null => 
 
   const activate = () => {
     userStatusMutation.mutate({ userId, active: true })
+  }
+
+  const onPasswordChange = () => {
+    setOpen(false)
+    setTimeout(() => {
+      enqueueSnackbar('Password actualizada.', {
+        variant: 'success',
+      })
+    }, 500)
   }
 
   if (isAdmin) return null
@@ -52,7 +60,7 @@ const UserActions = ({ userId, isAdmin, active }: Props): JSX.Element | null => 
 
   return (
     <Stack direction="row" spacing={.5}>
-      <IconButton title="Cambiar password" onClick={changePassword}>
+      <IconButton title="Cambiar password" onClick={() => setOpen(true)}>
         <PasswordIcon />
       </IconButton>
       <IconButton title="Hacer administrador" onClick={makeAdmin}>
@@ -78,6 +86,13 @@ const UserActions = ({ userId, isAdmin, active }: Props): JSX.Element | null => 
           </IconButton>
         )
       }
+      <PasswordChange
+        id={userId}
+        email={email}
+        open={open}
+        handleClose={() => setOpen(false)}
+        handleSuccess={onPasswordChange}
+      />
     </Stack>
   )
 }

@@ -1,6 +1,4 @@
 import React from 'react'
-import { User, Roles } from 'lib/models'
-import UserActions from './UserActions'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import ListItem from '@mui/material/ListItem'
@@ -11,6 +9,8 @@ import Avatar from '@mui/material/Avatar'
 import PersonIcon from '@mui/icons-material/Person'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 import BlockIcon from '@mui/icons-material/Block'
+import { User, Roles } from 'lib/models'
+import UserActions from './UserActions'
 
 interface Props {
   user: User
@@ -24,7 +24,12 @@ const UserListItem = ({ user }: Props): JSX.Element => {
     <Box my={2}>
       <Paper elevation={3}>
         <ListItem secondaryAction={(
-          <UserActions userId={user.id} isAdmin={isAdmin} active={user.active} />
+          <UserActions
+            userId={user.id}
+            email={user.email}
+            isAdmin={isAdmin}
+            active={user.active}
+          />
         )}>
           <ListItemAvatar>
             <Avatar>

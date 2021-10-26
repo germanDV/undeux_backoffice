@@ -34,6 +34,7 @@ const Login = (): JSX.Element => {
           <Separator times={2} />
 
           <TextField
+            autoFocus
             id="email"
             name="email"
             label="Email"
