@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import darkTheme from 'theme'
+import darkTheme from 'ui/theme'
 
 // Load Roboto font
 import '@fontsource/roboto/300.css'
