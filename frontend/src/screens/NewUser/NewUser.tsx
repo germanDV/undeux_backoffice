@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useFormik, FormikHelpers } from 'formik'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -10,30 +11,34 @@ import Switch from '@mui/material/Switch'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { registrationValidationSchema, RegistrationValues } from 'lib/schemas'
 import { Roles } from 'lib/models'
+import { register } from 'api'
 import { Container, FormWrapper, Form, Separator } from 'ui/form.styles'
 
-// TODO: make an API endpoint for this
-const register = (payload: RegistrationValues) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log(payload)
-      resolve('OK')
-    }, 1500)
-  })
-}
-
 const NewUser = (): JSX.Element => {
+  const history = useHistory()
   const [error, setError] = useState('')
 
   const formik = useFormik({
-    initialValues: { email: '', password: '', name: '', role: Roles.user },
+    initialValues: {
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+      name: '',
+      role: Roles.user,
+    },
     validationSchema: registrationValidationSchema,
     onSubmit: (values: RegistrationValues, { setSubmitting }: FormikHelpers<RegistrationValues>) => {
       setError('')
       const { name, email, password, role } = values
 
       register({ name, email, password, role })
-        .catch(() => setError('Error creando usuario.'))
+        .then(({ id }) => {
+          formik.resetForm()
+          history.push(`/users?newuser=${id}`)
+        })
+        .catch((err) => {
+          setError(err.message === 'duplicate email' ? 'Email ya existe.' : 'Error creando usuario.')
+        })
         .finally(() => setSubmitting(false))
     },
   });
@@ -57,6 +62,7 @@ const NewUser = (): JSX.Element => {
             label="Nombre"
             value={formik.values.name}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.name && !!formik.errors.name}
             helperText={formik.touched.name && formik.errors.name}
           />
@@ -68,6 +74,7 @@ const NewUser = (): JSX.Element => {
             label="Email"
             value={formik.values.email}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
           />
@@ -80,8 +87,22 @@ const NewUser = (): JSX.Element => {
             type="password"
             value={formik.values.password}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.password && !!formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
+          />
+          <Separator />
+
+          <TextField
+            id="passwordConfirmation"
+            name="passwordConfirmation"
+            label="Confirmación Password"
+            type="password"
+            value={formik.values.passwordConfirmation}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.passwordConfirmation && !!formik.errors.passwordConfirmation}
+            helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
           />
           <Separator />
 

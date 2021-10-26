@@ -1,5 +1,6 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { UserWithToken, User } from 'lib/models'
+import { RegistrationValues } from 'lib/schemas'
 import * as auth from 'lib/auth'
 
 async function client<T>(cfg: AxiosRequestConfig): Promise<T> {
@@ -20,8 +21,22 @@ async function client<T>(cfg: AxiosRequestConfig): Promise<T> {
     })
     return resp.data
   } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const err = error.response?.data
+      // @ts-ignore
+      const msg = err && err.error ? err.error : error.message
+      throw new Error(msg)
+    }
     throw error
   }
+}
+
+export async function register(payload: Omit<RegistrationValues, 'passwordConfirmation'>) {
+  return client<{id: number}>({
+    method: 'POST',
+    url: 'api/register',
+    data: payload,
+  })
 }
 
 export async function login(email: string, password: string) {

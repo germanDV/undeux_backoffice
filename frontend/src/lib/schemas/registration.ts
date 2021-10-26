@@ -5,6 +5,7 @@ export interface RegistrationValues {
   name: string
   email: string
   password: string
+  passwordConfirmation: string
   role: Roles
 }
 
@@ -22,6 +23,10 @@ export const registrationValidationSchema = yup.object({
     .string()
     .min(12, 'Mínimo 12 caracteres.')
     .max(32, 'Máximo 32 caracteres.')
+    .required('Ingresá tu password.'),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords no coinciden.')
     .required('Ingresá tu password.'),
   role: yup
     .mixed()

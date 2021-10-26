@@ -1,7 +1,7 @@
 import React, { createRef, FC } from 'react'
 import { SnackbarProvider, SnackbarKey } from 'notistack'
 import IconButton from '@mui/material/IconButton'
-import DeleteIcon from '@mui/icons-material/Delete'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
 const notistackRef = createRef<any>();
 
@@ -22,7 +22,7 @@ const ToastProvider: FC = ({ children }) => {
           onClick={onClickDismiss(key)}
           size="small"
         >
-          <DeleteIcon fontSize="small" />
+          <KeyboardArrowRightIcon fontSize="small" />
         </IconButton>
       )}
     >
