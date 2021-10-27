@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import Typography from '@mui/material/Typography'
 import { AppBar, LogoWrapper } from './Navbar.styes'
+import MyAccountMenu from './MyAccountMenu'
 
 interface Props {
   open: boolean;
@@ -30,9 +31,10 @@ const Navbar = ({ open, handleOpen, drawerWidth }: Props): JSX.Element => {
         <LogoWrapper>
           <img src="/logo.png" alt="Undeux Logo" width="25" />
         </LogoWrapper>
-        <Typography variant="h6" noWrap component="div">
+        <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
           UNDEUX BACKOFFICE
         </Typography>
+        <MyAccountMenu />
       </Toolbar>
     </AppBar>
   )

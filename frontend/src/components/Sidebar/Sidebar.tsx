@@ -8,7 +8,6 @@ import TimelineIcon from '@mui/icons-material/Timeline'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import { Drawer, DrawerHeader } from './Sidebar.styles'
 import SidebarItem from './SidebarItem'
-import LogoutItem from './LogoutItem'
 
 interface Props {
   open: boolean
@@ -29,7 +28,6 @@ const Sidebar = ({ open, handleClose, drawerWidth }: Props): JSX.Element => {
         <SidebarItem icon={<AppsIcon />} text="Inicio" to="/" />
         <SidebarItem icon={<TimelineIcon />} text="Otros" to="/other" />
         <SidebarItem icon={<PeopleAltIcon />} text="Usuarios" to="/users" adminOnly />
-        <LogoutItem />
       </List>
     </Drawer>
   )
