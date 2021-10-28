@@ -8,7 +8,6 @@ import (
 	"github.com/justinas/alice"
 	"log"
 	"net/http"
-	"path/filepath"
 )
 
 func routes(db *sql.DB, l *log.Logger) http.Handler {
@@ -68,8 +67,8 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		users.Controller.Auth("user", users.Controller.ChangeMyPassword),
 	)
 
-	// Static assets
-	r.NotFound = http.FileServer(http.Dir(filepath.Join(".", "web")))
+	// Static assets and index.html
+	r.NotFound = http.HandlerFunc(handlers.SpaHandler)
 
 	return generalMdw.Then(r)
 }
