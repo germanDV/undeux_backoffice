@@ -6,6 +6,7 @@ import {
   makeAdmin,
   register,
   changeUserPassword,
+  changeMyPassword,
 } from 'api'
 
 export function useUsers() {
@@ -36,4 +37,8 @@ export function useCreateUser() {
 
 export function useChangeUserPassword() {
   return useMutation(changeUserPassword)
+}
+
+export function useChangeMyPassword() {
+  return useMutation(changeMyPassword)
 }

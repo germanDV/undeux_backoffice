@@ -1,4 +1,5 @@
 import React, { MouseEvent, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import IconButton from '@mui/material/IconButton'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import Menu from '@mui/material/Menu'
@@ -10,6 +11,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import { useAuth } from 'lib/hooks/use-auth'
 
 const MyAccountMenu = () => {
+  const history = useHistory()
   const { logout } = useAuth()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -22,8 +24,7 @@ const MyAccountMenu = () => {
   }
 
   const handlePasswordChange = () => {
-    alert('Formulario para cambiar password')
-    handleClose()
+    history.push('/my-account')
   }
 
   const handleLogout = () => {

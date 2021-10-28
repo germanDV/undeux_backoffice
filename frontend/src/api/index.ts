@@ -84,3 +84,10 @@ export async function changeUserPassword(payload: { id: number, password: string
     data: payload,
   })
 }
+export async function changeMyPassword(payload: { oldPassword: string, newPassword: string }) {
+  return client<{message: string}>({
+    method: 'PUT',
+    url: 'api/users/change-my-password',
+    data: payload,
+  })
+}
