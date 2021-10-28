@@ -24,7 +24,7 @@ docker/local:
 	  -e PORT \
   	  -e JWT_SECRET \
   	  -e DATABASE_URL \
-	  -p 3000:8080 \
+	  --network="host" \
 	  undeux-backoffice
 
 ## deploy: deploy to Heroku.
