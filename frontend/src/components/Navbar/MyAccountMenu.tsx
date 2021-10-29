@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from 'react'
+import React, { MouseEvent, useState, useCallback } from 'react'
 import { useSnackbar } from 'notistack'
 import { useTheme } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
@@ -41,18 +41,18 @@ const MyAccountMenu = () => {
     setOpenChangePwd(true)
   }
 
-  const handleCloseChangePwd = () => {
+  const handleCloseChangePwd = useCallback(() => {
     setOpenChangePwd(false)
-  }
+  }, [])
 
-  const handleSuccessChangePwd = () => {
+  const handleSuccessChangePwd = useCallback(() => {
     handleCloseChangePwd()
     setTimeout(() => {
       enqueueSnackbar('Password actualizada exitosamente.', {
         variant: 'success',
       })
     }, 200)
-  }
+  }, [handleCloseChangePwd, enqueueSnackbar])
 
   const handleLogout = () => logout()
 

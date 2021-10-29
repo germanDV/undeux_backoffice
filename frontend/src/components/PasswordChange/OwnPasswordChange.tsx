@@ -38,12 +38,13 @@ const OtherUserChange = ({ open, handleClose, handleSuccess }: Props): JSX.Eleme
     formik.setSubmitting(false)
   }
 
+  const { resetForm } = formik
   useEffect(() => {
     if (mutation.isSuccess) {
       handleSuccess()
     }
-    return () => formik.resetForm()
-  }, [mutation.isSuccess])
+    return () => resetForm()
+  }, [mutation.isSuccess, handleSuccess, resetForm])
 
   return (
     <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>

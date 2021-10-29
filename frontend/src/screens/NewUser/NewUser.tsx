@@ -38,7 +38,9 @@ const NewUser = (): JSX.Element => {
   }
 
   if (mutation.isSuccess) {
-    history.push(`/users?newuser=${mutation.data.id}`)
+    setTimeout(() => {
+      history.push(`/users?newuser=${mutation.data.id}`)
+    }, 200)
   }
 
   const handleRoleSwitch = (ev: ChangeEvent<HTMLInputElement>) => {
