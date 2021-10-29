@@ -7,6 +7,7 @@ import PasswordIcon from '@mui/icons-material/Password'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CircularProgress from '@mui/material/CircularProgress'
+import Tooltip from '@mui/material/Tooltip'
 import { useChangeUserStatus, useMakeAdmin } from 'lib/hooks/user'
 import PasswordChange from '../PasswordChange/PasswordChange'
 
@@ -60,30 +61,38 @@ const UserActions = ({ userId, email, isAdmin, active }: Props): JSX.Element | n
 
   return (
     <Stack direction="row" spacing={.5}>
-      <IconButton title="Cambiar password" onClick={() => setOpen(true)}>
-        <PasswordIcon />
-      </IconButton>
-      <IconButton title="Hacer administrador" onClick={makeAdmin}>
-        {makeAdminMutation.isLoading
-          ? <CircularProgress color="secondary" size={25} />
-          : <UpgradeIcon />
-        }
-      </IconButton>
+      <Tooltip title="Cambiar password" arrow>
+        <IconButton onClick={() => setOpen(true)}>
+          <PasswordIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Convertir en administrador" arrow>
+        <IconButton onClick={makeAdmin}>
+          {makeAdminMutation.isLoading
+            ? <CircularProgress color="secondary" size={25} />
+            : <UpgradeIcon />
+          }
+        </IconButton>
+      </Tooltip>
       {active
         ? (
-          <IconButton title="Desactivar usuario" onClick={deactivate}>
-            {userStatusMutation.isLoading
-              ? <CircularProgress color="secondary" size={25} />
-              : <RemoveCircleOutlineIcon />
-            }
-          </IconButton>
+          <Tooltip title="Desactivar usuario" arrow>
+            <IconButton onClick={deactivate}>
+              {userStatusMutation.isLoading
+                ? <CircularProgress color="secondary" size={25} />
+                : <RemoveCircleOutlineIcon />
+              }
+            </IconButton>
+          </Tooltip>
         ) : (
-          <IconButton title="Reactivar usuario" onClick={activate}>
-            {userStatusMutation.isLoading
-              ? <CircularProgress color="secondary" size={25} />
-              : <AddCircleOutlineIcon />
-            }
-          </IconButton>
+          <Tooltip title="Reactivar usuario" arrow>
+            <IconButton onClick={activate}>
+              {userStatusMutation.isLoading
+                ? <CircularProgress color="secondary" size={25} />
+                : <AddCircleOutlineIcon />
+              }
+            </IconButton>
+          </Tooltip>
         )
       }
       <PasswordChange
