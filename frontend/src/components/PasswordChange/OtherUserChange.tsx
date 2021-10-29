@@ -22,7 +22,7 @@ interface Props {
   handleSuccess: () => void
 }
 
-const PasswordChange = ({ id, email, open, handleClose, handleSuccess }: Props): JSX.Element => {
+const OtherUserChange = ({ id, email, open, handleClose, handleSuccess }: Props): JSX.Element => {
   const ref = React.useRef(false)
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -103,4 +103,4 @@ const PasswordChange = ({ id, email, open, handleClose, handleSuccess }: Props):
   )
 }
 
-export default PasswordChange
+export default OtherUserChange

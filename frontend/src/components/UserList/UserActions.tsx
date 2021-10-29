@@ -9,7 +9,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CircularProgress from '@mui/material/CircularProgress'
 import Tooltip from '@mui/material/Tooltip'
 import { useChangeUserStatus, useMakeAdmin } from 'lib/hooks/user'
-import PasswordChange from '../PasswordChange/PasswordChange'
+import OtherUserChange from '../PasswordChange/OtherUserChange'
 
 interface Props {
   userId: number
@@ -95,7 +95,7 @@ const UserActions = ({ userId, email, isAdmin, active }: Props): JSX.Element | n
           </Tooltip>
         )
       }
-      <PasswordChange
+      <OtherUserChange
         id={userId}
         email={email}
         open={open}

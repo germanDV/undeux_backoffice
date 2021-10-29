@@ -1,5 +1,5 @@
 import React, { MouseEvent, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 import { useTheme } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import AccountCircle from '@mui/icons-material/AccountCircle'
@@ -15,29 +15,46 @@ import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { useAuth } from 'lib/hooks/use-auth'
 import { LowEmphasisText } from './MyAccountMenu.styles'
 import { useMode } from 'providers/MuiThemeProvider'
+import OwnPasswordChange from '../PasswordChange/OwnPasswordChange'
 
 const MyAccountMenu = () => {
-  const history = useHistory()
   const { logout, user } = useAuth()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [openChangePwd, setOpenChangePwd] = useState(false)
   const theme = useTheme()
   const { toggle } = useMode()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
-    setAnchorEl(null)
+  const handleClose = () => setAnchorEl(null)
+
+  const handleModeChange = () => {
+    toggle()
+    handleClose()
   }
 
   const handlePasswordChange = () => {
-    history.push('/my-account')
+    handleClose()
+    setOpenChangePwd(true)
   }
 
-  const handleLogout = () => {
-    logout()
+  const handleCloseChangePwd = () => {
+    setOpenChangePwd(false)
   }
+
+  const handleSuccessChangePwd = () => {
+    handleCloseChangePwd()
+    setTimeout(() => {
+      enqueueSnackbar('Password actualizada exitosamente.', {
+        variant: 'success',
+      })
+    }, 200)
+  }
+
+  const handleLogout = () => logout()
 
   return (
     <div>
@@ -67,7 +84,7 @@ const MyAccountMenu = () => {
           <ListItemIcon>
             <SettingsRoundedIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Cuenta</ListItemText>
+          <ListItemText>Cambiar password</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
@@ -75,7 +92,7 @@ const MyAccountMenu = () => {
           </ListItemIcon>
           <ListItemText>Salir</ListItemText>
         </MenuItem>
-        <MenuItem onClick={toggle}>
+        <MenuItem onClick={handleModeChange}>
           <ListItemIcon>
             {theme.palette.mode === 'dark'
               ? <Brightness7Icon fontSize="small" />
@@ -87,6 +104,11 @@ const MyAccountMenu = () => {
           </ListItemText>
         </MenuItem>
       </Menu>
+      <OwnPasswordChange
+        open={openChangePwd}
+        handleClose={handleCloseChangePwd}
+        handleSuccess={handleSuccessChangePwd}
+      />
     </div>
   )
 }

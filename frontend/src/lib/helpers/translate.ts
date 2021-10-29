@@ -22,6 +22,8 @@ export function translateErr(err: Error, fallback = ''): string {
       return 'Usuario bloqueado.'
     case 'invalid credentials':
       return 'Email y/o password incorrecto.'
+    case 'incorrect old password':
+      return 'Password incorrecta'
     default:
       return err.message
   }
