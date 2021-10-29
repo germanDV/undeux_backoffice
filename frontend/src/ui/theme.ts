@@ -1,22 +1,24 @@
-import { createTheme } from '@mui/material/styles'
+import { createTheme, Theme } from '@mui/material/styles'
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#26a69a',
-    },
-    secondary: {
-      main: '#f06292',
-    },
-  },
-  components: {
-    MuiAppBar: {
-      defaultProps: {
-        enableColorOnDark: false,
+function getTheme(mode: 'light' | 'dark'): Theme {
+  return createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: '#26a69a',
+      },
+      secondary: {
+        main: '#f06292',
       },
     },
-  },
-})
+    components: {
+      MuiAppBar: {
+        defaultProps: {
+          enableColorOnDark: false,
+        },
+      },
+    },
+  })
+}
 
-export default darkTheme
+export default getTheme

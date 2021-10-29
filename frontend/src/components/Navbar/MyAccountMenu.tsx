@@ -1,5 +1,6 @@
 import React, { MouseEvent, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useTheme } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import Menu from '@mui/material/Menu'
@@ -9,13 +10,18 @@ import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { useAuth } from 'lib/hooks/use-auth'
 import { LowEmphasisText } from './MyAccountMenu.styles'
+import { useMode } from 'providers/MuiThemeProvider'
 
 const MyAccountMenu = () => {
   const history = useHistory()
   const { logout, user } = useAuth()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const theme = useTheme()
+  const { toggle } = useMode()
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -68,6 +74,17 @@ const MyAccountMenu = () => {
             <LogoutRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Salir</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={toggle}>
+          <ListItemIcon>
+            {theme.palette.mode === 'dark'
+              ? <Brightness7Icon fontSize="small" />
+              : <Brightness4Icon fontSize="small" />
+            }
+          </ListItemIcon>
+          <ListItemText>
+            Modo {theme.palette.mode === 'dark' ? 'claro' : 'oscuro'}
+          </ListItemText>
         </MenuItem>
       </Menu>
     </div>
