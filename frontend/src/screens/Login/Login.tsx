@@ -8,6 +8,7 @@ import Alert from '@mui/material/Alert'
 import { loginValidationSchema, LoginValues } from 'lib/schemas'
 import { useAuth } from 'lib/hooks/use-auth'
 import { FullPageContainer, FormWrapper, Form, Separator } from 'ui/form.styles'
+import { translateErr } from 'lib/helpers'
 
 const Login = (): JSX.Element => {
   const [error, setError] = useState('')
@@ -19,7 +20,7 @@ const Login = (): JSX.Element => {
     onSubmit: (values: LoginValues, { setSubmitting }: FormikHelpers<LoginValues>) => {
       setError('')
       login(values.email, values.password)
-        .catch(() => setError('Password y/o email incorrecto.'))
+        .catch((err) => setError(translateErr(err, 'Password y/o email incorrecto.')))
         .finally(() => setSubmitting(false))
     },
   });
