@@ -3,16 +3,18 @@ import { useHistory } from 'react-router-dom'
 import IconButton from '@mui/material/IconButton'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import Menu from '@mui/material/Menu'
+import Box from '@mui/material/Box'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import { useAuth } from 'lib/hooks/use-auth'
+import { LowEmphasisText } from './MyAccountMenu.styles'
 
 const MyAccountMenu = () => {
   const history = useHistory()
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
@@ -52,6 +54,9 @@ const MyAccountMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <Box pl={2}>
+          <LowEmphasisText>ID: #{user.id}</LowEmphasisText>
+        </Box>
         <MenuItem onClick={handlePasswordChange}>
           <ListItemIcon>
             <SettingsRoundedIcon fontSize="small" />
