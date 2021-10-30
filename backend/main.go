@@ -58,6 +58,6 @@ func main() {
 	tc, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	// should use a waitgroup to keep track of subroutines instead of a timeout
-	time.Sleep(10*time.Second)
+	time.Sleep(10 * time.Second)
 	_ = srv.Shutdown(tc)
 }

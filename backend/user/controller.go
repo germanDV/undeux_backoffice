@@ -11,15 +11,15 @@ import (
 
 type userController struct {
 	Model iModel
-	L *log.Logger
+	L     *log.Logger
 }
 
 func (uc userController) Register(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		Email string `json:"email"`
-		Name string `json:"name"`
+		Email    string `json:"email"`
+		Name     string `json:"name"`
 		Password string `json:"password"`
-		Role string `json:"role"`
+		Role     string `json:"role"`
 	}
 
 	err := handlers.ReadJSON(w, r, &input)
@@ -29,11 +29,11 @@ func (uc userController) Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	u := &User{
-		Name: input.Name,
-		Email: strings.ToLower(input.Email),
+		Name:          input.Name,
+		Email:         strings.ToLower(input.Email),
 		PasswordPlain: input.Password,
-		Role: strings.ToLower(input.Role),
-		Active: true,
+		Role:          strings.ToLower(input.Role),
+		Active:        true,
 	}
 
 	err = u.Validate()
@@ -145,7 +145,7 @@ func (uc userController) Upgrade(w http.ResponseWriter, r *http.Request) {
 
 func (uc userController) ChangeStatus(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		UserID int `json:"userId"`
+		UserID int  `json:"userId"`
 		Active bool `json:"active"`
 	}
 

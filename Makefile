@@ -32,3 +32,17 @@ docker/local:
 deploy: confirm
 	@echo 'Deploying to heroku (git push)...'
 	git push heroku main
+
+## audit: tidy dependencies, format, vet and test
+.PHONY: audit
+audit:
+	@echo 'Tidying and verifying module dependencies...'
+	cd ./backend && go mod tidy
+	cd ./backend && go mod verify
+	@echo 'Formatting code...'
+	cd ./backend && go fmt ./...
+	@echo 'Vetting code...'
+	cd ./backend && go vet ./...
+	@echo 'Running tests...'
+	cd ./backend && go test -race -vet=off ./...
+

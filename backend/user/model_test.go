@@ -5,11 +5,11 @@ import "testing"
 func TestUserValidation(t *testing.T) {
 	t.Run("good user (role=admin)", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Name: "German",
-			Role: "admin",
+			Email:         "german@undeux.com",
+			Name:          "German",
+			Role:          "admin",
 			PasswordPlain: "Abc123456789",
-			Active: true,
+			Active:        true,
 		}
 
 		err := u.Validate()
@@ -20,11 +20,11 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("good user (role=user)", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Name: "German",
-			Role: "user",
+			Email:         "german@undeux.com",
+			Name:          "German",
+			Role:          "user",
 			PasswordPlain: "Abc123456789",
-			Active: false,
+			Active:        false,
 		}
 
 		err := u.Validate()
@@ -35,9 +35,9 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("good user (without `Active` field", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Name: "German",
-			Role: "admin",
+			Email:         "german@undeux.com",
+			Name:          "German",
+			Role:          "admin",
 			PasswordPlain: "Abc123456789",
 		}
 
@@ -49,9 +49,9 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("invalid email address", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux",
-			Name: "German",
-			Role: "user",
+			Email:         "german@undeux",
+			Name:          "German",
+			Role:          "user",
 			PasswordPlain: "Abc123456789",
 		}
 
@@ -63,8 +63,8 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("missing name", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Role: "user",
+			Email:         "german@undeux.com",
+			Role:          "user",
 			PasswordPlain: "Abc123456789",
 		}
 
@@ -76,9 +76,9 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("name too short", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Name: "G",
-			Role: "user",
+			Email:         "german@undeux.com",
+			Name:          "G",
+			Role:          "user",
 			PasswordPlain: "Abc123456789",
 		}
 
@@ -90,9 +90,9 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("name too long", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Name: "German alalalnewrpoisadfbnkjlsdfopiaefnaasdfnasferqbnaiubasab",
-			Role: "user",
+			Email:         "german@undeux.com",
+			Name:          "German alalalnewrpoisadfbnkjlsdfopiaefnaasdfnasferqbnaiubasab",
+			Role:          "user",
 			PasswordPlain: "Abc123456789",
 		}
 
@@ -105,8 +105,8 @@ func TestUserValidation(t *testing.T) {
 	t.Run("missing password", func(t *testing.T) {
 		u := &User{
 			Email: "german@undeux.com",
-			Role: "user",
-			Name: "German",
+			Role:  "user",
+			Name:  "German",
 		}
 
 		err := u.Validate()
@@ -117,9 +117,9 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("password too short", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Name: "German",
-			Role: "user",
+			Email:         "german@undeux.com",
+			Name:          "German",
+			Role:          "user",
 			PasswordPlain: "Abc123",
 		}
 
@@ -131,9 +131,9 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("password too long", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Name: "German",
-			Role: "user",
+			Email:         "german@undeux.com",
+			Name:          "German",
+			Role:          "user",
 			PasswordPlain: "Abc123456789alalalnewrpoisadfbnkjlsdfopiaefnaasdfnasferqbnaiubasab",
 		}
 
@@ -145,8 +145,8 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("missing role", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Name: "German",
+			Email:         "german@undeux.com",
+			Name:          "German",
 			PasswordPlain: "Abc123456789",
 		}
 
@@ -158,9 +158,9 @@ func TestUserValidation(t *testing.T) {
 
 	t.Run("invalid role", func(t *testing.T) {
 		u := &User{
-			Email: "german@undeux.com",
-			Name: "German",
-			Role: "superhero",
+			Email:         "german@undeux.com",
+			Name:          "German",
+			Role:          "superhero",
 			PasswordPlain: "Abc123456789",
 		}
 

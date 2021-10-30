@@ -12,10 +12,10 @@ import (
 func createToken(userID int, role string) (string, error) {
 	secret := []byte(config.Config.Secret)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": userID,
+		"sub":  userID,
 		"role": role,
-		"exp": time.Now().Add(24*time.Hour).Unix(),
-		"iat": time.Now().Unix(),
+		"exp":  time.Now().Add(24 * time.Hour).Unix(),
+		"iat":  time.Now().Unix(),
 	})
 	return token.SignedString(secret)
 }
@@ -55,7 +55,7 @@ func verifyToken(t string) (*User, error) {
 	}
 
 	user := &User{
-		ID: int(id),
+		ID:   int(id),
 		Role: role,
 	}
 

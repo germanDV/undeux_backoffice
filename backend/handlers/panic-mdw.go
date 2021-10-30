@@ -19,4 +19,3 @@ func (h *Handler) RecoverPanic(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
-

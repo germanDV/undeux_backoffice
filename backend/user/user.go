@@ -8,7 +8,7 @@ import (
 
 type Module struct {
 	Controller iController
-	Model iModel
+	Model      iModel
 }
 
 type iController interface {
@@ -38,7 +38,7 @@ func New(db *sql.DB, l *log.Logger) *Module {
 	controller := userController{Model: model, L: l}
 
 	return &Module{
-		Model: model,
+		Model:      model,
 		Controller: controller,
 	}
 }
