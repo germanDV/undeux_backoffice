@@ -1,11 +1,15 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"github.com/constructoraundeux/backoffice/config"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -33,9 +37,27 @@ func main() {
 		WriteTimeout: 30 * time.Second,
 	}
 
-	l.Println(fmt.Sprintf("starting server on %d - environment: %s", port, env))
-	err = srv.ListenAndServe()
-	if err != nil {
-		l.Panicln(err)
-	}
+	// Start server on a subroutine
+	go func() {
+		l.Println(fmt.Sprintf("starting server on %d - environment: %s", port, env))
+		err = srv.ListenAndServe()
+		if err != nil {
+			if errors.Is(err, http.ErrServerClosed) {
+				l.Println("Server stopped.")
+			} else {
+				l.Panicln(err)
+			}
+		}
+	}()
+
+	// Handle graceful shutdown
+	quitCh := make(chan os.Signal, 1)
+	signal.Notify(quitCh, syscall.SIGINT, syscall.SIGTERM)
+	sig := <-quitCh
+	l.Printf("Received termination signal %q, graceful shutdown in %ds.\n", sig, 10)
+	tc, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	// should use a waitgroup to keep track of subroutines instead of a timeout
+	time.Sleep(10*time.Second)
+	_ = srv.Shutdown(tc)
 }
