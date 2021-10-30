@@ -13,7 +13,7 @@ import Alert from '@mui/material/Alert'
 import { useChangeMyPassword } from 'lib/hooks/user'
 import { myPasswordValidationSchema, MyPasswordValues } from 'lib/schemas'
 import { Form, Separator } from 'ui/form.styles'
-import { translateErr } from 'lib/helpers'
+import { tr } from 'lib/helpers'
 
 interface Props {
   open: boolean
@@ -93,7 +93,7 @@ const OtherUserChange = ({ open, handleClose, handleSuccess }: Props): JSX.Eleme
           <Separator times={2} />
           {mutation.isError && (
             <div>
-              <Alert severity="error">{translateErr(mutation.error as Error)}</Alert>
+              <Alert severity="error">{tr((mutation.error as Error).message)}</Alert>
               <Separator />
             </div>
           )}

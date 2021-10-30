@@ -12,7 +12,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { registrationValidationSchema, RegistrationValues } from 'lib/schemas'
 import { Roles } from 'lib/models'
 import { useCreateUser } from 'lib/hooks/user'
-import { translateErr } from 'lib/helpers'
+import { tr } from 'lib/helpers'
 import { Container, FormWrapper, Form, Separator } from 'ui/form.styles'
 
 const NewUser = (): JSX.Element => {
@@ -136,7 +136,7 @@ const NewUser = (): JSX.Element => {
           {mutation.isError && (
             <div>
               <Alert severity="error">
-                {translateErr(mutation.error as Error)}
+                {tr((mutation.error as Error).message)}
               </Alert>
               <Separator />
             </div>
