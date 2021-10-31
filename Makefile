@@ -27,12 +27,6 @@ docker/local:
 	  --network="host" \
 	  undeux-backoffice
 
-## deploy: deploy to Heroku.
-.PHONY: deploy
-deploy: confirm
-	@echo 'Deploying to heroku (git push)...'
-	git push heroku main
-
 ## audit: tidy dependencies, format, vet and test
 .PHONY: audit
 audit:

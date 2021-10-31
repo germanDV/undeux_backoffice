@@ -48,9 +48,25 @@ Run all migrations:
 migrate -path ./migrations -database "postgres://postgres:esonoesharinasa@localhost/undeux?sslmode=disable" up
 ```
 
+Get Postgres connection URL from heroku:
+```shell
+heroku pg:credentials:url
+```
+
 ## Local Postgres For Development
 
 Create docker image:
 ```shell
 $ docker run --name pgdb-undeux -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=esonoesharinasa -e POSTGRES_DB=undeux -p 5432:5432 -d postgres
 ```
+
+## Deployment
+
+If any database migrations are needed, run those first with `migrate` (the postgres connection URL can be obtained with the heroku CLI).
+
+Then just push code to the `heroku` remote:
+```shell
+git push heroku main
+```
+
+The docker image will be built on heroku and released.
