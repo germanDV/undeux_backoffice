@@ -35,12 +35,6 @@ func (uc userController) Auth(role string, next http.HandlerFunc) http.HandlerFu
 			return
 		}
 
-		if role == "admin" && partialUser.Role != "admin" {
-			msg := fmt.Sprintf("requires %q role, you are %q\n", role, partialUser.Role)
-			handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusForbidden)
-			return
-		}
-
 		user, err := uc.Model.GetByID(partialUser.ID)
 		if err != nil {
 			handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusUnauthorized)
@@ -50,6 +44,12 @@ func (uc userController) Auth(role string, next http.HandlerFunc) http.HandlerFu
 		if !user.Active {
 			msg := "account has been deactivated"
 			handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusUnauthorized)
+			return
+		}
+
+		if role == "admin" && user.Role != "admin" {
+			msg := fmt.Sprintf("requires %q role, you are %q\n", role, user.Role)
+			handlers.WriteJSON(w, handlers.Envelope{"error": msg}, http.StatusForbidden)
 			return
 		}
 
