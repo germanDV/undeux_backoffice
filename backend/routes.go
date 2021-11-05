@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"github.com/constructoraundeux/backoffice/handlers"
+	"github.com/constructoraundeux/backoffice/shareholder"
 	"github.com/constructoraundeux/backoffice/user"
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
@@ -17,6 +18,7 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	// Instantiate modules
 	handler := &handlers.Handler{L: l}
 	users := user.New(db, l)
+	shareholders := shareholder.New(db, l)
 
 	// Create middleware chain
 	// TODO: add rate limiting?
@@ -65,6 +67,13 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		http.MethodPut,
 		"/api/users/change-my-password",
 		users.Controller.Auth("user", users.Controller.ChangeMyPassword),
+	)
+
+	// API Routes: Shareholders
+	r.HandlerFunc(
+		http.MethodPost,
+		"/api/shareholders",
+		users.Controller.Auth("admin", shareholders.Controller.Create),
 	)
 
 	// Static assets and index.html

@@ -6,7 +6,7 @@ POST http://localhost:8080/api/login
 Content-Type: application/json
 
 {
-  "email": "archu@undeux.com",
+  "email": "german@undeux.com",
   "password": "pondosclavosamisalas"
 }
 
@@ -72,4 +72,13 @@ Content-Type: application/json
 {
   "userId": 13,
   "active": false
+}
+
+### Create shareholder
+POST http://localhost:8080/api/shareholders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzYyMzc1ODcsImlhdCI6MTYzNjE1MTE4Nywicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.uda1WiTSMbABSVQD5cXj5Po5OTOV2YY9F9nzWy_WU4M
+Content-Type: application/json
+
+{
+  "name": "Javier"
 }
