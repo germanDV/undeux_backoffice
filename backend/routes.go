@@ -2,13 +2,14 @@ package main
 
 import (
 	"database/sql"
+	"log"
+	"net/http"
+
 	"github.com/constructoraundeux/backoffice/handlers"
 	"github.com/constructoraundeux/backoffice/shareholder"
 	"github.com/constructoraundeux/backoffice/user"
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
-	"log"
-	"net/http"
 )
 
 func routes(db *sql.DB, l *log.Logger) http.Handler {
@@ -74,6 +75,16 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		http.MethodPost,
 		"/api/shareholders",
 		users.Controller.Auth("admin", shareholders.Controller.Create),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/shareholders",
+		users.Controller.Auth("admin", shareholders.Controller.List),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/shareholders/:id",
+		users.Controller.Auth("admin", shareholders.Controller.Find),
 	)
 
 	// Static assets and index.html

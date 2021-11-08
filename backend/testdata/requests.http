@@ -1,8 +1,8 @@
 ### Health
-GET http://localhost:8080/api/health
+GET http://localhost:8080/api/health HTTP/1.1
 
 ### Login
-POST http://localhost:8080/api/login
+POST http://localhost:8080/api/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -75,10 +75,19 @@ Content-Type: application/json
 }
 
 ### Create shareholder
-POST http://localhost:8080/api/shareholders
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzYyMzc1ODcsImlhdCI6MTYzNjE1MTE4Nywicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.uda1WiTSMbABSVQD5cXj5Po5OTOV2YY9F9nzWy_WU4M
+POST http://localhost:8080/api/shareholders HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
 Content-Type: application/json
 
 {
-  "name": "Javier"
+  "name": "German"
 }
+
+### Fetch all shareholders
+GET http://localhost:8080/api/shareholders HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+
+### Fetch shareholder by ID
+GET http://localhost:8080/api/shareholders/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+

@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/constructoraundeux/backoffice/config"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/constructoraundeux/backoffice/config"
 )
 
 func main() {
@@ -54,10 +55,11 @@ func main() {
 	quitCh := make(chan os.Signal, 1)
 	signal.Notify(quitCh, syscall.SIGINT, syscall.SIGTERM)
 	sig := <-quitCh
-	l.Printf("Received termination signal %q, graceful shutdown in %ds.\n", sig, 10)
+	var waitTime time.Duration = 5
+	l.Printf("Received termination signal %q, graceful shutdown in %ds.\n", sig, waitTime)
 	tc, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	// should use a waitgroup to keep track of subroutines instead of a timeout
-	time.Sleep(5 * time.Second)
+	time.Sleep(waitTime * time.Second)
 	_ = srv.Shutdown(tc)
 }
