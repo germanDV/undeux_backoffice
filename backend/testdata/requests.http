@@ -91,3 +91,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3M
 GET http://localhost:8080/api/shareholders/2 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
 
+### Create vendor
+POST http://localhost:8080/api/vendors HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+Content-Type: application/json
+
+{
+  "name": "Archu",
+  "notes": "Se lo puede bicicletear"
+}
+
+### Fetch all vendors
+GET http://localhost:8080/api/vendors HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+
+### Fetch vendor by ID
+GET http://localhost:8080/api/vendors/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+

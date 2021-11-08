@@ -7,6 +7,7 @@ import (
 
 	"github.com/constructoraundeux/backoffice/handlers"
 	"github.com/constructoraundeux/backoffice/shareholder"
+	vendor "github.com/constructoraundeux/backoffice/supplier"
 	"github.com/constructoraundeux/backoffice/user"
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
@@ -20,6 +21,7 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	handler := &handlers.Handler{L: l}
 	users := user.New(db, l)
 	shareholders := shareholder.New(db, l)
+	vendors := vendor.New(db, l)
 
 	// Create middleware chain
 	// TODO: add rate limiting?
@@ -85,6 +87,23 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		http.MethodGet,
 		"/api/shareholders/:id",
 		users.Controller.Auth("admin", shareholders.Controller.Find),
+	)
+
+	// API Routes: Vendors
+	r.HandlerFunc(
+		http.MethodPost,
+		"/api/vendors",
+		users.Controller.Auth("admin", vendors.Controller.Create),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/vendors",
+		users.Controller.Auth("admin", vendors.Controller.List),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/vendors/:id",
+		users.Controller.Auth("admin", vendors.Controller.Find),
 	)
 
 	// Static assets and index.html
