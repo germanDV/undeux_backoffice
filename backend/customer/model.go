@@ -1,4 +1,4 @@
-package vendor
+package customer
 
 import (
 	"context"
@@ -10,27 +10,27 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type Vendor struct {
+type Customer struct {
 	ID    int    `json:"id"`
 	Name  string `json:"name" validate:"required,min=2,max=32"`
 	Notes string `json:"notes" validate:"max=500"`
 }
 
-type vendorModel struct {
+type customerModel struct {
 	DB *sql.DB
 }
 
-func (v *Vendor) Validate() error {
+func (c *Customer) Validate() error {
 	validate := validator.New()
-	return validate.Struct(v)
+	return validate.Struct(c)
 }
 
-func (vm vendorModel) Save(v *Vendor) error {
-	query := `insert into vendors (name, notes) values ($1, $2) returning id`
+func (cm customerModel) Save(c *Customer) error {
+	query := `insert into customers (name, notes) values ($1, $2) returning id`
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
-	err := vm.DB.QueryRowContext(ctx, query, v.Name, v.Notes).Scan(&v.ID)
+	err := cm.DB.QueryRowContext(ctx, query, c.Name, c.Notes).Scan(&c.ID)
 	if err != nil {
 		return err
 	}
@@ -38,42 +38,42 @@ func (vm vendorModel) Save(v *Vendor) error {
 	return nil
 }
 
-func (vm vendorModel) Get() ([]*Vendor, error) {
-	query := `select id, name, notes from vendors`
+func (cm customerModel) Get() ([]*Customer, error) {
+	query := `select id, name, notes from customers`
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
-	rows, err := vm.DB.QueryContext(ctx, query)
+	rows, err := cm.DB.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var sv []*Vendor
+	var sc []*Customer
 
 	for rows.Next() {
-		v := &Vendor{}
-		err := rows.Scan(&v.ID, &v.Name, &v.Notes)
+		c := &Customer{}
+		err := rows.Scan(&c.ID, &c.Name, &c.Notes)
 		if err != nil {
 			return nil, err
 		}
-		sv = append(sv, v)
+		sc = append(sc, c)
 	}
 
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return sv, nil
+	return sc, nil
 }
 
-func (vm vendorModel) GetByID(id int) (*Vendor, error) {
-	query := `select id, name, notes from vendors where id = $1`
+func (cm customerModel) GetByID(id int) (*Customer, error) {
+	query := `select id, name, notes from customers where id = $1`
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
-	var v Vendor
-	err := vm.DB.QueryRowContext(ctx, query, id).Scan(&v.ID, &v.Name, &v.Notes)
+	var c Customer
+	err := cm.DB.QueryRowContext(ctx, query, id).Scan(&c.ID, &c.Name, &c.Notes)
 	if err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):
@@ -83,5 +83,5 @@ func (vm vendorModel) GetByID(id int) (*Vendor, error) {
 		}
 	}
 
-	return &v, nil
+	return &c, nil
 }

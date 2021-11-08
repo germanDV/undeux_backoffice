@@ -109,3 +109,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3M
 GET http://localhost:8080/api/vendors/2 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
 
+### Create customer
+POST http://localhost:8080/api/customers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+Content-Type: application/json
+
+{
+  "name": "Cliente A",
+  "notes": ""
+}
+
+### Fetch all customers
+GET http://localhost:8080/api/customers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+
+### Fetch customer by ID
+GET http://localhost:8080/api/customers/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+
