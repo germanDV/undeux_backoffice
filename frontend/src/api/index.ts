@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
-import { UserWithToken, User } from 'lib/models'
+import { UserWithToken, User, Shareholder } from 'lib/models'
 import { RegistrationValues } from 'lib/schemas'
 import * as auth from 'lib/auth'
 
@@ -84,6 +84,7 @@ export async function changeUserPassword(payload: { id: number, password: string
     data: payload,
   })
 }
+
 export async function changeMyPassword(payload: { oldPassword: string, newPassword: string }) {
   return client<{message: string}>({
     method: 'PUT',
@@ -91,3 +92,18 @@ export async function changeMyPassword(payload: { oldPassword: string, newPasswo
     data: payload,
   })
 }
+
+export async function fetchShareholders() {
+  return client<{shareholders: Shareholder[]}>({
+    method: 'GET',
+    url: 'api/shareholders',
+  })
+}
+
+export async function fetchShareholder(id: number) {
+  return client<{shareholder: Shareholder}>({
+    method: 'GET',
+    url: `api/shareholders/${id}`,
+  })
+}
+

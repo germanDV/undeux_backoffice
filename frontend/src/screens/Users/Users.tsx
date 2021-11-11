@@ -15,9 +15,7 @@ const Users = (): JSX.Element => {
     })
   }
 
-  return (
-    <UserList />
-  )
+  return <UserList />
 }
 
 export default Users

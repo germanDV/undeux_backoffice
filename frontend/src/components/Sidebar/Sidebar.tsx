@@ -4,8 +4,10 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import AppsIcon from '@mui/icons-material/Apps'
-import TimelineIcon from '@mui/icons-material/Timeline'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
+import AirlineSeatFlatIcon from '@mui/icons-material/AirlineSeatFlat';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
+import PieChartIcon from '@mui/icons-material/PieChart';
 import { Drawer, DrawerHeader } from './Sidebar.styles'
 import SidebarItem from './SidebarItem'
 
@@ -26,7 +28,9 @@ const Sidebar = ({ open, handleClose, drawerWidth }: Props): JSX.Element => {
       <Divider />
       <List component="nav">
         <SidebarItem icon={<AppsIcon />} text="Inicio" to="/" />
-        <SidebarItem icon={<TimelineIcon />} text="Otros" to="/other" />
+        <SidebarItem icon={<AirlineSeatFlatIcon />} text="Clientes" to="/customers" />
+        <SidebarItem icon={<DirectionsBikeIcon />} text="Proveedores" to="/vendors" />
+        <SidebarItem icon={<PieChartIcon />} text="Socios" to="/shareholders" adminOnly />
         <SidebarItem icon={<PeopleAltIcon />} text="Usuarios" to="/users" adminOnly />
       </List>
     </Drawer>
