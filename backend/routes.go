@@ -95,34 +95,34 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	r.HandlerFunc(
 		http.MethodPost,
 		"/api/vendors",
-		users.Controller.Auth("admin", vendors.Controller.Create),
+		users.Controller.Auth("user", vendors.Controller.Create),
 	)
 	r.HandlerFunc(
 		http.MethodGet,
 		"/api/vendors",
-		users.Controller.Auth("admin", vendors.Controller.List),
+		users.Controller.Auth("user", vendors.Controller.List),
 	)
 	r.HandlerFunc(
 		http.MethodGet,
 		"/api/vendors/:id",
-		users.Controller.Auth("admin", vendors.Controller.Find),
+		users.Controller.Auth("user", vendors.Controller.Find),
 	)
 
 	// API Routes: Customer
 	r.HandlerFunc(
 		http.MethodPost,
 		"/api/customers",
-		users.Controller.Auth("admin", customers.Controller.Create),
+		users.Controller.Auth("user", customers.Controller.Create),
 	)
 	r.HandlerFunc(
 		http.MethodGet,
 		"/api/customers",
-		users.Controller.Auth("admin", customers.Controller.List),
+		users.Controller.Auth("user", customers.Controller.List),
 	)
 	r.HandlerFunc(
 		http.MethodGet,
 		"/api/customers/:id",
-		users.Controller.Auth("admin", customers.Controller.Find),
+		users.Controller.Auth("user", customers.Controller.Find),
 	)
 
 	// Static assets and index.html
