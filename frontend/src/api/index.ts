@@ -34,7 +34,7 @@ async function client<T>(cfg: AxiosRequestConfig): Promise<T> {
 export async function register(payload: Omit<RegistrationValues, 'passwordConfirmation'>) {
   return client<{id: number}>({
     method: 'POST',
-    url: 'api/register',
+    url: '/api/register',
     data: payload,
   })
 }
@@ -42,7 +42,7 @@ export async function register(payload: Omit<RegistrationValues, 'passwordConfir
 export async function login(email: string, password: string) {
   return client<UserWithToken>({
     method: 'POST',
-    url: 'api/login',
+    url: '/api/login',
     data: { email, password },
   })
 }
@@ -50,21 +50,21 @@ export async function login(email: string, password: string) {
 export async function me() {
   return client<{user: User}>({
     method: 'GET',
-    url: 'api/me',
+    url: '/api/me',
   })
 }
 
 export async function fetchUsers() {
   return client<{users: User[]}>({
     method: 'GET',
-    url: 'api/users',
+    url: '/api/users',
   })
 }
 
 export async function changeUserStatus(payload: { userId: number, active: boolean }) {
   return client<{message: string}>({
     method: 'PUT',
-    url: 'api/users/status',
+    url: '/api/users/status',
     data: payload,
   })
 }
@@ -72,7 +72,7 @@ export async function changeUserStatus(payload: { userId: number, active: boolea
 export async function makeAdmin(userId: number) {
   return client<{message: string}>({
     method: 'PUT',
-    url: 'api/users/upgrade',
+    url: '/api/users/upgrade',
     data: { userId },
   })
 }
@@ -80,7 +80,7 @@ export async function makeAdmin(userId: number) {
 export async function changeUserPassword(payload: { id: number, password: string }) {
   return client<{message: string}>({
     method: 'PUT',
-    url: 'api/users/change-user-password',
+    url: '/api/users/change-user-password',
     data: payload,
   })
 }
@@ -88,7 +88,7 @@ export async function changeUserPassword(payload: { id: number, password: string
 export async function changeMyPassword(payload: { oldPassword: string, newPassword: string }) {
   return client<{message: string}>({
     method: 'PUT',
-    url: 'api/users/change-my-password',
+    url: '/api/users/change-my-password',
     data: payload,
   })
 }
@@ -96,14 +96,14 @@ export async function changeMyPassword(payload: { oldPassword: string, newPasswo
 export async function fetchShareholders() {
   return client<{shareholders: Shareholder[]}>({
     method: 'GET',
-    url: 'api/shareholders',
+    url: '/api/shareholders',
   })
 }
 
 export async function fetchShareholder(id: number) {
   return client<{shareholder: Shareholder}>({
     method: 'GET',
-    url: `api/shareholders/${id}`,
+    url: `/api/shareholders/${id}`,
   })
 }
 

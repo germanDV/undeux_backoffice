@@ -85,11 +85,11 @@ Content-Type: application/json
 
 ### Fetch all shareholders
 GET http://localhost:8080/api/shareholders HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY3NTkzNzYsImlhdCI6MTYzNjY3Mjk3Niwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.iOBOIlxX4aUNJjopbhN4nDn864FKyBl6Z7ovF7KOp8k
 
 ### Fetch shareholder by ID
 GET http://localhost:8080/api/shareholders/2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY3NTkzNzYsImlhdCI6MTYzNjY3Mjk3Niwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.iOBOIlxX4aUNJjopbhN4nDn864FKyBl6Z7ovF7KOp8k
 
 ### Create vendor
 POST http://localhost:8080/api/vendors HTTP/1.1
