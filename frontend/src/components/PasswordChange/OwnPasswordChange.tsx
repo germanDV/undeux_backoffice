@@ -21,7 +21,7 @@ interface Props {
   handleSuccess: () => void
 }
 
-const OtherUserChange = ({ open, handleClose, handleSuccess }: Props): JSX.Element => {
+const OwnPasswordChange = ({ open, handleClose, handleSuccess }: Props): JSX.Element => {
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
   const mutation = useChangeMyPassword()
@@ -107,4 +107,4 @@ const OtherUserChange = ({ open, handleClose, handleSuccess }: Props): JSX.Eleme
   )
 }
 
-export default OtherUserChange
+export default OwnPasswordChange

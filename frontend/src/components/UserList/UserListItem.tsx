@@ -39,7 +39,7 @@ const UserListItem = ({ user }: Props): JSX.Element => {
           <ListItemText
             primary={(
               <Typography variant="h6" sx={textStyle}>
-                {user.name}
+                {user.id} {user.name}
               </Typography>
             )}
             secondary={(

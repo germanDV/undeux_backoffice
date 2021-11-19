@@ -32,7 +32,12 @@ export function useMakeAdmin() {
 }
 
 export function useCreateUser() {
-  return useMutation(register)
+  const queryClient = useQueryClient()
+  return useMutation(register, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('users')
+    },
+  })
 }
 
 export function useChangeUserPassword() {
