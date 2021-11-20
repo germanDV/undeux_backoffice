@@ -1,7 +1,4 @@
 import React from 'react'
-import Box from '@mui/material/Box'
-import Fab from '@mui/material/Fab'
-import AddIcon from '@mui/icons-material/Add'
 import { useShareholders } from 'lib/hooks/shareholder'
 import ShareholderListItem from './ShareholderListItem'
 
@@ -22,20 +19,11 @@ const ShareholderList = (): JSX.Element => {
   }
 
   return (
-    <div>
-      {(data?.shareholders || []).map((sh) => <ShareholderListItem key={sh.id} shareholder={sh} />)}
-      <Box sx={{ my: 8, display: 'flex', justifyContent: 'right' }}>
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={() => alert('Rederigir a página con formulario o abrir modal?')}
-          variant="extended"
-        >
-          <AddIcon sx={{ mr: 1 }} />
-          Crear Socio
-        </Fab>
-      </Box>
-    </div>
+    <>
+      {(data?.shareholders || []).map((sh) => (
+        <ShareholderListItem key={sh.id} shareholder={sh} />
+      ))}
+    </>
   )
 }
 

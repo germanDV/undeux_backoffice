@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { UserWithToken, User, Shareholder } from 'lib/models'
-import { RegistrationValues } from 'lib/schemas'
+import { RegistrationValues, ShareholderRegistration } from 'lib/schemas'
 import * as auth from 'lib/auth'
 
 async function client<T>(cfg: AxiosRequestConfig): Promise<T> {
@@ -104,6 +104,14 @@ export async function fetchShareholder(id: number) {
   return client<{shareholder: Shareholder}>({
     method: 'GET',
     url: `/api/shareholders/${id}`,
+  })
+}
+
+export async function createShareholder(payload: ShareholderRegistration) {
+  return client<{id: number}>({
+    method: 'POST',
+    url: '/api/shareholders',
+    data: payload,
   })
 }
 
