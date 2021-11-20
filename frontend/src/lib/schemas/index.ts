@@ -1,4 +1,2 @@
-export * from './login'
-export * from './registration'
-export * from './password'
+export * from './user'
 export * from './shareholder'

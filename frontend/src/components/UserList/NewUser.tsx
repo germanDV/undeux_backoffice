@@ -13,8 +13,7 @@ import Alert from '@mui/material/Alert'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import { registrationValidationSchema, RegistrationValues } from 'lib/schemas'
-import { Roles } from 'lib/models'
+import { registrationSchema, Registration, Roles } from 'lib/schemas'
 import { useCreateUser } from 'lib/hooks/user'
 import { tr } from 'lib/helpers'
 import { Form, Separator } from 'ui/form.styles'
@@ -38,8 +37,8 @@ const NewUser = ({ open, handleClose, handleSuccess }: Props): JSX.Element => {
       name: '',
       role: Roles.user,
     },
-    validationSchema: registrationValidationSchema,
-    onSubmit: ({ name, email, password, role }: RegistrationValues) => {
+    validationSchema: registrationSchema,
+    onSubmit: ({ name, email, password, role }: Registration) => {
       mutation.mutate({ name, email, password, role })
     },
   });

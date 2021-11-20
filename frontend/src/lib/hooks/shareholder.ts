@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { Shareholder } from '../models'
+import { Shareholder } from '../schemas'
 import { fetchShareholders, fetchShareholder, createShareholder } from 'api'
 
 export function useShareholders() {

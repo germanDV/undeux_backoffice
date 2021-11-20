@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { useAuth } from 'lib/hooks/use-auth';
-import { Roles } from 'lib/models'
+import { Roles } from 'lib/schemas'
 import { ListItem } from './SidebarItem.styles'
 
 interface Props {

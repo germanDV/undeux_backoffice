@@ -12,7 +12,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import Alert from '@mui/material/Alert'
 import { useChangeUserPassword } from 'lib/hooks/user'
-import { passwordChangeValidationSchema, PasswordChangeValues } from 'lib/schemas'
+import { passwordChangeSchema, Sensitive } from 'lib/schemas'
 
 interface Props {
   id: number
@@ -30,8 +30,8 @@ const OtherUserChange = ({ id, email, open, handleClose, handleSuccess }: Props)
 
   const formik = useFormik({
     initialValues: { password: '', passwordConfirmation: '' },
-    validationSchema: passwordChangeValidationSchema,
-    onSubmit: ({ password }: PasswordChangeValues) => {
+    validationSchema: passwordChangeSchema,
+    onSubmit: ({ password }: Sensitive) => {
       ref.current = true
       mutation.mutate({ password, id })
     },

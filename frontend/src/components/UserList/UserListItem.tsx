@@ -9,7 +9,7 @@ import Avatar from '@mui/material/Avatar'
 import PersonIcon from '@mui/icons-material/Person'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 import BlockIcon from '@mui/icons-material/Block'
-import { User, Roles } from 'lib/models'
+import { User, Roles } from 'lib/schemas'
 import UserActions from './UserActions'
 
 interface Props {

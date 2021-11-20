@@ -1,5 +1,5 @@
 import { login as apiLogin } from 'api'
-import { User } from './models'
+import { User } from './schemas'
 import { LS_AUTH_KEY } from './config'
 
 export async function login(email: string, password: string): Promise<User> {

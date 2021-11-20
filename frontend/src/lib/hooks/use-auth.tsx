@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { Roles, User } from 'lib/models'
+import { Roles, User } from 'lib/schemas'
 import * as auth from 'lib/auth'
 import { me } from 'api'
 

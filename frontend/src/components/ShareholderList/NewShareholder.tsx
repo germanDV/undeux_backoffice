@@ -10,7 +10,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Alert from '@mui/material/Alert'
-import { shareholderSchema, ShareholderRegistration } from 'lib/schemas'
+import { shareholderSchema, Shareholder } from 'lib/schemas'
 import { useCreateShareholder } from 'lib/hooks/shareholder'
 import { tr } from 'lib/helpers'
 import { Form, Separator } from 'ui/form.styles'
@@ -29,7 +29,7 @@ const NewShareholder = ({ open, handleClose, handleSuccess }: Props): JSX.Elemen
   const formik = useFormik({
     initialValues: { name: '' },
     validationSchema: shareholderSchema,
-    onSubmit: ({ name }: ShareholderRegistration) => {
+    onSubmit: ({ name }: Omit<Shareholder, 'id'>) => {
       mutation.mutate({ name })
     },
   });

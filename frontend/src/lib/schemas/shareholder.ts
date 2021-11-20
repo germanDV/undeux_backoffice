@@ -1,9 +1,5 @@
 import * as yup from 'yup'
 
-export interface ShareholderRegistration {
-  name: string
-}
-
 export const shareholderSchema = yup.object({
   name: yup
     .string()
@@ -11,4 +7,8 @@ export const shareholderSchema = yup.object({
     .max(32, 'Máximo 32 caracteres.')
     .required('Ingresá tu nombre.'),
 })
+
+type Shareholder = yup.InferType<typeof shareholderSchema> & { id: number }
+
+export type { Shareholder }
 

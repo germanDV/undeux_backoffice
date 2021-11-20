@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { User } from '../models'
+import { User } from '../schemas'
 import {
   fetchUsers,
   changeUserStatus,

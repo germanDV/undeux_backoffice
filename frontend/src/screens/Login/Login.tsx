@@ -5,7 +5,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import TextField from '@mui/material/TextField'
 import LoginIcon from '@mui/icons-material/Login'
 import Alert from '@mui/material/Alert'
-import { loginValidationSchema, LoginValues } from 'lib/schemas'
+import { loginSchema, Login as LoginValues } from 'lib/schemas'
 import { useAuth } from 'lib/hooks/use-auth'
 import { FullPageContainer, FormWrapper, Form, Separator } from 'ui/form.styles'
 import { tr } from 'lib/helpers'
@@ -16,7 +16,7 @@ const Login = (): JSX.Element => {
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
-    validationSchema: loginValidationSchema,
+    validationSchema: loginSchema,
     onSubmit: (values: LoginValues, { setSubmitting }: FormikHelpers<LoginValues>) => {
       setError('')
       login(values.email, values.password)

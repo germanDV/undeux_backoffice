@@ -11,7 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import Alert from '@mui/material/Alert'
 import { useChangeMyPassword } from 'lib/hooks/user'
-import { myPasswordValidationSchema, MyPasswordValues } from 'lib/schemas'
+import { myPasswordSchema, PasswordChange } from 'lib/schemas'
 import { Form, Separator } from 'ui/form.styles'
 import { tr } from 'lib/helpers'
 
@@ -28,8 +28,8 @@ const OwnPasswordChange = ({ open, handleClose, handleSuccess }: Props): JSX.Ele
 
   const formik = useFormik({
     initialValues: { oldPassword: '', newPassword: '', newPasswordConfirmation: '' },
-    validationSchema: myPasswordValidationSchema,
-    onSubmit: ({ oldPassword, newPassword }: MyPasswordValues) => {
+    validationSchema: myPasswordSchema,
+    onSubmit: ({ oldPassword, newPassword }: PasswordChange) => {
       mutation.mutate({ oldPassword, newPassword })
     },
   });
