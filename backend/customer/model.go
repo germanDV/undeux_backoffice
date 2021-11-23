@@ -11,9 +11,10 @@ import (
 )
 
 type Customer struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name" validate:"required,min=2,max=32"`
-	Notes string `json:"notes" validate:"max=500"`
+	ID     int    `json:"id"`
+	Name   string `json:"name" validate:"required,min=2,max=32"`
+	Notes  string `json:"notes" validate:"max=500"`
+	Active bool   `json:"active"`
 }
 
 type customerModel struct {
@@ -39,7 +40,7 @@ func (cm customerModel) Save(c *Customer) error {
 }
 
 func (cm customerModel) Get() ([]*Customer, error) {
-	query := `select id, name, notes from customers`
+	query := `select id, name, notes, active from customers`
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
@@ -53,7 +54,7 @@ func (cm customerModel) Get() ([]*Customer, error) {
 
 	for rows.Next() {
 		c := &Customer{}
-		err := rows.Scan(&c.ID, &c.Name, &c.Notes)
+		err := rows.Scan(&c.ID, &c.Name, &c.Notes, &c.Active)
 		if err != nil {
 			return nil, err
 		}
@@ -68,12 +69,12 @@ func (cm customerModel) Get() ([]*Customer, error) {
 }
 
 func (cm customerModel) GetByID(id int) (*Customer, error) {
-	query := `select id, name, notes from customers where id = $1`
+	query := `select id, name, notes, active from customers where id = $1`
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
 	var c Customer
-	err := cm.DB.QueryRowContext(ctx, query, id).Scan(&c.ID, &c.Name, &c.Notes)
+	err := cm.DB.QueryRowContext(ctx, query, id).Scan(&c.ID, &c.Name, &c.Notes, &c.Active)
 	if err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):

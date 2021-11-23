@@ -11,9 +11,10 @@ import (
 )
 
 type Vendor struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name" validate:"required,min=2,max=32"`
-	Notes string `json:"notes" validate:"max=500"`
+	ID     int    `json:"id"`
+	Name   string `json:"name" validate:"required,min=2,max=32"`
+	Notes  string `json:"notes" validate:"max=500"`
+	Active bool   `json:"active"`
 }
 
 type vendorModel struct {
@@ -39,7 +40,7 @@ func (vm vendorModel) Save(v *Vendor) error {
 }
 
 func (vm vendorModel) Get() ([]*Vendor, error) {
-	query := `select id, name, notes from vendors`
+	query := `select id, name, notes, active from vendors`
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
@@ -53,7 +54,7 @@ func (vm vendorModel) Get() ([]*Vendor, error) {
 
 	for rows.Next() {
 		v := &Vendor{}
-		err := rows.Scan(&v.ID, &v.Name, &v.Notes)
+		err := rows.Scan(&v.ID, &v.Name, &v.Notes, &v.Active)
 		if err != nil {
 			return nil, err
 		}
@@ -68,12 +69,12 @@ func (vm vendorModel) Get() ([]*Vendor, error) {
 }
 
 func (vm vendorModel) GetByID(id int) (*Vendor, error) {
-	query := `select id, name, notes from vendors where id = $1`
+	query := `select id, name, notes, active from vendors where id = $1`
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
 	var v Vendor
-	err := vm.DB.QueryRowContext(ctx, query, id).Scan(&v.ID, &v.Name, &v.Notes)
+	err := vm.DB.QueryRowContext(ctx, query, id).Scan(&v.ID, &v.Name, &v.Notes, &v.Active)
 	if err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):

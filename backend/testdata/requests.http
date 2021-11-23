@@ -93,37 +93,36 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY3NTkzN
 
 ### Create vendor
 POST http://localhost:8080/api/vendors HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExMjUsImlhdCI6MTYzNzcwNDcyNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fDnaHt2x8zouNflSlcgnoR5tHr4Lc6vV4eRCRDVcxq4
 Content-Type: application/json
 
 {
-  "name": "Archu",
-  "notes": "Se lo puede bicicletear"
+  "name": "NN"
 }
 
 ### Fetch all vendors
 GET http://localhost:8080/api/vendors HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExMjUsImlhdCI6MTYzNzcwNDcyNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fDnaHt2x8zouNflSlcgnoR5tHr4Lc6vV4eRCRDVcxq4
 
 ### Fetch vendor by ID
-GET http://localhost:8080/api/vendors/2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+GET http://localhost:8080/api/vendors/4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExMjUsImlhdCI6MTYzNzcwNDcyNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fDnaHt2x8zouNflSlcgnoR5tHr4Lc6vV4eRCRDVcxq4
 
 ### Create customer
 POST http://localhost:8080/api/customers HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExMjUsImlhdCI6MTYzNzcwNDcyNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fDnaHt2x8zouNflSlcgnoR5tHr4Lc6vV4eRCRDVcxq4
 Content-Type: application/json
 
 {
-  "name": "Cliente A",
-  "notes": ""
+  "name": "Cliente B",
+  "notes": "Lorem ipsum dolor sit amet"
 }
 
 ### Fetch all customers
 GET http://localhost:8080/api/customers HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExMjUsImlhdCI6MTYzNzcwNDcyNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fDnaHt2x8zouNflSlcgnoR5tHr4Lc6vV4eRCRDVcxq4
 
 ### Fetch customer by ID
-GET http://localhost:8080/api/customers/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY0OTA3MTUsImlhdCI6MTYzNjQwNDMxNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.CVzCZi1BYqS-RrvP6it7x3nQmyCruiEZXmngYbOAK9k
+GET http://localhost:8080/api/customers/3 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExMjUsImlhdCI6MTYzNzcwNDcyNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fDnaHt2x8zouNflSlcgnoR5tHr4Lc6vV4eRCRDVcxq4
 
