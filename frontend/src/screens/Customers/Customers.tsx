@@ -5,6 +5,7 @@ import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
 import CustomerList from 'components/CustomerList/CustomerList'
 import NewCustomer from 'components/CustomerList/NewCustomer'
+import PageTitle from 'components/PageTitle/PageTitle'
 
 const Customers = (): JSX.Element => {
   const [open, setOpen] = useState(false);
@@ -23,6 +24,7 @@ const Customers = (): JSX.Element => {
 
   return (
     <div>
+      <PageTitle>clientes</PageTitle>
       <CustomerList />
       <Box sx={{ my: 8, display: 'flex', justifyContent: 'right' }}>
         <Fab

@@ -12,7 +12,7 @@ confirm:
 .PHONY: docker/build
 docker/build: confirm
 	@echo 'Creating docker image...'
-	docker build -t undeux-backoffice .
+	docker build -t undeux-backoffice:latest .
 
 ## docker/local: run docker image locally (port 3000).
 .PHONY: docker/local
@@ -22,12 +22,12 @@ docker/local:
 	  --env-file ./backend/.env \
 	  -e ENV \
 	  -e PORT \
-  	  -e JWT_SECRET \
-  	  -e DATABASE_URL \
+    -e JWT_SECRET \
+  	-e DATABASE_URL \
 	  --network="host" \
 	  undeux-backoffice
 
-## audit: tidy dependencies, format, vet and test
+## audit: tidy dependencies, format, vet and test.
 .PHONY: audit
 audit:
 	@echo 'Tidying and verifying module dependencies...'
@@ -39,4 +39,16 @@ audit:
 	cd ./backend && go vet ./...
 	@echo 'Running tests...'
 	cd ./backend && go test -race -vet=off ./...
+
+## migrate/up: run UP database migrations.
+.PHONY: migrate/up
+migrate/up:
+	@echo 'Running UP migrations...'
+	migrate -path ./backend/migrations -database "postgres://postgres:esonoesharinasa@localhost/undeux?sslmode=disable" up
+
+## migrate/down: run DOWN database migrations.
+.PHONY: migrate/down
+migrate/down:
+	@echo 'Running DOWN migrations...'
+	migrate -path ./backend/migrations -database "postgres://postgres:esonoesharinasa@localhost/undeux?sslmode=disable" down
 

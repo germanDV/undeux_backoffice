@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useSnackbar } from 'notistack'
 import Box from '@mui/material/Box'
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
 import ShareholderList from 'components/ShareholderList/ShareholderList'
 import NewShareholder from 'components/ShareholderList/NewShareholder'
+import PageTitle from 'components/PageTitle/PageTitle'
 
 const Shareholders = (): JSX.Element => {
   const [open, setOpen] = useState(false);
@@ -23,6 +24,7 @@ const Shareholders = (): JSX.Element => {
 
   return (
     <div>
+      <PageTitle>socios</PageTitle>
       <ShareholderList />
       <Box sx={{ my: 8, display: 'flex', justifyContent: 'right' }}>
         <Fab

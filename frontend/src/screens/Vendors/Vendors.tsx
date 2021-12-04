@@ -5,6 +5,7 @@ import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
 import VendorList from 'components/VendorList/VendorList'
 import NewVendor from 'components/VendorList/NewVendor'
+import PageTitle from 'components/PageTitle/PageTitle'
 
 const Vendors = (): JSX.Element => {
   const [open, setOpen] = useState(false);
@@ -23,6 +24,7 @@ const Vendors = (): JSX.Element => {
 
   return (
     <div>
+      <PageTitle>proveedores</PageTitle>
       <VendorList />
       <Box sx={{ my: 8, display: 'flex', justifyContent: 'right' }}>
         <Fab
