@@ -1,3 +1,0 @@
-ALTER TABLE vendors DROP COLUMN IF EXISTS active;
-ALTER TABLE customers DROP COLUMN IF EXISTS active;
-

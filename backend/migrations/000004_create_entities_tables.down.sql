@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS projects;
+DROP TABLE IF EXISTS vendors;
+DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS shareholders;
