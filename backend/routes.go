@@ -107,6 +107,11 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		"/api/vendors/:id",
 		users.Controller.Auth("user", vendors.Controller.Find),
 	)
+	r.HandlerFunc(
+		http.MethodPost,
+		"/api/vendors/pay",
+		users.Controller.Auth("user", vendors.Controller.Pay),
+	)
 
 	// API Routes: Customer
 	r.HandlerFunc(

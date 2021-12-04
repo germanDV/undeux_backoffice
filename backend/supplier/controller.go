@@ -2,6 +2,7 @@ package vendor
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -79,4 +80,43 @@ func (vc vendorController) Find(w http.ResponseWriter, r *http.Request) {
 	}
 
 	handlers.WriteJSON(w, handlers.Envelope{"vendor": v}, http.StatusOK)
+}
+
+func (vc vendorController) Pay(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Amount      int64  `json:"amount"`
+		Description string `json:"description"`
+		AccountID   int    `json:"accountId"`
+		ProjectID   int    `json:"projectId"`
+		VendorID    int    `json:"vendorId"`
+	}
+
+	err := handlers.ReadJSON(w, r, &input)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	pmnt := &Payment{
+		Amount:      input.Amount,
+		Description: input.Description,
+		AccountID:   input.AccountID,
+		ProjectID:   input.ProjectID,
+		VendorID:    input.VendorID,
+	}
+
+	err = pmnt.Validate()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	err = vc.Model.Pay(pmnt)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	msg := fmt.Sprintf("Successful payment of %d to vendor with ID %d", pmnt.Amount, pmnt.VendorID)
+	handlers.WriteJSON(w, handlers.Envelope{"msg": msg}, http.StatusOK)
 }

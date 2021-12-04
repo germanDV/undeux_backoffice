@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### Change own password
-PUT http://localhost:8080/api/users/change-my-password
+PUT http://localhost:8080/api/users/change-my-password HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTc4NjksImlhdCI6MTYzNTExMTQ2OSwicm9sZSI6InVzZXIiLCJzdWIiOjEzfQ.SsApELX5_MwspyMYVNZ3pxFzrwhdvm_IGBNNLrsYkbo
 Content-Type: application/json
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 }
 
 ### Change other user password
-PUT http://localhost:8080/api/users/change-user-password
+PUT http://localhost:8080/api/users/change-user-password HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTkwMzUsImlhdCI6MTYzNTExMjYzNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.hY3EEJyBU50az4wAQovxaOHTWtogYXdlLA1umxiXy2M
 Content-Type: application/json
 
@@ -31,32 +31,32 @@ Content-Type: application/json
 }
 
 ### Me
-GET http://localhost:8080/api/me
+GET http://localhost:8080/api/me HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzNDgsImlhdCI6MTYzNDk5Njk0OCwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fMswz5LnaHWUWzYNktuI9Ma2hwwIK7Ix0RCrUR2CceE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg3NDM3MDIsImlhdCI6MTYzODY1NzMwMiwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.6ng6_1WPSvlUSWmknvRFlGiZ4_7TpwAFfSD3sWtZfy4
 
 ### Register
-POST http://localhost:8080/api/register
+POST http://localhost:8080/api/register HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzNDgsImlhdCI6MTYzNDk5Njk0OCwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fMswz5LnaHWUWzYNktuI9Ma2hwwIK7Ix0RCrUR2CceE
 Content-Type: application/json
 
 {
-  "name": "Archu",
-  "email": "archu@undeux.com",
+  "name": "German",
+  "email": "german@undeux.com",
   "password": "pondosclavosamisalas",
-  "role": "user"
+  "role": "admin"
 }
 
 ### Fetch all users (admin token)
-GET http://localhost:8080/api/users
+GET http://localhost:8080/api/users HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODMzNDgsImlhdCI6MTYzNDk5Njk0OCwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fMswz5LnaHWUWzYNktuI9Ma2hwwIK7Ix0RCrUR2CceE
 
 ### Fetch all users (user token)
-GET http://localhost:8080/api/users
+GET http://localhost:8080/api/users HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUwODc3MTEsImlhdCI6MTYzNTAwMTMxMSwicm9sZSI6InVzZXIiLCJzdWIiOjh9.S7YyjBzf02z9k59ZSDVvHdjNzqAJ-1hwQuHDJRNDoe8
 
 ### Make admin
-PUT http://localhost:8080/api/users/upgrade
+PUT http://localhost:8080/api/users/upgrade HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTkwMzUsImlhdCI6MTYzNTExMjYzNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.hY3EEJyBU50az4wAQovxaOHTWtogYXdlLA1umxiXy2M
 Content-Type: application/json
 
@@ -65,7 +65,7 @@ Content-Type: application/json
 }
 
 ### Reactivate/Deactivate
-PUT http://localhost:8080/api/users/status
+PUT http://localhost:8080/api/users/status HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUxOTkwMzUsImlhdCI6MTYzNTExMjYzNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.hY3EEJyBU50az4wAQovxaOHTWtogYXdlLA1umxiXy2M
 Content-Type: application/json
 
@@ -107,6 +107,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExM
 ### Fetch vendor by ID
 GET http://localhost:8080/api/vendors/4 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExMjUsImlhdCI6MTYzNzcwNDcyNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fDnaHt2x8zouNflSlcgnoR5tHr4Lc6vV4eRCRDVcxq4
+
+### Pay vendor
+POST http://localhost:8080/api/vendors/pay HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg3NDM3MDIsImlhdCI6MTYzODY1NzMwMiwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.6ng6_1WPSvlUSWmknvRFlGiZ4_7TpwAFfSD3sWtZfy4
+
+{
+  "amount": 1499,
+  "accountId": 2,
+  "projectId": 1,
+  "vendorId": 1,
+  "description": "T490 AMD"
+}
 
 ### Create customer
 POST http://localhost:8080/api/customers HTTP/1.1
