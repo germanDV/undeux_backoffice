@@ -137,5 +137,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExM
 
 ### Fetch customer by ID
 GET http://localhost:8080/api/customers/3 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExMjUsImlhdCI6MTYzNzcwNDcyNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fDnaHt2x8zouNflSlcgnoR5tHr4Lc6vV4eRCRDVcxq4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzkzMzg4OTcsImlhdCI6MTYzOTI1MjQ5Nywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.8TKQMVg50_J-p0ZBE9y9p-VAW2guqmnJAj0noIKoa3g
+
+### Create project
+POST http://localhost:800/api/projects HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzkzMzg4OTcsImlhdCI6MTYzOTI1MjQ5Nywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.8TKQMVg50_J-p0ZBE9y9p-VAW2guqmnJAj0noIKoa3g
+
+{
+  "name": "Project I",
+  "notes": "Lorem ipsum dolor sit amet"
+}
+
+### Fetch all projects
+GET http://localhost:8080/api/projects HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzkzMzg4OTcsImlhdCI6MTYzOTI1MjQ5Nywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.8TKQMVg50_J-p0ZBE9y9p-VAW2guqmnJAj0noIKoa3g
+
+### Update project
+PUT http://localhost:800/api/projects HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzkzMzg4OTcsImlhdCI6MTYzOTI1MjQ5Nywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.8TKQMVg50_J-p0ZBE9y9p-VAW2guqmnJAj0noIKoa3g
+Content-Type: application/json
+
+{
+  "id": 1,
+  "finished": true
+}
 
