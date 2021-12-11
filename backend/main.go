@@ -56,6 +56,9 @@ func main() {
 	signal.Notify(quitCh, syscall.SIGINT, syscall.SIGTERM)
 	sig := <-quitCh
 	var waitTime time.Duration = 5
+	if config.Config.Env != "production" {
+		waitTime = 1
+	}
 	l.Printf("Received termination signal %q, graceful shutdown in %ds.\n", sig, waitTime)
 	tc, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
