@@ -10,8 +10,8 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Alert from '@mui/material/Alert'
-import { customerSchema, Customer } from 'lib/schemas'
-import { useCreateCustomer } from 'lib/hooks/customer'
+import { projectSchema, Project } from 'lib/schemas'
+import { useCreateProject } from 'lib/hooks/project'
 import { tr } from 'lib/helpers'
 import { Form, Separator } from 'ui/form.styles'
 
@@ -21,15 +21,15 @@ interface Props {
   handleSuccess: (id: number) => void
 }
 
-const NewCustomer = ({ open, handleClose, handleSuccess }: Props): JSX.Element => {
+const NewProject = ({ open, handleClose, handleSuccess }: Props): JSX.Element => {
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
-  const mutation = useCreateCustomer()
+  const mutation = useCreateProject()
 
   const formik = useFormik({
-    initialValues: { name: '', notes: '', active: true },
-    validationSchema: customerSchema,
-    onSubmit: ({ name, notes }: Omit<Customer, 'id'>) => {
+    initialValues: { name: '', notes: '', finished: false },
+    validationSchema: projectSchema,
+    onSubmit: ({ name, notes }: Omit<Project, 'id'>) => {
       mutation.mutate({ name, notes })
     },
   })
@@ -49,10 +49,10 @@ const NewCustomer = ({ open, handleClose, handleSuccess }: Props): JSX.Element =
 
   return (
     <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
-      <DialogTitle>Crear Cliente</DialogTitle>
+      <DialogTitle>Crear Proyecto</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Creación de nuevo cliente o fuente de ingresos
+          Creación de nuevo proyecto para asignación de ingresos y egresos
         </DialogContentText>
         <Form onSubmit={formik.handleSubmit}>
           <Separator />
@@ -102,5 +102,5 @@ const NewCustomer = ({ open, handleClose, handleSuccess }: Props): JSX.Element =
   )
 }
 
-export default NewCustomer
+export default NewProject
 

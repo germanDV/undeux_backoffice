@@ -6,35 +6,38 @@ import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import PersonIcon from '@mui/icons-material/Person'
-import { Customer } from 'lib/schemas'
+import FolderIcon from '@mui/icons-material/Folder'
+import { Project } from 'lib/schemas'
 import { chop } from 'lib/helpers'
+import ProjectActions from './ProjectActions'
 
 interface Props {
-  customer: Customer
+  project: Project
 }
 
-const CustomerListItem = ({ customer }: Props): JSX.Element => {
+const ProjectListItem = ({ project }: Props): JSX.Element => {
   const theme = useTheme()
 
   return (
     <Box my={2}>
       <Paper elevation={3}>
-        <ListItem>
+        <ListItem secondaryAction={(
+          <ProjectActions projectId={project.id} finished={project.finished} />
+        )}>
           <ListItemAvatar>
             <Avatar>
-              <PersonIcon />
+              <FolderIcon />
             </Avatar>
           </ListItemAvatar>
           <ListItemText
             primary={(
               <Typography variant="h6">
-                {customer.name}
+                {project.name}
               </Typography>
             )}
             secondary={(
               <Typography variant="subtitle1" style={{ color: theme.palette.text.secondary }}>
-                {chop(customer.notes)}
+                {chop(project.notes)}
               </Typography>
             )}
           />
@@ -44,5 +47,5 @@ const CustomerListItem = ({ customer }: Props): JSX.Element => {
   )
 }
 
-export default CustomerListItem
+export default ProjectListItem
 

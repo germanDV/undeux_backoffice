@@ -1,4 +1,3 @@
-import React from 'react'
 import { useCustomers } from 'lib/hooks/customer'
 import CustomerListItem from './CustomerListItem'
 

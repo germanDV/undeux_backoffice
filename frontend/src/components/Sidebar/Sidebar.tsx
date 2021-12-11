@@ -1,4 +1,3 @@
-import React from 'react'
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import Divider from '@mui/material/Divider'
@@ -8,6 +7,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import AirlineSeatFlatIcon from '@mui/icons-material/AirlineSeatFlat';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import PieChartIcon from '@mui/icons-material/PieChart';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import { Drawer, DrawerHeader } from './Sidebar.styles'
 import SidebarItem from './SidebarItem'
 
@@ -32,9 +32,11 @@ const Sidebar = ({ open, handleClose, drawerWidth }: Props): JSX.Element => {
         <SidebarItem icon={<DirectionsBikeIcon />} text="Proveedores" to="/vendors" />
         <SidebarItem icon={<PieChartIcon />} text="Socios" to="/shareholders" adminOnly />
         <SidebarItem icon={<PeopleAltIcon />} text="Usuarios" to="/users" adminOnly />
+        <SidebarItem icon={<HomeWorkIcon />} text="Proyectos" to="/projects" />
       </List>
     </Drawer>
   )
 }
 
 export default Sidebar
+

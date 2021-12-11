@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useSnackbar } from 'notistack'
 import Stack from '@mui/material/Stack'
 import IconButton from '@mui/material/IconButton'
