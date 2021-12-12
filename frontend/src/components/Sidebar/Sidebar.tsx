@@ -4,10 +4,11 @@ import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import AppsIcon from '@mui/icons-material/Apps'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
-import AirlineSeatFlatIcon from '@mui/icons-material/AirlineSeatFlat';
-import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
-import PieChartIcon from '@mui/icons-material/PieChart';
-import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import AirlineSeatFlatIcon from '@mui/icons-material/AirlineSeatFlat'
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike'
+import PieChartIcon from '@mui/icons-material/PieChart'
+import HomeWorkIcon from '@mui/icons-material/HomeWork'
+import PaymentIcon from '@mui/icons-material/Payment'
 import { Drawer, DrawerHeader } from './Sidebar.styles'
 import SidebarItem from './SidebarItem'
 
@@ -28,11 +29,12 @@ const Sidebar = ({ open, handleClose, drawerWidth }: Props): JSX.Element => {
       <Divider />
       <List component="nav">
         <SidebarItem icon={<AppsIcon />} text="Inicio" to="/" />
+        <SidebarItem icon={<PaymentIcon />} text="Pagos" to="/payments" />
         <SidebarItem icon={<AirlineSeatFlatIcon />} text="Clientes" to="/customers" />
         <SidebarItem icon={<DirectionsBikeIcon />} text="Proveedores" to="/vendors" />
+        <SidebarItem icon={<HomeWorkIcon />} text="Proyectos" to="/projects" />
         <SidebarItem icon={<PieChartIcon />} text="Socios" to="/shareholders" adminOnly />
         <SidebarItem icon={<PeopleAltIcon />} text="Usuarios" to="/users" adminOnly />
-        <SidebarItem icon={<HomeWorkIcon />} text="Proyectos" to="/projects" />
       </List>
     </Drawer>
   )

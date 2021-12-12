@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
@@ -7,6 +7,7 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: false,
+      staleTime: 2 * 60 * 1000, // 2 minutes
     },
   },
 })
@@ -21,3 +22,4 @@ const ReactQueryProvider: FC = ({ children }) => {
 }
 
 export default ReactQueryProvider
+

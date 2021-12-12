@@ -1,6 +1,7 @@
 /**
  * Translates a piece of text,
- * if fallback is not provided, defaults to empty string.
+ * if no fallback is provided, it returns
+ * the original "untranslated" text.
  */
 export function tr(str: string, fallback = '') {
   switch (str.toLowerCase()) {
@@ -14,6 +15,6 @@ export function tr(str: string, fallback = '') {
       return 'Password incorrecta'
     default:
       console.log(`Add translation for "${str}"`)
-      return fallback
+      return fallback || str
   }
 }

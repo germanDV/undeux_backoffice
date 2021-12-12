@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useFormik, FormikHelpers } from 'formik'
 import Typography from '@mui/material/Typography'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -23,7 +23,7 @@ const Login = (): JSX.Element => {
         .catch((err) => setError(tr(err.message, 'Password y/o email incorrecto.')))
         .finally(() => setSubmitting(false))
     },
-  });
+  })
 
   return (
     <FullPageContainer>
