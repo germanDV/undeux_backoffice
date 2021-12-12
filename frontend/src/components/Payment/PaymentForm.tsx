@@ -13,7 +13,7 @@ import Select from '@mui/material/Select'
 import { paymentSchema, PaymentSubmission } from 'lib/schemas'
 import { useMakePayment } from 'lib/hooks/payment'
 import { useVendors } from 'lib/hooks/vendor'
-import { useProjects } from 'lib/hooks/project'
+import { useActiveProjects } from 'lib/hooks/project'
 import { Form, Separator } from 'ui/form.styles'
 import { PaperContainer } from 'ui/paper.styles'
 import { tr } from 'lib/helpers'
@@ -22,7 +22,7 @@ const PaymentForm = (): JSX.Element => {
   const mutation = useMakePayment()
   const { enqueueSnackbar } = useSnackbar()
   const { data: vendorsData } = useVendors()
-  const { data: projectsData } = useProjects()
+  const { data: projectsData } = useActiveProjects()
 
   const formik = useFormik({
     initialValues: {
@@ -76,7 +76,7 @@ const PaymentForm = (): JSX.Element => {
             labelId="account"
             id="accountId"
             name="accountId"
-            value={formik.values.accountId === 0 ? null : formik.values.accountId}
+            value={formik.values.accountId === 0 ? '' : formik.values.accountId}
             label="Cuenta"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -97,7 +97,7 @@ const PaymentForm = (): JSX.Element => {
             labelId="vendor"
             id="vendorId"
             name="vendorId"
-            value={formik.values.vendorId === 0 ? null : formik.values.vendorId}
+            value={formik.values.vendorId === 0 ? '' : formik.values.vendorId}
             label="Proveedor"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -119,7 +119,7 @@ const PaymentForm = (): JSX.Element => {
             labelId="project"
             id="projectId"
             name="projectId"
-            value={formik.values.projectId === 0 ? null : formik.values.projectId}
+            value={formik.values.projectId === 0 ? '' : formik.values.projectId}
             label="Proyecto"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
