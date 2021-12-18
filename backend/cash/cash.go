@@ -1,4 +1,4 @@
-package vendor
+package cash
 
 import (
 	"database/sql"
@@ -12,20 +12,18 @@ type Module struct {
 }
 
 type iController interface {
-	Create(w http.ResponseWriter, r *http.Request)
+	Pay(w http.ResponseWriter, r *http.Request)
 	List(w http.ResponseWriter, r *http.Request)
-	Find(w http.ResponseWriter, r *http.Request)
 }
 
 type iModel interface {
-	Save(vendor *Vendor) error
-	Get() ([]*Vendor, error)
-	GetByID(id int) (*Vendor, error)
+	Pay(pmnt *Payment) error
+	Get() ([]*Payment, error)
 }
 
 func New(db *sql.DB, l *log.Logger) *Module {
-	model := vendorModel{DB: db}
-	controller := vendorController{Model: model, L: l}
+	model := cashModel{DB: db}
+	controller := cashController{Model: model, L: l}
 
 	return &Module{
 		Model:      model,

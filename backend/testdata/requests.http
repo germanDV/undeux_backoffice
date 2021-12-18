@@ -109,17 +109,23 @@ GET http://localhost:8080/api/vendors/4 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzc3OTExMjUsImlhdCI6MTYzNzcwNDcyNSwicm9sZSI6ImFkbWluIiwic3ViIjo2fQ.fDnaHt2x8zouNflSlcgnoR5tHr4Lc6vV4eRCRDVcxq4
 
 ### Pay vendor
-POST http://localhost:8080/api/vendors/pay HTTP/1.1
+POST http://localhost:8080/api/cash/payments HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg3NDM3MDIsImlhdCI6MTYzODY1NzMwMiwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.6ng6_1WPSvlUSWmknvRFlGiZ4_7TpwAFfSD3sWtZfy4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzk5NDg5NTUsImlhdCI6MTYzOTg2MjU1NSwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.s-W3QR-fgF5XcvAI7BDawUil93qzs9o-F-KXdsIsiOA
 
 {
-  "amount": 1499,
-  "accountId": 2,
+  "date": "2020-12-25",
+  "amount": 50002,
+  "accountId": 1,
   "projectId": 1,
   "vendorId": 1,
-  "description": "T490 AMD"
+  "description": "Regalos de Navidad"
 }
+
+### Fetch all payments
+GET http://localhost:8080/api/cash/payments HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzk5NDg5NTUsImlhdCI6MTYzOTg2MjU1NSwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.s-W3QR-fgF5XcvAI7BDawUil93qzs9o-F-KXdsIsiOA
 
 ### Create customer
 POST http://localhost:8080/api/customers HTTP/1.1

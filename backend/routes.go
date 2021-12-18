@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/constructoraundeux/backoffice/cash"
 	"github.com/constructoraundeux/backoffice/customer"
 	"github.com/constructoraundeux/backoffice/handlers"
 	"github.com/constructoraundeux/backoffice/project"
@@ -26,9 +27,9 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	vendors := vendor.New(db, l)
 	customers := customer.New(db, l)
 	projects := project.New(db, l)
+	bank := cash.New(db, l)
 
 	// Create middleware chain
-	// TODO: add rate limiting?
 	generalMdw := alice.New(handler.Logger, handler.SecurityHeaders, handler.RecoverPanic)
 
 	// API Routes: Other
@@ -109,11 +110,6 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		"/api/vendors/:id",
 		users.Controller.Auth("user", vendors.Controller.Find),
 	)
-	r.HandlerFunc(
-		http.MethodPost,
-		"/api/vendors/pay",
-		users.Controller.Auth("user", vendors.Controller.Pay),
-	)
 
 	// API Routes: Customer
 	r.HandlerFunc(
@@ -147,6 +143,18 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		http.MethodPut,
 		"/api/projects",
 		users.Controller.Auth("user", projects.Controller.Update),
+	)
+
+	// API Routes: Cash / Bank
+	r.HandlerFunc(
+		http.MethodPost,
+		"/api/cash/payments",
+		users.Controller.Auth("user", bank.Controller.Pay),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/cash/payments",
+		users.Controller.Auth("user", bank.Controller.List),
 	)
 
 	// Static assets and index.html
