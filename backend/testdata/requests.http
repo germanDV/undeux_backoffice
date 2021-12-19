@@ -169,3 +169,7 @@ Content-Type: application/json
   "finished": true
 }
 
+### Fetch all accounts
+GET http://localhost:8080/api/accounts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDAwMTQxMjIsImlhdCI6MTYzOTkyNzcyMiwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.L40Vq1zXV948FjZtDnNzl_gr9bz-U670ucMQz69uq9o
+

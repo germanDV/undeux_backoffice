@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/constructoraundeux/backoffice/account"
 	"github.com/constructoraundeux/backoffice/cash"
 	"github.com/constructoraundeux/backoffice/customer"
 	"github.com/constructoraundeux/backoffice/handlers"
@@ -28,6 +29,7 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	customers := customer.New(db, l)
 	projects := project.New(db, l)
 	bank := cash.New(db, l)
+	accounts := account.New(db, l)
 
 	// Create middleware chain
 	generalMdw := alice.New(handler.Logger, handler.SecurityHeaders, handler.RecoverPanic)
@@ -155,6 +157,13 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		http.MethodGet,
 		"/api/cash/payments",
 		users.Controller.Auth("user", bank.Controller.List),
+	)
+
+	// API Routes: Accounts
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/accounts",
+		users.Controller.Auth("user", accounts.Controller.List),
 	)
 
 	// Static assets and index.html

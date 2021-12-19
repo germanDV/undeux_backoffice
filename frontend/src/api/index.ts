@@ -4,4 +4,5 @@ export * from './vendor'
 export * from './customer'
 export * from './project'
 export * from './payment'
+export * from './account'
 
