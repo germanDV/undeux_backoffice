@@ -35,7 +35,7 @@ const PaymentForm = (): JSX.Element => {
     },
     validationSchema: paymentSchema,
     onSubmit: (data: PaymentSubmission) => {
-      mutation.mutate({ ...data, amount: +data.amount })
+      mutation.mutate({ ...data, amount: Math.round(data.amount) })
     },
   })
 
@@ -61,7 +61,7 @@ const PaymentForm = (): JSX.Element => {
         <TextField
           id="amount"
           name="amount"
-          label="Importe"
+          label="Importe (sin decimales)"
           value={formik.values.amount === 0 ? '' : formik.values.amount}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
