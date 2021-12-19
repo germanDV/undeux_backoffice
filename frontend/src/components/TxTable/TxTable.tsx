@@ -9,9 +9,12 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { PaperContainer } from 'ui/paper.styles'
 import { Payment } from 'lib/schemas'
 import { formatDate, formatAmount } from 'lib/helpers'
+import { useProjects } from 'lib/hooks/project'
+import { useVendors } from 'lib/hooks/vendor'
 
 interface Props {
   rows: Payment[]
+  category: 'payments' | 'collections'
 }
 
 const accountMap: Record<number, string> = {
@@ -31,7 +34,26 @@ function getTooltip(p: Payment): JSX.Element {
   )
 }
 
-const TxTable = ({ rows }: Props): JSX.Element => {
+const TxTable = ({ rows, category }: Props): JSX.Element => {
+  const projectsData = useProjects()
+  const vendorsData = useVendors()
+
+  const getProjectName = (id: number): string => {
+    if (!projectsData.data?.projects) {
+      return ''
+    }
+    const project = projectsData.data.projects.find(p => p.id === id)
+    return project ? project.name : ''
+  }
+
+  const getVendorName = (id: number): string => {
+    if (!vendorsData.data?.vendors) {
+      return ''
+    }
+    const vendor = vendorsData.data.vendors.find(v => v.id === id)
+    return vendor ? vendor.name : ''
+  }
+
   const handleDelete = (id: number): void => {
     alert(`Delete payment with ID ${id}`)
   }
@@ -45,7 +67,7 @@ const TxTable = ({ rows }: Props): JSX.Element => {
             <TableCell align="right">Importe</TableCell>
             <TableCell align="center">Cuenta</TableCell>
             <TableCell>Proy.</TableCell>
-            <TableCell>Prov.</TableCell>
+            <TableCell>{category === 'payments' ? 'Prov.' : 'Cliente'}</TableCell>
             <TableCell>Descripción</TableCell>
             <TableCell></TableCell>
           </TableRow>
@@ -57,8 +79,13 @@ const TxTable = ({ rows }: Props): JSX.Element => {
                 <TableCell>{formatDate(row.date)}</TableCell>
                 <TableCell align="right">{formatAmount(row.amount)}</TableCell>
                 <TableCell align="center">{accountMap[row.accountId]}</TableCell>
-                <TableCell>{row.projectId}</TableCell>
-                <TableCell>{row.vendorId}</TableCell>
+                <TableCell>{getProjectName(row.projectId)}</TableCell>
+                <TableCell>
+                  {category === 'payments'
+                    ? getVendorName(row.vendorId)
+                    : 'getCustomerName(row.customerId)'
+                  }
+                </TableCell>
                 <TableCell>{row.description}</TableCell>
                 <TableCell>
                   <IconButton size="small" onClick={() => handleDelete(row.id)}>

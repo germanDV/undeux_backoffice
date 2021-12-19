@@ -22,7 +22,7 @@ const PaymentsTable: FC = () => {
     return null
   }
   
-  return <TxTable rows={pmnts.data.payments} />
+  return <TxTable category="payments" rows={pmnts.data.payments} />
 }
 
 export default PaymentsTable
