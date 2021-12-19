@@ -15,12 +15,14 @@ type iController interface {
 	Pay(w http.ResponseWriter, r *http.Request)
 	ListPayments(w http.ResponseWriter, r *http.Request)
 	FindPayment(w http.ResponseWriter, r *http.Request)
+	DeletePayment(w http.ResponseWriter, r *http.Request)
 }
 
 type iModel interface {
 	Pay(pmnt *Payment) error
 	GetPayments() ([]*Payment, error)
 	GetPaymentByID(id int) (*Payment, error)
+	DeletePayment(p *Payment) error
 }
 
 func New(db *sql.DB, l *log.Logger) *Module {

@@ -174,4 +174,38 @@ func (cm cashModel) GetPaymentByID(id int) (*Payment, error) {
 }
 
 // Delete removes payment from database and updates account balance.
-// func (cm cashModel) Delete(id int) error { }
+func (cm cashModel) DeletePayment(p *Payment) error {
+	paymentQuery := `delete from payments where id = $1`
+	paymentArgs := []interface{}{p.ID}
+
+	balanceQuery := `update accounts set balance = balance + $1 where id = $2`
+	balanceArgs := []interface{}{p.Amount, p.AccountID}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	tx, err := cm.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, paymentQuery, paymentArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, balanceQuery, balanceArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	return tx.Commit()
+}

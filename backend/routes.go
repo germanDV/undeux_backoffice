@@ -163,6 +163,11 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		"/api/cash/payments/:id",
 		users.Controller.Auth("user", bank.Controller.FindPayment),
 	)
+	r.HandlerFunc(
+		http.MethodDelete,
+		"/api/cash/payments/:id",
+		users.Controller.Auth("user", bank.Controller.DeletePayment),
+	)
 
 	// API Routes: Accounts
 	r.HandlerFunc(

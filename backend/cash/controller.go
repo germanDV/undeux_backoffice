@@ -97,3 +97,33 @@ func (cc cashController) FindPayment(w http.ResponseWriter, r *http.Request) {
 
 	handlers.WriteJSON(w, handlers.Envelope{"payment": p}, http.StatusOK)
 }
+
+func (cc cashController) DeletePayment(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+	idStr := params.ByName("id")
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": "invalid ID provided."}, http.StatusBadRequest)
+		return
+	}
+
+	pmnt, err := cc.Model.GetPaymentByID(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, errs.ErrRecordNotFound):
+			handlers.WriteJSON(w, handlers.Envelope{"error": "payment not found"}, http.StatusNotFound)
+		default:
+			handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		}
+		return
+	}
+
+	err = cc.Model.DeletePayment(pmnt)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	handlers.WriteJSON(w, handlers.Envelope{"msg": "Payment deleted successfully"}, http.StatusOK)
+}
