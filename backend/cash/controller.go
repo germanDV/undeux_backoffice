@@ -1,12 +1,16 @@
 package cash
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
+	"github.com/constructoraundeux/backoffice/errs"
 	"github.com/constructoraundeux/backoffice/handlers"
+	"github.com/julienschmidt/httprouter"
 )
 
 type cashController struct {
@@ -61,11 +65,35 @@ func (cc cashController) Pay(w http.ResponseWriter, r *http.Request) {
 	handlers.WriteJSON(w, handlers.Envelope{"msg": msg}, http.StatusOK)
 }
 
-func (cc cashController) List(w http.ResponseWriter, r *http.Request) {
-	sp, err := cc.Model.Get()
+func (cc cashController) ListPayments(w http.ResponseWriter, r *http.Request) {
+	sp, err := cc.Model.GetPayments()
 	if err != nil {
 		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
 		return
 	}
 	handlers.WriteJSON(w, handlers.Envelope{"payments": sp}, http.StatusOK)
+}
+
+func (cc cashController) FindPayment(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+	idStr := params.ByName("id")
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": "invalid ID provided."}, http.StatusBadRequest)
+		return
+	}
+
+	p, err := cc.Model.GetPaymentByID(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, errs.ErrRecordNotFound):
+			handlers.WriteJSON(w, handlers.Envelope{"error": "payment not found"}, http.StatusNotFound)
+		default:
+			handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		}
+		return
+	}
+
+	handlers.WriteJSON(w, handlers.Envelope{"payment": p}, http.StatusOK)
 }

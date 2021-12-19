@@ -156,7 +156,12 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	r.HandlerFunc(
 		http.MethodGet,
 		"/api/cash/payments",
-		users.Controller.Auth("user", bank.Controller.List),
+		users.Controller.Auth("user", bank.Controller.ListPayments),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/cash/payments/:id",
+		users.Controller.Auth("user", bank.Controller.FindPayment),
 	)
 
 	// API Routes: Accounts

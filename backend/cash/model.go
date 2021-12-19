@@ -3,9 +3,11 @@ package cash
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"time"
 
+	"github.com/constructoraundeux/backoffice/errs"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -100,7 +102,7 @@ func (cm cashModel) Pay(pmnt *Payment) error {
 }
 
 // Get fetches all the payments.
-func (cm cashModel) Get() ([]*Payment, error) {
+func (cm cashModel) GetPayments() ([]*Payment, error) {
 	query := `select id, tx_date, amount, account_id, project_id, vendor_id, description from payments`
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
@@ -136,3 +138,40 @@ func (cm cashModel) Get() ([]*Payment, error) {
 
 	return sp, nil
 }
+
+// GetByID fetches a single payment and returns it.
+func (cm cashModel) GetPaymentByID(id int) (*Payment, error) {
+	query := `
+		select id, tx_date, amount, account_id, project_id, vendor_id, description
+		from payments
+		where id = $1
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	var p Payment
+	err := cm.DB.QueryRowContext(ctx, query, id).Scan(
+		&p.ID,
+		&p.Date,
+		&p.Amount,
+		&p.AccountID,
+		&p.ProjectID,
+		&p.VendorID,
+		&p.Description,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, errs.ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+
+	return &p, nil
+}
+
+// Delete removes payment from database and updates account balance.
+// func (cm cashModel) Delete(id int) error { }
