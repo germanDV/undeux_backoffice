@@ -1,13 +1,26 @@
 /**
+ * Converts the Date obj to a string with format
+ * "yyyy-mm-dd"
+ */
+export function dateToString(date: Date): string {
+  const yyyy = date.getUTCFullYear()
+
+  const m = date.getUTCMonth() + 1
+  const mm = m < 10 ? `0${m}` : `${m}`
+
+  const d = date.getUTCDate()
+  const dd = d < 10 ? `0${d}` : `${d}`
+
+  return `${yyyy}-${mm}-${dd}`
+}
+
+/**
  * Returns the current date (UTC)
  * with the format "yyyy-mm-dd"
  */
 export function nowUTC(): string {
   const now = new Date()
-  const y = now.getUTCFullYear()
-  const m = now.getUTCMonth() + 1
-  const d = now.getUTCDate()
-  return `${y}-${m}-${d}`
+  return dateToString(now)
 }
 
 /**
@@ -21,3 +34,4 @@ export function formatDate(date: string): string {
     month: '2-digit',
   })
 }
+

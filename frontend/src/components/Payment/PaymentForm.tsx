@@ -10,13 +10,17 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import Select from '@mui/material/Select'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import DatePicker from '@mui/lab/DatePicker'
+import esLocale from 'date-fns/locale/es'
 import { paymentSchema, PaymentSubmission } from 'lib/schemas'
 import { useMakePayment } from 'lib/hooks/payment'
 import { useVendors } from 'lib/hooks/vendor'
 import { useActiveProjects } from 'lib/hooks/project'
 import { Form, Separator } from 'ui/form.styles'
 import { PaperContainer } from 'ui/paper.styles'
-import { tr, nowUTC } from 'lib/helpers'
+import { tr, nowUTC, dateToString } from 'lib/helpers'
 
 const PaymentForm = (): JSX.Element => {
   const mutation = useMakePayment()
@@ -35,7 +39,11 @@ const PaymentForm = (): JSX.Element => {
     },
     validationSchema: paymentSchema,
     onSubmit: (data: PaymentSubmission) => {
-      mutation.mutate({ ...data, amount: Math.round(data.amount) })
+      mutation.mutate({
+        ...data,
+        amount: Math.round(data.amount),
+        date: dateToString(data.date as unknown as Date),
+      })
     },
   })
 
@@ -68,6 +76,16 @@ const PaymentForm = (): JSX.Element => {
           error={formik.touched.amount && !!formik.errors.amount}
           helperText={formik.touched.amount && formik.errors.amount}
         />
+        <Separator />
+
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={esLocale}>
+          <DatePicker
+            label="Fecha de pago"
+            value={formik.values.date}
+            onChange={(date: Date | null) => formik.setFieldValue('date', date)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
         <Separator />
 
         <FormControl fullWidth>
