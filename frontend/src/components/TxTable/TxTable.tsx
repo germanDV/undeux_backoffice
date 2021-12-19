@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useSnackbar } from 'notistack'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -12,6 +14,7 @@ import { formatDate, formatAmount } from 'lib/helpers'
 import { useProjects } from 'lib/hooks/project'
 import { useVendors } from 'lib/hooks/vendor'
 import { useAccounts } from 'lib/hooks/account'
+import { useDeletePayment } from 'lib/hooks/payment'
 
 interface Props {
   rows: Payment[]
@@ -34,6 +37,22 @@ const TxTable = ({ rows, category }: Props): JSX.Element => {
   const projectsData = useProjects()
   const vendorsData = useVendors()
   const acctData = useAccounts()
+  const deletePaymentMutation = useDeletePayment()
+  const { enqueueSnackbar } = useSnackbar()
+
+  useEffect(() => {
+    if (deletePaymentMutation.isError) {
+      enqueueSnackbar((deletePaymentMutation.error as Error).message, { variant: 'error' })
+    }
+    if (deletePaymentMutation.isSuccess) {
+      enqueueSnackbar('Pago eliminado exitosamente.', { variant: 'success' })
+    }
+  }, [
+    deletePaymentMutation.isError,
+    deletePaymentMutation.isSuccess,
+    deletePaymentMutation.error,
+    enqueueSnackbar,
+  ])
 
   const getProjectName = (id: number): string => {
     if (!projectsData.data?.projects) return ''
@@ -54,7 +73,7 @@ const TxTable = ({ rows, category }: Props): JSX.Element => {
   }
 
   const handleDelete = (id: number): void => {
-    alert(`Delete payment with ID ${id}`)
+    deletePaymentMutation.mutate(id)
   }
 
   return (

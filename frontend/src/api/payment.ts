@@ -16,3 +16,10 @@ export async function fetchPayments() {
   })
 }
 
+export async function deletePayment(id: number) {
+  return client<{msg: string}>({
+    method: 'DELETE',
+    url: `/api/cash/payments/${id}`,
+  })
+}
+
