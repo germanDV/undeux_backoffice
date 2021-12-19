@@ -1,5 +1,6 @@
-import { useMutation, useQueryClient } from 'react-query'
-import { pay } from 'api'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { Payment } from '../schemas'
+import { pay, fetchPayments } from 'api'
 
 export function useMakePayment() {
   const queryClient = useQueryClient()
@@ -10,3 +11,6 @@ export function useMakePayment() {
   })
 }
 
+export function usePayments() {
+  return useQuery<{payments: Payment[]}, Error>('payments', fetchPayments)
+}

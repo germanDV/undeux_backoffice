@@ -1,11 +1,18 @@
 import client from './client'
-import { PaymentSubmission } from 'lib/schemas'
+import { Payment, PaymentSubmission } from 'lib/schemas'
 
 export async function pay(payload: PaymentSubmission) {
   return client<{msg: string}>({
     method: 'POST',
-    url: '/api/vendors/pay',
+    url: '/api/cash/payments',
     data: payload,
+  })
+}
+
+export async function fetchPayments() {
+  return client<{payments: Payment[]}>({
+    method: 'GET',
+    url: '/api/cash/payments',
   })
 }
 

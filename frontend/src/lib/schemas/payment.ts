@@ -1,6 +1,9 @@
 import * as yup from 'yup'
 
 export const paymentSchema = yup.object({
+  date: yup
+    .string()
+    .required('Ingresá fecha del pago.'),
   amount: yup
     .number()
     .required('Ingesá el importe del pago.')
@@ -25,7 +28,7 @@ export const paymentSchema = yup.object({
 })
 
 type PaymentSubmission = yup.InferType<typeof paymentSchema>
-type Payment = PaymentSubmission & { id: number; date: string }
+type Payment = PaymentSubmission & { id: number }
 
 export type { Payment, PaymentSubmission }
 

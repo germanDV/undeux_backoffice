@@ -16,7 +16,7 @@ import { useVendors } from 'lib/hooks/vendor'
 import { useActiveProjects } from 'lib/hooks/project'
 import { Form, Separator } from 'ui/form.styles'
 import { PaperContainer } from 'ui/paper.styles'
-import { tr } from 'lib/helpers'
+import { tr, nowUTC } from 'lib/helpers'
 
 const PaymentForm = (): JSX.Element => {
   const mutation = useMakePayment()
@@ -26,6 +26,7 @@ const PaymentForm = (): JSX.Element => {
 
   const formik = useFormik({
     initialValues: {
+      date: nowUTC(),
       amount: 0,
       description: '',
       accountId: 0,
@@ -61,7 +62,6 @@ const PaymentForm = (): JSX.Element => {
           id="amount"
           name="amount"
           label="Importe"
-          autoFocus
           value={formik.values.amount === 0 ? '' : formik.values.amount}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

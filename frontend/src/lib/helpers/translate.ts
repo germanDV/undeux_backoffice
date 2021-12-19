@@ -18,3 +18,4 @@ export function tr(str: string, fallback = '') {
       return fallback || str
   }
 }
+

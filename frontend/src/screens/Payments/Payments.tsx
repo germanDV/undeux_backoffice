@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid'
 import PageTitle from 'components/PageTitle/PageTitle'
 import LineChart from 'components/LineChart/LineChart'
-import TxTable from 'components/TxTable/TxTable'
+import PaymentsTable from 'components/Payment/PaymentsTable'
 import PaymentForm from 'components/Payment/PaymentForm'
 
 const Payments = (): JSX.Element => {
@@ -12,10 +12,10 @@ const Payments = (): JSX.Element => {
         <Grid item xs={12}>
           <LineChart />
         </Grid>
-        <Grid item sm={12} md={6}>
-          <TxTable />
+        <Grid item sm={12} md={8}>
+          <PaymentsTable />
         </Grid>
-        <Grid item sm={12} md={6}>
+        <Grid item sm={12} md={4}>
           <PaymentForm />
         </Grid>
       </Grid>
