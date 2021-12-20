@@ -1,3 +1,5 @@
+import { compareAsc } from 'date-fns'
+
 /**
  * Converts the Date obj to a string with format
  * "yyyy-mm-dd"
@@ -33,5 +35,14 @@ export function formatDate(date: string): string {
     day: '2-digit',
     month: '2-digit',
   })
+}
+
+export function sortByDateAsc<T extends { date: string }>(entries: T[]): T[] {
+  entries.sort((a, b) => {
+    const aDate = new Date(a.date)
+    const bDate = new Date(b.date)
+    return compareAsc(aDate, bDate)
+  })
+  return entries
 }
 

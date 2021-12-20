@@ -5,7 +5,7 @@ import { usePayments } from 'lib/hooks/payment'
 import { useVendors } from 'lib/hooks/vendor'
 import { useProjects } from 'lib/hooks/project'
 import { Payment } from 'lib/schemas'
-import { formatDate } from 'lib/helpers'
+import { formatDate, sortByDateAsc } from 'lib/helpers'
 import LineChart from 'components/LineChart/LineChart'
 
 type ChartEntry = {
@@ -41,7 +41,7 @@ const PaymentCharts = () => {
   const splitByCurrency = useCallback((data: Payment[], currency: 'ARS' | 'USD'): ChartEntry[] => {
     const entries: ChartEntry[] = []
 
-    data.forEach(i => {
+    sortByDateAsc(data).forEach(i => {
       const entry = {
         id: i.id,
         date: formatDate(i.date),
