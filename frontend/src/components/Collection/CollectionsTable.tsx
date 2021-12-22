@@ -5,9 +5,9 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { PaperContainer } from 'ui/paper.styles'
 import { formatDate, formatAmount } from 'lib/helpers'
-import { usePayments, useDeletePayment } from 'lib/hooks/payment'
+import { useCollections, useDeleteCollection } from 'lib/hooks/collection'
 import { useProjects } from 'lib/hooks/project'
-import { useVendors } from 'lib/hooks/vendor'
+import { useCustomers } from 'lib/hooks/customer'
 import { useAccounts } from 'lib/hooks/account'
 
 type TableEntry = {
@@ -16,7 +16,7 @@ type TableEntry = {
   amount: string
   account: string
   project: string
-  vendor: string
+  customer: string
   description: string
 }
 
@@ -26,30 +26,30 @@ const columns = [
   { field: 'amount', headerName: 'Importe', width: 100 },
   { field: 'account', headerName: 'Cuenta', width: 80 },
   { field: 'project', headerName: 'Proyecto', width: 250 },
-  { field: 'vendor', headerName: 'Proveedor', width: 200 },
+  { field: 'customer', headerName: 'Cliente', width: 200 },
   { field: 'description', headerName: 'Descripción', width: 350 },
 ]
 
-const PaymentsTable: FC = () => {
+const CollectionsTable: FC = () => {
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([])
-  const pmnts = usePayments()
+  const collections = useCollections()
   const projectsData = useProjects()
-  const vendorsData = useVendors()
+  const customersData = useCustomers()
   const acctData = useAccounts()
-  const deletePaymentMutation = useDeletePayment()
+  const deleteCollectionMutation = useDeleteCollection()
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
-    if (deletePaymentMutation.isError) {
-      enqueueSnackbar((deletePaymentMutation.error as Error).message, { variant: 'error' })
+    if (deleteCollectionMutation.isError) {
+      enqueueSnackbar((deleteCollectionMutation.error as Error).message, { variant: 'error' })
     }
-    if (deletePaymentMutation.isSuccess) {
-      enqueueSnackbar('Pago eliminado exitosamente.', { variant: 'success' })
+    if (deleteCollectionMutation.isSuccess) {
+      enqueueSnackbar('Cobro eliminado exitosamente.', { variant: 'success' })
     }
   }, [
-    deletePaymentMutation.isError,
-    deletePaymentMutation.isSuccess,
-    deletePaymentMutation.error,
+    deleteCollectionMutation.isError,
+    deleteCollectionMutation.isSuccess,
+    deleteCollectionMutation.error,
     enqueueSnackbar,
   ])
 
@@ -59,11 +59,11 @@ const PaymentsTable: FC = () => {
     return project ? project.name : ''
   }, [projectsData.data?.projects])
 
-  const getVendorName = useCallback((id: number): string => {
-    if (!vendorsData.data?.vendors) return ''
-    const vendor = vendorsData.data.vendors.find(v => v.id === id)
-    return vendor ? vendor.name : ''
-  }, [vendorsData.data?.vendors])
+  const getCustomerName = useCallback((id: number): string => {
+    if (!customersData.data?.customers) return ''
+    const customer = customersData.data.customers.find(c => c.id === id)
+    return customer ? customer.name : ''
+  }, [customersData.data?.customers])
 
   const getAccount = useCallback((id: number): string => {
     if (!acctData.data?.accounts) return ''
@@ -72,42 +72,47 @@ const PaymentsTable: FC = () => {
   }, [acctData.data?.accounts])
 
   const rows = useMemo((): TableEntry[] => {
-    if (pmnts.data?.payments) {
-      return pmnts.data.payments.map(i => ({
+    if (collections.data?.collections) {
+      return collections.data.collections.map(i => ({
         id: i.id,
         date: formatDate(i.date),
         amount: formatAmount(i.amount),
         account: getAccount(i.accountId),
         project: getProjectName(i.projectId),
-        vendor: getVendorName(i.vendorId),
+        customer: getCustomerName(i.customerId),
         description: i.description,
       }))
     }
     return []
-  }, [getAccount, getVendorName, getProjectName, pmnts.data?.payments])
+  }, [
+    getAccount,
+    getCustomerName,
+    getProjectName,
+    collections.data?.collections,
+  ])
 
   const handleSelectionChange = (newSelection: GridSelectionModel): void => {
     setSelectionModel(newSelection)
   }
 
   const handleDelete = (): void => {
-    deletePaymentMutation.mutate(selectionModel[0] as number)
+    deleteCollectionMutation.mutate(selectionModel[0] as number)
   }
 
-  if (pmnts.isLoading) {
+  if (collections.isLoading) {
     return <p>Cargando projectos...</p>
   }
 
-  if (pmnts.isError && pmnts.error) {
+  if (collections.isError && collections.error) {
     return (
       <div>
         <p>Algo no anda bien</p>
-        <p>{pmnts.error.message}</p>
+        <p>{collections.error.message}</p>
       </div>
     )
   }
 
-  if (!pmnts.data?.payments) {
+  if (!collections.data?.collections) {
     return null
   }
   
@@ -140,5 +145,5 @@ const PaymentsTable: FC = () => {
   )
 }
 
-export default PaymentsTable
+export default CollectionsTable
 
