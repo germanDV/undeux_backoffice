@@ -168,6 +168,26 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		"/api/cash/payments/:id",
 		users.Controller.Auth("user", bank.Controller.DeletePayment),
 	)
+	r.HandlerFunc(
+		http.MethodPost,
+		"/api/cash/collections",
+		users.Controller.Auth("user", bank.Controller.Collect),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/cash/collections",
+		users.Controller.Auth("user", bank.Controller.ListCollections),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/cash/collections/:id",
+		users.Controller.Auth("user", bank.Controller.FindCollection),
+	)
+	r.HandlerFunc(
+		http.MethodDelete,
+		"/api/cash/collections/:id",
+		users.Controller.Auth("user", bank.Controller.DeleteCollection),
+	)
 
 	// API Routes: Accounts
 	r.HandlerFunc(

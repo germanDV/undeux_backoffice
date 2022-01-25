@@ -183,3 +183,32 @@ Content-Type: application/json
 GET http://localhost:8080/api/accounts HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDAwMTQxMjIsImlhdCI6MTYzOTkyNzcyMiwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.L40Vq1zXV948FjZtDnNzl_gr9bz-U670ucMQz69uq9o
 
+### Collect from customer
+POST http://localhost:8080/api/cash/collections HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMxNTQ5ODMsImlhdCI6MTY0MzA2ODU4Mywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.OuuOXJYXnaSkUCp8Gt7Ew9wGBfhFyjDGp5C-9ROPdAA
+
+{
+  "date": "2022-01-23",
+  "amount": 99,
+  "accountId": 2,
+  "projectId": 1,
+  "customerId": 1,
+  "description": "Le construimos una rampa"
+}
+
+### Fetch all collections
+GET http://localhost:8080/api/cash/collections HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMxNTQ5ODMsImlhdCI6MTY0MzA2ODU4Mywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.OuuOXJYXnaSkUCp8Gt7Ew9wGBfhFyjDGp5C-9ROPdAA
+
+### Fetch collection by ID
+GET http://localhost:8080/api/cash/collections/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMxNTQ5ODMsImlhdCI6MTY0MzA2ODU4Mywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.OuuOXJYXnaSkUCp8Gt7Ew9wGBfhFyjDGp5C-9ROPdAA
+
+### Delete collection
+DELETE http://localhost:8080/api/cash/collections/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDMxNTQ5ODMsImlhdCI6MTY0MzA2ODU4Mywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.OuuOXJYXnaSkUCp8Gt7Ew9wGBfhFyjDGp5C-9ROPdAA
+
