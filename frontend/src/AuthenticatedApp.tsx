@@ -10,6 +10,7 @@ const Vendors = lazy(() => import('screens/Vendors/Vendors'))
 const Customers = lazy(() => import('screens/Customers/Customers'))
 const Projects = lazy(() => import('screens/Projects/Projects'))
 const Payments = lazy(() => import('screens/Payments/Payments'))
+const Collections = lazy(() => import('screens/Collections/Collections'))
 
 const AuthenticatedApp = () => {
   return (
@@ -24,6 +25,7 @@ const AuthenticatedApp = () => {
             <Route path="/shareholders" component={Shareholders} />
             <Route path="/projects" component={Projects} />
             <Route path="/payments" component={Payments} />
+            <Route path="/collections" component={Collections} />
             <Route component={() => <h2>404</h2>} />
           </Switch>
         </Suspense>

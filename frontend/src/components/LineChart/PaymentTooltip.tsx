@@ -6,9 +6,10 @@ interface Props {
   active: boolean
   payload: any
   label: string
+  category: 'payment' | 'collection'
 }
 
-const PaymentTooltip = ({ active, payload, label }: Props): JSX.Element | null => {
+const PaymentTooltip = ({ active, payload, label, category }: Props): JSX.Element | null => {
   if (!active || !payload || payload.length < 1) return null
 
   return (
@@ -26,7 +27,10 @@ const PaymentTooltip = ({ active, payload, label }: Props): JSX.Element | null =
       </Typography>
       <br />
       <Typography variant="caption">
-        Proveedor: {payload[0].payload.vendor}
+        {category === 'payment'
+          ? `Proveedor: ${payload[0].payload.vendor}`
+          : `Cliente: ${payload[0].payload.customer}`
+        }
       </Typography>
     </PaperContainer>
   )

@@ -8,6 +8,7 @@ import AirlineSeatFlatIcon from '@mui/icons-material/AirlineSeatFlat'
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike'
 import PieChartIcon from '@mui/icons-material/PieChart'
 import HomeWorkIcon from '@mui/icons-material/HomeWork'
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import PaymentIcon from '@mui/icons-material/Payment'
 import { Drawer, DrawerHeader } from './Sidebar.styles'
 import SidebarItem from './SidebarItem'
@@ -29,6 +30,7 @@ const Sidebar = ({ open, handleClose, drawerWidth }: Props): JSX.Element => {
       <Divider />
       <List component="nav">
         <SidebarItem icon={<AppsIcon />} text="Inicio" to="/" />
+        <SidebarItem icon={<AttachMoneyIcon />} text="Cobros" to="/collections" />
         <SidebarItem icon={<PaymentIcon />} text="Pagos" to="/payments" />
         <SidebarItem icon={<AirlineSeatFlatIcon />} text="Clientes" to="/customers" />
         <SidebarItem icon={<DirectionsBikeIcon />} text="Proveedores" to="/vendors" />

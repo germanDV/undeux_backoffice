@@ -81,6 +81,7 @@ const CollectionCharts = () => {
           y="amount"
           color={theme.palette.secondary.main}
           legend="ARS"
+          category="collection"
         />
       </Grid>
       <Grid item xs={12}>
@@ -90,6 +91,7 @@ const CollectionCharts = () => {
           y="amount"
           color={theme.palette.primary.main}
           legend="USD"
+          category="collection"
         />
       </Grid>
     </Grid>

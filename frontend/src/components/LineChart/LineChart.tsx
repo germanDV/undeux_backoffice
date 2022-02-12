@@ -17,9 +17,10 @@ interface Props {
   y: string
   color: string
   legend: string
+  category: 'payment' | 'collection'
 }
 
-const LineChart = ({ data, x, y, color, legend }: Props): JSX.Element => {
+const LineChart = ({ data, x, y, color, legend, category }: Props): JSX.Element => {
   return (
     <PaperContainer>
       <div style={{ width: '100%', height: 250 }}>
@@ -29,7 +30,7 @@ const LineChart = ({ data, x, y, color, legend }: Props): JSX.Element => {
             <XAxis dataKey={x} />
             <YAxis />
             {/* @ts-ignore */}
-            <Tooltip content={<PaymentTooltip />} />
+            <Tooltip content={<PaymentTooltip category={category} />} />
             <Legend />
             <Line
               name={legend}
