@@ -6,7 +6,7 @@ POST http://localhost:8080/api/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "german@undeux.com",
+  "email": "german@undeux.io",
   "password": "pondosclavosamisalas"
 }
 
@@ -181,7 +181,7 @@ Content-Type: application/json
 
 ### Fetch all accounts
 GET http://localhost:8080/api/accounts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDAwMTQxMjIsImlhdCI6MTYzOTkyNzcyMiwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.L40Vq1zXV948FjZtDnNzl_gr9bz-U670ucMQz69uq9o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDUzOTUwMjMsImlhdCI6MTY0NTMwODYyMywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.Enhp614d8gaodFRBT7NVcQrYEUmJmTFGTkDFH8v2Fvk
 
 ### Collect from customer
 POST http://localhost:8080/api/cash/collections HTTP/1.1
