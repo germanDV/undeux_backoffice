@@ -80,6 +80,7 @@ const PaymentCharts = () => {
           y="amount"
           color={theme.palette.secondary.main}
           legend="ARS"
+          category="payment"
         />
       </Grid>
       <Grid item xs={12}>
@@ -89,6 +90,7 @@ const PaymentCharts = () => {
           y="amount"
           color={theme.palette.primary.main}
           legend="USD"
+          category="payment"
         />
       </Grid>
     </Grid>
