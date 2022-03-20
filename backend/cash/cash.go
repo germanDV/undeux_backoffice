@@ -20,6 +20,12 @@ type iController interface {
 	ListCollections(w http.ResponseWriter, r *http.Request)
 	FindCollection(w http.ResponseWriter, r *http.Request)
 	DeleteCollection(w http.ResponseWriter, r *http.Request)
+	Invest(w http.ResponseWriter, r *http.Request)
+	ListInvestments(w http.ResponseWriter, r *http.Request)
+	DeleteInvestment(w http.ResponseWriter, r *http.Request)
+	PayDividend(w http.ResponseWriter, r *http.Request)
+	ListDividends(w http.ResponseWriter, r *http.Request)
+	DeleteDividend(w http.ResponseWriter, r *http.Request)
 }
 
 type iModel interface {
@@ -31,6 +37,14 @@ type iModel interface {
 	GetCollections() ([]*Collection, error)
 	GetCollectionByID(id int) (*Collection, error)
 	DeleteCollection(c *Collection) error
+	Invest(i *Investment) error
+	GetInvestments() ([]*Investment, error)
+	GetInvestmentByID(id int) (*Investment, error)
+	DeleteInvestment(i *Investment) error
+	PayDividend(d *Dividend) error
+	GetDividends() ([]*Dividend, error)
+	GetDividendByID(id int) (*Dividend, error)
+	DeleteDividend(d *Dividend) error
 }
 
 func New(db *sql.DB, l *log.Logger) *Module {

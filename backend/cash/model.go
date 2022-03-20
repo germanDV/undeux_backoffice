@@ -31,6 +31,22 @@ type Collection struct {
 	CustomerID  int    `json:"customerId" validate:"required,gt=0"`
 }
 
+type Investment struct {
+	ID            int    `json:"id"`
+	Date          string `json:"date" validate:"date"`
+	Amount        int64  `json:"amount" validate:"required,gt=0"`
+	AccountID     int    `json:"accountId" validate:"required,gt=0"`
+	ShareholderID int    `json:"shareholderId" validate:"required,gt=0"`
+}
+
+type Dividend struct {
+	ID            int    `json:"id"`
+	Date          string `json:"date" validate:"date"`
+	Amount        int64  `json:"amount" validate:"required,gt=0"`
+	AccountID     int    `json:"accountId" validate:"required,gt=0"`
+	ShareholderID int    `json:"shareholderId" validate:"required,gt=0"`
+}
+
 type cashModel struct {
 	DB *sql.DB
 }
@@ -45,6 +61,18 @@ func (c *Collection) Validate() error {
 	validate := validator.New()
 	validate.RegisterValidation("date", ValidateDate)
 	return validate.Struct(c)
+}
+
+func (i *Investment) Validate() error {
+	validate := validator.New()
+	validate.RegisterValidation("date", ValidateDate)
+	return validate.Struct(i)
+}
+
+func (d *Dividend) Validate() error {
+	validate := validator.New()
+	validate.RegisterValidation("date", ValidateDate)
+	return validate.Struct(d)
 }
 
 func ValidateDate(fl validator.FieldLevel) bool {
@@ -347,6 +375,308 @@ func (cm cashModel) DeleteCollection(c *Collection) error {
 	}
 
 	_, err = tx.ExecContext(ctx, collectionQuery, collectionArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, balanceQuery, balanceArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	return tx.Commit()
+}
+
+// Invest records an investment from a shareholder and updates the account balance.
+func (cm cashModel) Invest(i *Investment) error {
+	investmentQuery := `
+		insert into investments (amount, account_id, shareholder_id, tx_date)
+		values ($1, $2, $3, $4)
+		returning id
+	`
+	investmentArgs := []interface{}{
+		i.Amount,
+		i.AccountID,
+		i.ShareholderID,
+		i.Date,
+	}
+
+	balanceQuery := `update accounts set balance = balance + $1 where id = $2`
+	balanceArgs := []interface{}{i.Amount, i.AccountID}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	tx, err := cm.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, investmentQuery, investmentArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, balanceQuery, balanceArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	return tx.Commit()
+}
+
+// GetInvestments fetches all the investments from shareholders.
+func (cm cashModel) GetInvestments() ([]*Investment, error) {
+	query := `select id, tx_date, amount, account_id, shareholder_id from investments`
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	rows, err := cm.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var si []*Investment
+
+	for rows.Next() {
+		i := &Investment{}
+		err := rows.Scan(
+			&i.ID,
+			&i.Date,
+			&i.Amount,
+			&i.AccountID,
+			&i.ShareholderID,
+		)
+		if err != nil {
+			return nil, err
+		}
+		si = append(si, i)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return si, nil
+}
+
+// GetInvestmentByID fetches a single investment and returns it.
+func (cm cashModel) GetInvestmentByID(id int) (*Investment, error) {
+	query := `
+		select id, tx_date, amount, account_id, shareholder_id
+		from investments
+		where id = $1
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	var i Investment
+	err := cm.DB.QueryRowContext(ctx, query, id).Scan(
+		&i.ID,
+		&i.Date,
+		&i.Amount,
+		&i.AccountID,
+		&i.ShareholderID,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, errs.ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+
+	return &i, nil
+}
+
+// DeleteInvestment removes an investment from database and updates account balance.
+func (cm cashModel) DeleteInvestment(i *Investment) error {
+	investmentQuery := `delete from investments where id = $1`
+	investmentArgs := []interface{}{i.ID}
+
+	balanceQuery := `update accounts set balance = balance - $1 where id = $2`
+	balanceArgs := []interface{}{i.Amount, i.AccountID}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	tx, err := cm.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, investmentQuery, investmentArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, balanceQuery, balanceArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	return tx.Commit()
+}
+
+// PayDividend records a dividend to a shareholder and updates the account balance.
+func (cm cashModel) PayDividend(d *Dividend) error {
+	dividendQuery := `
+		insert into dividends (amount, account_id, shareholder_id, tx_date)
+		values ($1, $2, $3, $4)
+		returning id
+	`
+	dividendArgs := []interface{}{
+		d.Amount,
+		d.AccountID,
+		d.ShareholderID,
+		d.Date,
+	}
+
+	balanceQuery := `update accounts set balance = balance - $1 where id = $2`
+	balanceArgs := []interface{}{d.Amount, d.AccountID}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	tx, err := cm.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, dividendQuery, dividendArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, balanceQuery, balanceArgs...)
+	if err != nil {
+		rbErr := tx.Rollback()
+		if rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v.", err, rbErr)
+		}
+		return err
+	}
+
+	return tx.Commit()
+}
+
+// GetDividends fetches all the dividends to shareholders.
+func (cm cashModel) GetDividends() ([]*Dividend, error) {
+	query := `select id, tx_date, amount, account_id, shareholder_id from dividends`
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	rows, err := cm.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var sd []*Dividend
+
+	for rows.Next() {
+		d := &Dividend{}
+		err := rows.Scan(
+			&d.ID,
+			&d.Date,
+			&d.Amount,
+			&d.AccountID,
+			&d.ShareholderID,
+		)
+		if err != nil {
+			return nil, err
+		}
+		sd = append(sd, d)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return sd, nil
+}
+
+// GetDividendByID fetches a single dividend and returns it.
+func (cm cashModel) GetDividendByID(id int) (*Dividend, error) {
+	query := `
+		select id, tx_date, amount, account_id, shareholder_id
+		from dividends
+		where id = $1
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	var d Dividend
+	err := cm.DB.QueryRowContext(ctx, query, id).Scan(
+		&d.ID,
+		&d.Date,
+		&d.Amount,
+		&d.AccountID,
+		&d.ShareholderID,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, errs.ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+
+	return &d, nil
+}
+
+// DeleteDividend removes a dividend from database and updates account balance.
+func (cm cashModel) DeleteDividend(d *Dividend) error {
+	dividendQuery := `delete from dividends where id = $1`
+	dividendArgs := []interface{}{d.ID}
+
+	balanceQuery := `update accounts set balance = balance + $1 where id = $2`
+	balanceArgs := []interface{}{d.Amount, d.AccountID}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	tx, err := cm.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, dividendQuery, dividendArgs...)
 	if err != nil {
 		rbErr := tx.Rollback()
 		if rbErr != nil {

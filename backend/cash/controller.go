@@ -237,3 +237,167 @@ func (cc cashController) DeleteCollection(w http.ResponseWriter, r *http.Request
 
 	handlers.WriteJSON(w, handlers.Envelope{"msg": "Collection deleted successfully"}, http.StatusOK)
 }
+
+func (cc cashController) Invest(w http.ResponseWriter, r *http.Request) {
+	cc.L.Println("Processing investment request")
+	var input struct {
+		Date          string `json:"date,omitempty"`
+		Amount        int64  `json:"amount"`
+		AccountID     int    `json:"accountId"`
+		ShareholderID int    `json:"shareholderId"`
+	}
+
+	err := handlers.ReadJSON(w, r, &input)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		cc.L.Println("Error decoding JSON.")
+		return
+	}
+
+	if input.Date == "" {
+		input.Date = time.Now().UTC().String()
+	}
+
+	inv := &Investment{
+		Amount:        input.Amount,
+		Date:          input.Date,
+		AccountID:     input.AccountID,
+		ShareholderID: input.ShareholderID,
+	}
+
+	err = inv.Validate()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	err = cc.Model.Invest(inv)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	msg := fmt.Sprintf("Successful investment of %d from shareholder with ID %d", inv.Amount, inv.ShareholderID)
+	handlers.WriteJSON(w, handlers.Envelope{"msg": msg}, http.StatusOK)
+}
+
+func (cc cashController) ListInvestments(w http.ResponseWriter, r *http.Request) {
+	si, err := cc.Model.GetInvestments()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+	handlers.WriteJSON(w, handlers.Envelope{"investments": si}, http.StatusOK)
+}
+
+func (cc cashController) DeleteInvestment(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+	idStr := params.ByName("id")
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": "invalid ID provided."}, http.StatusBadRequest)
+		return
+	}
+
+	inv, err := cc.Model.GetInvestmentByID(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, errs.ErrRecordNotFound):
+			handlers.WriteJSON(w, handlers.Envelope{"error": "investment not found"}, http.StatusNotFound)
+		default:
+			handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		}
+		return
+	}
+
+	err = cc.Model.DeleteInvestment(inv)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	handlers.WriteJSON(w, handlers.Envelope{"msg": "Investment deleted successfully"}, http.StatusOK)
+}
+
+func (cc cashController) PayDividend(w http.ResponseWriter, r *http.Request) {
+	cc.L.Println("Processing dividend request")
+	var input struct {
+		Date          string `json:"date,omitempty"`
+		Amount        int64  `json:"amount"`
+		AccountID     int    `json:"accountId"`
+		ShareholderID int    `json:"shareholderId"`
+	}
+
+	err := handlers.ReadJSON(w, r, &input)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		cc.L.Println("Error decoding JSON.")
+		return
+	}
+
+	if input.Date == "" {
+		input.Date = time.Now().UTC().String()
+	}
+
+	div := &Dividend{
+		Amount:        input.Amount,
+		Date:          input.Date,
+		AccountID:     input.AccountID,
+		ShareholderID: input.ShareholderID,
+	}
+
+	err = div.Validate()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	err = cc.Model.PayDividend(div)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	msg := fmt.Sprintf("Successful dividend of %d to shareholder with ID %d", div.Amount, div.ShareholderID)
+	handlers.WriteJSON(w, handlers.Envelope{"msg": msg}, http.StatusOK)
+}
+
+func (cc cashController) ListDividends(w http.ResponseWriter, r *http.Request) {
+	sd, err := cc.Model.GetDividends()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+	handlers.WriteJSON(w, handlers.Envelope{"dividends": sd}, http.StatusOK)
+}
+
+func (cc cashController) DeleteDividend(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+	idStr := params.ByName("id")
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": "invalid ID provided."}, http.StatusBadRequest)
+		return
+	}
+
+	div, err := cc.Model.GetDividendByID(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, errs.ErrRecordNotFound):
+			handlers.WriteJSON(w, handlers.Envelope{"error": "dividend not found"}, http.StatusNotFound)
+		default:
+			handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		}
+		return
+	}
+
+	err = cc.Model.DeleteDividend(div)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	handlers.WriteJSON(w, handlers.Envelope{"msg": "Dividend deleted successfully"}, http.StatusOK)
+}

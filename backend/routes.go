@@ -188,6 +188,36 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		"/api/cash/collections/:id",
 		users.Controller.Auth("user", bank.Controller.DeleteCollection),
 	)
+	r.HandlerFunc(
+		http.MethodPost,
+		"/api/cash/investments",
+		users.Controller.Auth("admin", bank.Controller.Invest),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/cash/investments",
+		users.Controller.Auth("admin", bank.Controller.ListInvestments),
+	)
+	r.HandlerFunc(
+		http.MethodDelete,
+		"/api/cash/investments/:id",
+		users.Controller.Auth("admin", bank.Controller.DeleteInvestment),
+	)
+	r.HandlerFunc(
+		http.MethodPost,
+		"/api/cash/dividends",
+		users.Controller.Auth("admin", bank.Controller.PayDividend),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/cash/dividends",
+		users.Controller.Auth("admin", bank.Controller.ListDividends),
+	)
+	r.HandlerFunc(
+		http.MethodDelete,
+		"/api/cash/dividends/:id",
+		users.Controller.Auth("admin", bank.Controller.DeleteDividend),
+	)
 
 	// API Routes: Accounts
 	r.HandlerFunc(
