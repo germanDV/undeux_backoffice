@@ -1,4 +1,5 @@
-import { compareAsc } from 'date-fns'
+import { compareAsc, compareDesc } from 'date-fns'
+import { GridValueFormatterParams } from "@mui/x-data-grid";
 
 /**
  * Converts the Date obj to a string with format
@@ -26,14 +27,14 @@ export function nowUTC(): string {
 }
 
 /**
- * Returns the date with format "yyyy-mm-dd"
- * in local timezone.
+ * Returns the date formatted in local timezone.
  */
 export function formatDate(date: string): string {
   const dateObj = new Date(date)
   return dateObj.toLocaleDateString('es-AR', {
     day: '2-digit',
     month: '2-digit',
+    year: 'numeric',
   })
 }
 
@@ -46,3 +47,18 @@ export function sortByDateAsc<T extends { date: string }>(entries: T[]): T[] {
   return entries
 }
 
+export function sortByDateDesc<T extends { date: string }>(entries: T[]): T[] {
+  entries.sort((a, b) => {
+    const aDate = new Date(a.date)
+    const bDate = new Date(b.date)
+    return compareDesc(aDate, bDate)
+  })
+  return entries
+}
+
+/**
+ * Formatter function to display dates in MUI's DataGrid.
+ */
+export function displayDateGridCell(cell: GridValueFormatterParams): string {
+  return formatDate(cell.value as string)
+}

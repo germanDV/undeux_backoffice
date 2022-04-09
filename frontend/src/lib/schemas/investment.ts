@@ -3,15 +3,15 @@ import * as yup from 'yup'
 export const investmentSchema = yup.object({
   date: yup
     .string()
-    .required('Ingresá fecha del pago.'),
+    .required('Ingresá fecha de la inversión.'),
   amount: yup
     .number()
-    .required('Ingesá el importe del pago.')
+    .required('Ingesá el importe de la inversión.')
     .moreThan(0, 'Debe ser un número mayor a 0.'),
   accountId: yup
     .number()
     .min(1, 'Número de cuenta debe ser positivo')
-    .required('Ingresá la cuenta de la que salen los fondos.'),
+    .required('Ingresá la cuenta a la que ingresan los fondos.'),
   shareholderId: yup
     .number()
     .min(1, 'ID de socio debe ser positivo')

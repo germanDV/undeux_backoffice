@@ -16,7 +16,7 @@ export async function fetchInvestments() {
   })
 }
 
-export function deleteInvestment(id: number) {
+export async function deleteInvestment(id: number) {
   return client<{msg: string}>({
     method: 'DELETE',
     url: `/api/cash/investments/${id}`,
