@@ -1,10 +1,10 @@
 import { FC, useState, useEffect, useMemo, useCallback } from 'react';
 import { useSnackbar } from 'notistack'
-import { DataGrid, GridSelectionModel } from '@mui/x-data-grid'
+import { DataGrid, GridSelectionModel, GridColDef } from '@mui/x-data-grid'
 import LoadingButton from '@mui/lab/LoadingButton'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { PaperContainer } from 'ui/paper.styles'
-import { formatDate, formatAmount } from 'lib/helpers'
+import { displayDateGridCell, formatAmount, sortByDateDesc } from 'lib/helpers'
 import { useCollections, useDeleteCollection } from 'lib/hooks/collection'
 import { useProjects } from 'lib/hooks/project'
 import { useCustomers } from 'lib/hooks/customer'
@@ -20,14 +20,14 @@ type TableEntry = {
   description: string
 }
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 50 },
-  { field: 'date', headerName: 'Fecha', width: 80 },
-  { field: 'amount', headerName: 'Importe', width: 100 },
-  { field: 'account', headerName: 'Cuenta', width: 80 },
-  { field: 'project', headerName: 'Proyecto', width: 250 },
-  { field: 'customer', headerName: 'Cliente', width: 200 },
-  { field: 'description', headerName: 'Descripción', width: 350 },
+const columns: GridColDef[] = [
+  { field: 'id', headerName: 'ID', width: 50, align: 'center' },
+  { field: 'date', headerName: 'Fecha', width: 80, valueFormatter: displayDateGridCell },
+  { field: 'amount', headerName: 'Importe', width: 100, align: 'right' },
+  { field: 'account', headerName: 'Cuenta', width: 80, align: 'center' },
+  { field: 'project', headerName: 'Proyecto', width: 200 },
+  { field: 'customer', headerName: 'Cliente', width: 150 },
+  { field: 'description', headerName: 'Descripción', width: 400 },
 ]
 
 const CollectionsTable: FC = () => {
@@ -73,15 +73,15 @@ const CollectionsTable: FC = () => {
 
   const rows = useMemo((): TableEntry[] => {
     if (collections.data?.collections) {
-      return collections.data.collections.map(i => ({
+      return sortByDateDesc(collections.data.collections.map(i => ({
         id: i.id,
-        date: formatDate(i.date),
+        date: i.date,
         amount: formatAmount(i.amount),
         account: getAccount(i.accountId),
         project: getProjectName(i.projectId),
         customer: getCustomerName(i.customerId),
         description: i.description,
-      }))
+      })))
     }
     return []
   }, [
@@ -115,7 +115,7 @@ const CollectionsTable: FC = () => {
   if (!collections.data?.collections) {
     return null
   }
-  
+
   return (
     <PaperContainer>
       <div style={{ width: '100%', height: 700 }}>
