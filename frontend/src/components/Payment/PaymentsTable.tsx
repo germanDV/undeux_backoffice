@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useMemo, useCallback } from 'react';
+import { FC, useState, useEffect, useMemo, useCallback } from 'react'
 import { useSnackbar } from 'notistack'
 import { DataGrid, GridSelectionModel } from '@mui/x-data-grid'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -110,7 +110,7 @@ const PaymentsTable: FC = () => {
   if (!pmnts.data?.payments) {
     return null
   }
-  
+
   return (
     <PaperContainer>
       <div style={{ width: '100%', height: 700 }}>

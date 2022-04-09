@@ -9,15 +9,17 @@ import {
   changeMyPassword,
 } from 'api'
 
+const QUERY_KEY = 'users'
+
 export function useUsers() {
-  return useQuery<{users: User[]}, Error>('users', fetchUsers)
+  return useQuery<{users: User[]}, Error>(QUERY_KEY, fetchUsers)
 }
 
 export function useChangeUserStatus() {
   const queryClient = useQueryClient()
   return useMutation(changeUserStatus, {
     onSuccess: () => {
-      queryClient.invalidateQueries('users')
+      queryClient.invalidateQueries(QUERY_KEY)
     },
   })
 }
@@ -26,7 +28,7 @@ export function useMakeAdmin() {
   const queryClient = useQueryClient()
   return useMutation(makeAdmin, {
     onSuccess: () => {
-      queryClient.invalidateQueries('users')
+      queryClient.invalidateQueries(QUERY_KEY)
     },
   })
 }
@@ -35,7 +37,7 @@ export function useCreateUser() {
   const queryClient = useQueryClient()
   return useMutation(register, {
     onSuccess: () => {
-      queryClient.invalidateQueries('users')
+      queryClient.invalidateQueries(QUERY_KEY)
     },
   })
 }

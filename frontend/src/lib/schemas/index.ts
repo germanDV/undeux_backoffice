@@ -6,4 +6,4 @@ export * from './project'
 export * from './account'
 export * from './payment'
 export * from './collection'
-
+export * from './investment'

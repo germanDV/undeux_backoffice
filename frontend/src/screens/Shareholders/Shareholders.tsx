@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add'
 import ShareholderList from 'components/ShareholderList/ShareholderList'
 import NewShareholder from 'components/ShareholderList/NewShareholder'
 import PageTitle from 'components/PageTitle/PageTitle'
+import EquityTable from 'components/Equity/EquityTable'
 
 const Shareholders = (): JSX.Element => {
   const [open, setOpen] = useState(false);
@@ -24,7 +25,8 @@ const Shareholders = (): JSX.Element => {
 
   return (
     <div>
-      <PageTitle>socios</PageTitle>
+      <PageTitle>Inversiones y Dividendos</PageTitle>
+      <EquityTable />
       <ShareholderList />
       <Box sx={{ my: 8, display: 'flex', justifyContent: 'right' }}>
         <Fab

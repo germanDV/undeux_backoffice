@@ -31,4 +31,3 @@ type CollectionSubmission = yup.InferType<typeof collectionSchema>
 type Collection = CollectionSubmission & { id: number }
 
 export type { Collection, CollectionSubmission }
-

@@ -26,7 +26,7 @@ const ShareholderListItem = ({ shareholder }: Props): JSX.Element => {
           <ListItemText
             primary={(
               <Typography variant="h6">
-                {shareholder.name}
+                {shareholder.id} {shareholder.name}
               </Typography>
             )}
           />

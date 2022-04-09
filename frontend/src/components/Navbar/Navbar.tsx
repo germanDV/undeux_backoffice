@@ -32,7 +32,7 @@ const Navbar = ({ open, handleOpen, drawerWidth }: Props): JSX.Element => {
           <img src="/logo.png" alt="Undeux Logo" width="25" />
         </LogoWrapper>
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          UNDEUX BACKOFFICE
+          UNDEUX CASH
         </Typography>
         <MyAccountMenu />
       </Toolbar>
