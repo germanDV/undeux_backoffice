@@ -1,43 +1,12 @@
 import { FC, useState, useEffect, useCallback } from 'react'
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
-import { useTheme } from '@mui/material/styles'
 import { useInvestments } from 'lib/hooks/investment'
 import { useDividends } from 'lib/hooks/dividend'
 import { useAccounts } from 'lib/hooks/account'
 import { useShareholders } from 'lib/hooks/shareholder'
 import { toUSD } from 'lib/helpers'
-
-type Datapoint = {
-  name: string
-  ars: number
-  usd: number
-  total: number
-}
+import SimplePie, { Datapoint } from '../PieChart/SimplePie'
 
 type Summation = Record<number, Record<string, number>>
-
-
-type LabelDef = {
-  cx: string
-  cy: string
-  midAngle: number
-  innerRadius: number
-  outerRadius: number
-  percent: number
-}
-
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: LabelDef) => {
-  const RADIAN = Math.PI / 180
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
 
 const EquityChart: FC = () => {
   const [data, setData] = useState<Datapoint[]>([])
@@ -45,8 +14,6 @@ const EquityChart: FC = () => {
   const dividendsData = useDividends()
   const acctData = useAccounts()
   const shareholdersData = useShareholders()
-  const theme = useTheme()
-  const [colors] = useState(() => [theme.palette.primary.main, theme.palette.secondary.main])
 
   const getShareholderName = useCallback((id:number): string => {
     if (!shareholdersData.data?.shareholders) return ''
@@ -133,27 +100,7 @@ const EquityChart: FC = () => {
     return null
   }
 
-  return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart width={500} height={500}>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={150}
-          fill="black"
-          dataKey="total"
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-          ))}
-        </Pie>
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
-  )
+  return <SimplePie data={data} />
 }
 
 export default EquityChart
