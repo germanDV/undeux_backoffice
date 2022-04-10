@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo, useState } from 'react'
 import { DataGrid, GridColDef, GridSelectionModel } from '@mui/x-data-grid'
-import { PaperContainer } from 'ui/paper.styles'
 import { useInvestments } from 'lib/hooks/investment'
 import { useDividends } from 'lib/hooks/dividend'
 import { useAccounts } from 'lib/hooks/account'
@@ -101,18 +100,14 @@ const EquityTable: FC = () => {
   }
 
   return (
-    <PaperContainer>
-      <div style={{ width: '100%', height: 700 }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
-          onSelectionModelChange={handleSelectionChange}
-          selectionModel={selectionModel}
-        />
-      </div>
-    </PaperContainer>
+    <DataGrid
+      rows={rows}
+      columns={columns}
+      pageSize={10}
+      rowsPerPageOptions={[10]}
+      onSelectionModelChange={handleSelectionChange}
+      selectionModel={selectionModel}
+    />
   )
 }
 
