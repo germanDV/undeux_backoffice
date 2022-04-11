@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { Project } from '../schemas'
 import { fetchProjects, createProject, updateProject } from 'api'
@@ -36,3 +37,12 @@ export function useUpdateProject() {
   })
 }
 
+export function useGetProjectName() {
+  const projectsData = useProjects()
+
+  return useCallback((id: number): string => {
+    if (!projectsData.data?.projects) return ''
+    const project = projectsData.data.projects.find(p => p.id === id)
+    return project ? project.name : ''
+  }, [projectsData.data?.projects])
+}

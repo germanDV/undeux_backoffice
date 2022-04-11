@@ -1,9 +1,9 @@
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { DataGrid, GridColDef, GridSelectionModel } from '@mui/x-data-grid'
 import { useInvestments } from 'lib/hooks/investment'
 import { useDividends } from 'lib/hooks/dividend'
-import { useAccounts } from 'lib/hooks/account'
-import { useShareholders } from 'lib/hooks/shareholder'
+import { useGetAccountName } from 'lib/hooks/account'
+import { useGetShareholderName } from 'lib/hooks/shareholder'
 import { formatAmount, displayDateGridCell, sortByDateDesc } from 'lib/helpers'
 
 type TableEntry = {
@@ -28,20 +28,8 @@ const EquityTable: FC = () => {
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([])
   const investmentsData = useInvestments()
   const dividendsData = useDividends()
-  const acctData = useAccounts()
-  const shareholdersData = useShareholders()
-
-  const getShareholderName = useCallback((id:number): string => {
-    if (!shareholdersData.data?.shareholders) return ''
-    const sh = shareholdersData.data.shareholders.find(s => s.id === id)
-    return sh ? sh.name : ''
-  }, [shareholdersData.data?.shareholders])
-
-  const getAccount = useCallback((id: number): string => {
-    if (!acctData.data?.accounts) return ''
-    const acct = acctData.data.accounts.find(a => a.id === id)
-    return acct ? acct.currency : ''
-  }, [acctData.data?.accounts])
+  const getAccount = useGetAccountName()
+  const getShareholderName = useGetShareholderName()
 
   const rows = useMemo((): TableEntry[] => {
     let invs: TableEntry[] = []

@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { Vendor } from '../schemas'
 import { fetchVendors, fetchVendor, createVendor } from 'api'
@@ -21,3 +22,13 @@ export function useCreateVendor() {
   })
 }
 
+export function useGetVendorName() {
+  const vendorsData = useVendors()
+
+  return useCallback((id: number): string => {
+    if (!vendorsData.data?.vendors) return ''
+    const vendor = vendorsData.data.vendors.find(v => v.id === id)
+    return vendor ? vendor.name : ''
+  }, [vendorsData.data?.vendors])
+
+}

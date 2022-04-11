@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { Shareholder } from '../schemas'
 import { fetchShareholders, fetchShareholder, createShareholder } from 'api'
@@ -21,3 +22,12 @@ export function useCreateShareholder() {
   })
 }
 
+export function useGetShareholderName() {
+  const shareholdersData = useShareholders()
+
+  return useCallback((id:number): string => {
+    if (!shareholdersData.data?.shareholders) return ''
+    const sh = shareholdersData.data.shareholders.find(s => s.id === id)
+    return sh ? sh.name : ''
+  }, [shareholdersData.data?.shareholders])
+}

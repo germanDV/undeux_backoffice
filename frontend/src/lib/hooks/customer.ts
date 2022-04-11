@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { Customer } from '../schemas'
 import { fetchCustomers, fetchCustomer, createCustomer } from 'api'
@@ -21,3 +22,12 @@ export function useCreateCustomer() {
   })
 }
 
+export function useGetCustomerName() {
+  const customersData = useCustomers()
+
+  return useCallback((id: number): string => {
+    if (!customersData.data?.customers) return ''
+    const customer = customersData.data.customers.find(c => c.id === id)
+    return customer ? customer.name : ''
+  }, [customersData.data?.customers])
+}

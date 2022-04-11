@@ -2,8 +2,8 @@ import { useMemo, useCallback } from 'react'
 import Grid from '@mui/material/Grid'
 import { useTheme } from '@mui/material/styles'
 import { usePayments } from 'lib/hooks/payment'
-import { useVendors } from 'lib/hooks/vendor'
-import { useProjects } from 'lib/hooks/project'
+import { useGetVendorName } from 'lib/hooks/vendor'
+import { useGetProjectName } from 'lib/hooks/project'
 import { Payment } from 'lib/schemas'
 import { formatDate, sortByDateAsc } from 'lib/helpers'
 import LineChart from 'components/LineChart/LineChart'
@@ -19,24 +19,8 @@ type ChartEntry = {
 const PaymentCharts = () => {
   const theme = useTheme()
   const { data } = usePayments()
-  const { data: vendorsData } = useVendors()
-  const { data: projectsData } = useProjects()
-
-  const getVendorName = useCallback((id: number): string => {
-    if (vendorsData?.vendors) {
-      const vendor = vendorsData.vendors.find(v => v.id === id)
-      return vendor ? vendor.name : ''
-    }
-    return id.toString()
-  }, [vendorsData?.vendors])
-
-  const getProjectName = useCallback((id: number): string => {
-    if (projectsData?.projects) {
-      const proj = projectsData.projects.find(p => p.id === id)
-      return proj ? proj.name : ''
-    }
-    return id.toString()
-  }, [projectsData?.projects])
+  const getProjectName = useGetProjectName()
+  const getVendorName = useGetVendorName()
 
   const splitByCurrency = useCallback((data: Payment[], currency: 'ARS' | 'USD'): ChartEntry[] => {
     const entries: ChartEntry[] = []
@@ -75,7 +59,7 @@ const PaymentCharts = () => {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <LineChart
-          data={arsData} 
+          data={arsData}
           x="date"
           y="amount"
           color={theme.palette.secondary.main}
