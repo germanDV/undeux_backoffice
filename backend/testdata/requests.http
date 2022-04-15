@@ -237,11 +237,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDc5MDM1O
 ### Pay a dividend
 POST http://localhost:8080/api/cash/dividends HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDk2MDQ2NzYsImlhdCI6MTY0OTUxODI3Niwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.jRQe-gT9ga2Nm4MR8JNaEjniY6Yl9Q3qnDEwM7KeEVg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTAxMzIwNDUsImlhdCI6MTY1MDA0NTY0NSwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.QK5c6vhpRhvGUZN2LolZzxkS-27YlEUNxFibkq93LF0
 
 {
-  "date": "2022-03-31",
-  "amount": 500,
+  "date": "2022-04-15",
+  "amount": 5,
   "accountId": 2,
   "shareholderId": 1
 }
