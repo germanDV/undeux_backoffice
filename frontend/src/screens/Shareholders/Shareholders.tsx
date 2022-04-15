@@ -10,11 +10,13 @@ import PageTitle from 'components/PageTitle/PageTitle'
 import EquityTable from 'components/Equity/EquityTable'
 import EquityChart from 'components/Equity/EquityChart'
 import NewDividend from 'components/Equity/NewDividend'
+import NewInvestment from 'components/Equity/NewInvestment'
 import { PaperContainer } from 'ui/paper.styles'
 
 const Shareholders = (): JSX.Element => {
   const [shareholderOpen, setShareholderOpen] = useState(false);
   const [dividendOpen, setDividendOpen] = useState(false);
+  const [investmentOpen, setInvestmentOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar()
 
   const handleShareholderClose = useCallback(() => {
@@ -37,6 +39,15 @@ const Shareholders = (): JSX.Element => {
     enqueueSnackbar(msg, { variant: 'success' })
   }, [setDividendOpen, enqueueSnackbar])
 
+  const handleInvestmentClose = useCallback(() => {
+    setInvestmentOpen(false)
+  }, [setInvestmentOpen])
+
+  const handleInvestmentSuccess = useCallback((msg: string) => {
+    setInvestmentOpen(false)
+    enqueueSnackbar(msg, { variant: 'success' })
+  }, [setInvestmentOpen, enqueueSnackbar])
+
   return (
     <div>
       <PageTitle>Inversiones y Dividendos</PageTitle>
@@ -58,12 +69,22 @@ const Shareholders = (): JSX.Element => {
         <Fab
           color="primary"
           aria-label="add"
+          onClick={() => setInvestmentOpen(true)}
+          variant="extended"
+          sx={{ mr: 1 }}
+        >
+          <AddIcon sx={{ mr: 1 }} />
+          Inversión
+        </Fab>
+        <Fab
+          color="primary"
+          aria-label="add"
           onClick={() => setDividendOpen(true)}
           variant="extended"
           sx={{ mr: 1 }}
         >
           <AddIcon sx={{ mr: 1 }} />
-          Registrar Dividendo
+          Dividendo
         </Fab>
         <Fab
           color="primary"
@@ -72,10 +93,15 @@ const Shareholders = (): JSX.Element => {
           variant="extended"
         >
           <AddIcon sx={{ mr: 1 }} />
-          Crear Socio
+          Socio
         </Fab>
       </Box>
 
+      <NewInvestment
+        open={investmentOpen}
+        handleClose={handleInvestmentClose}
+        handleSuccess={handleInvestmentSuccess}
+      />
       <NewDividend
         open={dividendOpen}
         handleClose={handleDividendClose}

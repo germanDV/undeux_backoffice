@@ -19,8 +19,8 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
-import { dividendSchema, DividendSubmission } from 'lib/schemas'
-import { usePayDividend } from 'lib/hooks/dividend'
+import { investmentSchema, InvestmentSumbission } from 'lib/schemas'
+import { useMakeInvestment } from 'lib/hooks/investment'
 import { useShareholders } from 'lib/hooks/shareholder'
 import { nowUTC, dateToString, tr } from 'lib/helpers'
 import { Form, Separator } from 'ui/form.styles'
@@ -31,10 +31,10 @@ interface Props {
   handleSuccess: (msg: string) => void
 }
 
-const NewDividend = ({ open, handleClose, handleSuccess }: Props): JSX.Element => {
+const NewInvestment = ({ open, handleClose, handleSuccess }: Props): JSX.Element => {
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
-  const mutation = usePayDividend()
+  const mutation = useMakeInvestment()
   const shareholdersData = useShareholders()
 
   const formik = useFormik({
@@ -44,8 +44,8 @@ const NewDividend = ({ open, handleClose, handleSuccess }: Props): JSX.Element =
       accountId: 0,
       shareholderId: 0,
     },
-    validationSchema: dividendSchema,
-    onSubmit: (data: DividendSubmission) => {
+    validationSchema: investmentSchema,
+    onSubmit: (data: InvestmentSumbission) => {
       mutation.mutate({
         ...data,
         amount: Math.round(data.amount),
@@ -69,10 +69,10 @@ const NewDividend = ({ open, handleClose, handleSuccess }: Props): JSX.Element =
 
   return (
     <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
-      <DialogTitle>Dividendo</DialogTitle>
+      <DialogTitle>Inversión</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Registrar pago de dividendo.
+          Registrar inversión.
         </DialogContentText>
         <Form onSubmit={formik.handleSubmit}>
           <Separator />
@@ -161,4 +161,4 @@ const NewDividend = ({ open, handleClose, handleSuccess }: Props): JSX.Element =
   )
 }
 
-export default NewDividend
+export default NewInvestment
