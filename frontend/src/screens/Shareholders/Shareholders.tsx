@@ -54,10 +54,10 @@ const Shareholders = (): JSX.Element => {
 
       <PaperContainer>
           <Grid container spacing={2}>
-            <Grid item md={12} lg={8} height={500}>
+            <Grid item md={12} lg={8} height={600}>
               <EquityTable />
             </Grid>
-            <Grid item md={12} lg={4} height={500}>
+            <Grid item md={12} lg={4} height={600}>
               <EquityChart />
             </Grid>
           </Grid>

@@ -1,7 +1,9 @@
-import { FC, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { DataGrid, GridColDef, GridSelectionModel } from '@mui/x-data-grid'
-import { useInvestments } from 'lib/hooks/investment'
-import { useDividends } from 'lib/hooks/dividend'
+import LoadingButton from '@mui/lab/LoadingButton'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { useInvestments, useDeleteInvestment } from 'lib/hooks/investment'
+import { useDividends, useDeleteDividend } from 'lib/hooks/dividend'
 import { useGetAccountName } from 'lib/hooks/account'
 import { useGetShareholderName } from 'lib/hooks/shareholder'
 import { formatAmount, displayDateGridCell, sortByDateDesc } from 'lib/helpers'
@@ -24,12 +26,14 @@ const columns: GridColDef[] = [
   { field: 'shareholder', headerName: 'Socio', width: 250, align: 'left' },
 ]
 
-const EquityTable: FC = () => {
+const EquityTable = (): JSX.Element | null => {
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([])
   const investmentsData = useInvestments()
   const dividendsData = useDividends()
   const getAccount = useGetAccountName()
   const getShareholderName = useGetShareholderName()
+  const deleteInvestmentMutation = useDeleteInvestment()
+  const deleteDividendMutation = useDeleteDividend()
 
   const rows = useMemo((): TableEntry[] => {
     let invs: TableEntry[] = []
@@ -73,6 +77,16 @@ const EquityTable: FC = () => {
     return <p>Cargando inversiones y dividendos...</p>
   }
 
+  const handleDelete = (): void => {
+    const selected = selectionModel[0] as string
+    const [type, id] = selected.split(':') as [string, number]
+    if (type === 'D') {
+      deleteDividendMutation.mutate(id)
+    } else {
+      deleteInvestmentMutation.mutate(id)
+    }
+  }
+
   if (investmentsData.isError || dividendsData.isError) {
     return (
       <div>
@@ -88,14 +102,32 @@ const EquityTable: FC = () => {
   }
 
   return (
-    <DataGrid
-      rows={rows}
-      columns={columns}
-      pageSize={10}
-      rowsPerPageOptions={[10]}
-      onSelectionModelChange={handleSelectionChange}
-      selectionModel={selectionModel}
-    />
+    <>
+      <div style={{ height: 540 }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={10}
+          rowsPerPageOptions={[10]}
+          onSelectionModelChange={handleSelectionChange}
+          selectionModel={selectionModel}
+        />
+
+      </div>
+      <LoadingButton
+        type="submit"
+        endIcon={<DeleteIcon />}
+        loading={false}
+        loadingPosition="end"
+        variant="outlined"
+        color="secondary"
+        sx={{ mt: 1 }}
+        onClick={handleDelete}
+        disabled={selectionModel.length === 0}
+      >
+        Eliminar seleccionado
+      </LoadingButton>
+    </>
   )
 }
 
