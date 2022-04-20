@@ -256,3 +256,17 @@ DELETE http://localhost:8080/api/cash/dividends/2 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDc5MDM1ODQsImlhdCI6MTY0NzgxNzE4NCwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.7lwEzoUVFY52IgY_twMK5XfmCv9eyHuin6erHHA_nPE
 
+### Update FX
+POST http://localhost:8080/api/fx HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTA1ODA5NDMsImlhdCI6MTY1MDQ5NDU0Mywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.KYNx1qQaCQOY0Pm0FlhsenQHHr1qUZgWsE0flbN0eiY
+
+{
+  "currency": "ARS",
+  "rate": 200.25
+}
+
+### Fetch FX
+GET http://localhost:8080/api/fx HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTA1ODA5NDMsImlhdCI6MTY1MDQ5NDU0Mywicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.KYNx1qQaCQOY0Pm0FlhsenQHHr1qUZgWsE0flbN0eiY

@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"github.com/constructoraundeux/backoffice/fx"
 	"log"
 	"net/http"
 
@@ -30,6 +31,7 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	projects := project.New(db, l)
 	bank := cash.New(db, l)
 	accounts := account.New(db, l)
+	rates := fx.New(db, l)
 
 	// Create middleware chain
 	generalMdw := alice.New(handler.Logger, handler.SecurityHeaders, handler.RecoverPanic)
@@ -224,6 +226,18 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		http.MethodGet,
 		"/api/accounts",
 		users.Controller.Auth("user", accounts.Controller.List),
+	)
+
+	// API Routes: FX
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/fx",
+		users.Controller.Auth("user", rates.Controller.Get),
+	)
+	r.HandlerFunc(
+		http.MethodPost,
+		"/api/fx",
+		users.Controller.Auth("user", rates.Controller.Set),
 	)
 
 	// Static assets and index.html
