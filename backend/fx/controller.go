@@ -47,6 +47,21 @@ func (fxc fxController) Set(w http.ResponseWriter, r *http.Request) {
 
 func (fxc fxController) Get(w http.ResponseWriter, _ *http.Request) {
 	fx, err := fxc.Model.Get()
+
+	// If fx is too old, fetch a new one for subsequent requests.
+	lastUpdate, err := time.Parse(time.RFC3339, fx.UpdatedAt)
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	now := time.Now().UTC()
+	diff := now.Sub(lastUpdate)
+	if diff >= 12*time.Hour {
+		fxc.L.Println("Exchange rate is too old, fetching one for next time...")
+		// TODO: do the update in a goroutine and reply with the "old" one.
+	}
+
 	if err != nil {
 		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
 		return
