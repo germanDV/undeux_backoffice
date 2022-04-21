@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import { useTheme } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 
 export type Datapoint = {
   name: string
@@ -40,25 +41,30 @@ const SimplePie = ({ data }: Props): JSX.Element => {
   const colors = useMemo(() => [theme.palette.primary.main, theme.palette.secondary.main], [theme])
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart width={500} height={500}>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={150}
-          fill="black"
-          dataKey="total"
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-          ))}
-        </Pie>
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
+    <>
+      <Typography variant="h4" align="center">
+        Consolidado en USD
+      </Typography>
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart width={500} height={500}>
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={renderCustomizedLabel}
+            outerRadius={150}
+            fill="black"
+            dataKey="total"
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+        </PieChart>
+      </ResponsiveContainer>
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useState, useEffect, useCallback } from 'react'
 import { useInvestments } from 'lib/hooks/investment'
 import { useDividends } from 'lib/hooks/dividend'
 import { useGetAccountName } from 'lib/hooks/account'
@@ -15,6 +15,15 @@ const EquityChart: FC = () => {
   const fxData = useFX()
   const getAccount = useGetAccountName()
   const getShareholderName = useGetShareholderName()
+
+  const toUSD = useCallback((ars: number) => {
+    if (fxData.isSuccess) {
+      const { rate } = fxData.data.fx
+      return Math.round(ars / rate);
+    } else {
+      return ars
+    }
+  }, [fxData.isSuccess, fxData.data?.fx])
 
   useEffect(() => {
     if (investmentsData.isSuccess && dividendsData.isSuccess) {
@@ -69,16 +78,8 @@ const EquityChart: FC = () => {
     dividendsData.isSuccess,
     getShareholderName,
     getAccount,
+    toUSD,
   ])
-
-  const toUSD = (ars: number) => {
-    if (fxData.isSuccess) {
-      const { rate } = fxData.data.fx
-      return Math.round(ars / rate);
-    } else {
-      return ars
-    }
-  }
 
   if (investmentsData.isLoading || dividendsData.isLoading) {
     return <p>Cargando inversiones y dividendos...</p>
