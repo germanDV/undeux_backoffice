@@ -3,7 +3,6 @@ import { useInvestments } from 'lib/hooks/investment'
 import { useDividends } from 'lib/hooks/dividend'
 import { useGetAccountName } from 'lib/hooks/account'
 import { useGetShareholderName } from 'lib/hooks/shareholder'
-import { toUSD } from 'lib/helpers'
 import SimplePie, { Datapoint } from '../PieChart/SimplePie'
 
 type Summation = Record<number, Record<string, number>>
@@ -55,7 +54,7 @@ const EquityChart: FC = () => {
           name: getShareholderName(+k),
           ars,
           usd,
-          total:usd + toUSD(ars),
+          total: usd + ars / 200, // TODO: do not hardcode the exchange rate
         })
       })
 

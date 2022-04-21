@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
 import { Account } from 'lib/schemas'
 import { formatAmount } from 'lib/helpers'
+import { useFX } from 'lib/hooks/fx'
 
 interface Props {
   account: Account
@@ -12,6 +13,14 @@ interface Props {
 
 const Balance = ({ account }: Props): JSX.Element => {
   const theme = useTheme()
+  const fxData = useFX()
+
+  const toUSD = () => {
+    if (fxData.isSuccess && account?.balance) {
+      const { rate } = fxData.data.fx
+      return formatAmount(Math.round(account?.balance / rate));
+    }
+  }
 
   return (
     <Grid item xs={12} md={6}>
@@ -25,6 +34,11 @@ const Balance = ({ account }: Props): JSX.Element => {
           </Typography>
           <Typography variant="h3" align="right">
             {formatAmount(account.balance || 0)}
+            {account.balance && account.currency.toUpperCase() === 'ARS' ? (
+              <Typography component="span" variant="h4" sx={{ color: theme.palette.text.disabled, ml: 2}}>
+                (USD {toUSD()})
+              </Typography>
+            ) : null}
           </Typography>
         </Box>
       </Paper>
