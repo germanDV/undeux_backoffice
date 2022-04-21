@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from 'react'
 import { useInvestments } from 'lib/hooks/investment'
 import { useDividends } from 'lib/hooks/dividend'
 import { useGetAccountName } from 'lib/hooks/account'
+import { useFX } from 'lib/hooks/fx'
 import { useGetShareholderName } from 'lib/hooks/shareholder'
 import SimplePie, { Datapoint } from '../PieChart/SimplePie'
 
@@ -11,6 +12,7 @@ const EquityChart: FC = () => {
   const [data, setData] = useState<Datapoint[]>([])
   const investmentsData = useInvestments()
   const dividendsData = useDividends()
+  const fxData = useFX()
   const getAccount = useGetAccountName()
   const getShareholderName = useGetShareholderName()
 
@@ -54,7 +56,7 @@ const EquityChart: FC = () => {
           name: getShareholderName(+k),
           ars,
           usd,
-          total: usd + ars / 200, // TODO: do not hardcode the exchange rate
+          total: usd + toUSD(ars),
         })
       })
 
@@ -68,6 +70,15 @@ const EquityChart: FC = () => {
     getShareholderName,
     getAccount,
   ])
+
+  const toUSD = (ars: number) => {
+    if (fxData.isSuccess) {
+      const { rate } = fxData.data.fx
+      return Math.round(ars / rate);
+    } else {
+      return ars
+    }
+  }
 
   if (investmentsData.isLoading || dividendsData.isLoading) {
     return <p>Cargando inversiones y dividendos...</p>
