@@ -62,8 +62,8 @@ const EquityChart: FC = () => {
       }
 
       Object.keys(summation).forEach((k) => {
-        const ars = summation[+k]['ars']
-        const usd = summation[+k]['usd']
+        const ars = summation[+k]['ars'] || 0
+        const usd = summation[+k]['usd'] || 0
         datapoints.push({
           name: getShareholderName(+k),
           ars,
