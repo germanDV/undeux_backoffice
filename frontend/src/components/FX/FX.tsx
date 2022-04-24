@@ -36,25 +36,19 @@ const FX = (): JSX.Element => {
   }
 
   const renderRateInput = () => {
-    if (fxData.isError) {
-      return tr((fxData.error as Error)?.message)
-    }
     if (fxData.isLoading) {
       return 'cargando...'
     }
-    if (fxData.isSuccess) {
-      return (
-        <TextField
-          id="rate"
-          name="rate"
-          label="USD/ARS"
-          value={formik.values.rate}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-      )
-    }
-    return '?'
+    return (
+      <TextField
+        id="rate"
+        name="rate"
+        label="USD/ARS"
+        value={formik.values.rate}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+    )
   }
 
   return (
