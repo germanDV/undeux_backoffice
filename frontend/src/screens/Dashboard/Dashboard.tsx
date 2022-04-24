@@ -1,8 +1,12 @@
 import Balances from 'components/Balance/Balances'
+import FX from 'components/FX/FX'
 
 const Dashboard = () => {
   return (
-    <Balances />
+    <>
+      <FX />
+      <Balances />
+    </>
   )
 }
 

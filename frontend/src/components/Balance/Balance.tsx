@@ -18,7 +18,7 @@ const Balance = ({ account }: Props): JSX.Element => {
   const toUSD = () => {
     if (fxData.isSuccess && account?.balance) {
       const { rate } = fxData.data.fx
-      return formatAmount(Math.round(account?.balance / rate));
+      return formatAmount(Math.round(account?.balance / rate))
     }
   }
 
@@ -29,13 +29,20 @@ const Balance = ({ account }: Props): JSX.Element => {
           <Typography variant="h4" sx={{ color: theme.palette.secondary.main }}>
             {account.currency.toUpperCase()}
           </Typography>
-          <Typography variant="subtitle2" sx={{ color: theme.palette.text.secondary }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ color: theme.palette.text.secondary }}
+          >
             {account.description}
           </Typography>
           <Typography variant="h3" align="right">
             {formatAmount(account.balance || 0)}
             {account.balance && account.currency.toUpperCase() === 'ARS' ? (
-              <Typography component="span" variant="h4" sx={{ color: theme.palette.text.disabled, ml: 2}}>
+              <Typography
+                component="span"
+                variant="h4"
+                sx={{ color: theme.palette.text.disabled, ml: 2 }}
+              >
                 (USD {toUSD()})
               </Typography>
             ) : null}
@@ -47,4 +54,3 @@ const Balance = ({ account }: Props): JSX.Element => {
 }
 
 export default Balance
-

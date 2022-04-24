@@ -13,9 +13,10 @@ export function tr(str: string, fallback = '') {
       return 'Email y/o password incorrecto.'
     case 'incorrect old password':
       return 'Password incorrecta'
+    case 'load at least one rate in the ddbb.':
+      return 'no hay tipos de cambio en la BBDD.'
     default:
       console.log(`Add translation for "${str}"`)
       return fallback || str
   }
 }
-
