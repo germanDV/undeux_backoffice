@@ -60,7 +60,6 @@ func (fxc fxController) Get(w http.ResponseWriter, _ *http.Request) {
 		return
 	}
 
-	// If fx is too old, fetch a new one for subsequent requests.
 	lastUpdate, err := time.Parse(time.RFC3339, fx.UpdatedAt)
 	if err != nil {
 		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
@@ -70,8 +69,27 @@ func (fxc fxController) Get(w http.ResponseWriter, _ *http.Request) {
 	now := time.Now().UTC()
 	diff := now.Sub(lastUpdate)
 	if diff >= 12*time.Hour {
-		fxc.L.Println("Exchange rate is too old, fetching one for next time...")
-		// TODO: do the update in a goroutine and reply with the "old" one.
+		fxc.L.Println("Exchange rate is too old, updating for following requests...")
+		go func() {
+			r, err := fetchRate()
+			if err != nil {
+				fxc.L.Printf("Error fetching rate from BCRA %q\n", err.Error())
+				return
+			}
+
+			fxc.L.Printf("Successfully fetched rate from BCRA: %v\n", r)
+
+			err = fxc.Model.Set(&FX{
+				Currency:  "ARS",
+				Rate:      r,
+				UpdatedAt: time.Now().UTC().Format(time.RFC3339),
+			})
+
+			if err != nil {
+				fxc.L.Printf("Error updating rate in database %q\n", err.Error())
+			}
+			fxc.L.Printf("Successfully saved rate %v in database\n", r)
+		}()
 	}
 
 	if err != nil {

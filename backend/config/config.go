@@ -1,10 +1,11 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type config struct {
@@ -12,6 +13,7 @@ type config struct {
 	Env         string
 	Port        uint
 	DatabaseDSN string
+	BcraToken   string
 }
 
 var Config config
@@ -39,5 +41,6 @@ func init() {
 		Env:         env,
 		Port:        uint(port),
 		DatabaseDSN: os.Getenv("DATABASE_URL"),
+		BcraToken:   os.Getenv("BCRA_TOKEN"),
 	}
 }

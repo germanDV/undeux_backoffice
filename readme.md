@@ -34,6 +34,8 @@ $ make docker/local
 
 For _development_, env vars are supplied through an `.env` file. For _production_, these variables will be set in Heroku.
 
+This repo includes a `.env.sample` file, update the necessary values (API key for BCRA for example), and rename it to `.env`.
+
 ## Database Migrations
 
 For database migrations, [migrate](https://github.com/golang-migrate/migrate) is being used.

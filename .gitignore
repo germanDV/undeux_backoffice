@@ -2,3 +2,5 @@
 **/build
 **/.idea
 **/.vscode
+.env
+.env.secret
