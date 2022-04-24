@@ -1,10 +1,13 @@
 package fx
 
 import (
-	"github.com/constructoraundeux/backoffice/handlers"
+	"errors"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/constructoraundeux/backoffice/errs"
+	"github.com/constructoraundeux/backoffice/handlers"
 )
 
 type fxController struct {
@@ -47,6 +50,15 @@ func (fxc fxController) Set(w http.ResponseWriter, r *http.Request) {
 
 func (fxc fxController) Get(w http.ResponseWriter, _ *http.Request) {
 	fx, err := fxc.Model.Get()
+	if err != nil {
+		switch {
+		case errors.Is(err, errs.ErrRecordNotFound):
+			handlers.WriteJSON(w, handlers.Envelope{"error": "load at least one rate in the DDBB."}, http.StatusNotFound)
+		default:
+			handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		}
+		return
+	}
 
 	// If fx is too old, fetch a new one for subsequent requests.
 	lastUpdate, err := time.Parse(time.RFC3339, fx.UpdatedAt)

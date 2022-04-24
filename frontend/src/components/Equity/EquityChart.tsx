@@ -16,14 +16,17 @@ const EquityChart: FC = () => {
   const getAccount = useGetAccountName()
   const getShareholderName = useGetShareholderName()
 
-  const toUSD = useCallback((ars: number) => {
-    if (fxData.isSuccess) {
-      const { rate } = fxData.data.fx
-      return Math.round(ars / rate);
-    } else {
-      return ars
-    }
-  }, [fxData.isSuccess, fxData.data?.fx])
+  const toUSD = useCallback(
+    (ars: number) => {
+      if (fxData.isSuccess) {
+        const { rate } = fxData.data.fx
+        return Math.round(ars / rate)
+      } else {
+        return ars
+      }
+    },
+    [fxData.isSuccess, fxData.data?.fx]
+  )
 
   useEffect(() => {
     if (investmentsData.isSuccess && dividendsData.isSuccess) {
@@ -31,7 +34,7 @@ const EquityChart: FC = () => {
       let summation: Summation = {}
 
       if (investmentsData.data?.investments) {
-        investmentsData.data?.investments.forEach(i => {
+        investmentsData.data?.investments.forEach((i) => {
           const curr = getAccount(i.accountId).toLowerCase()
           if (!summation[i.shareholderId]) {
             summation[i.shareholderId] = {
@@ -45,7 +48,7 @@ const EquityChart: FC = () => {
       }
 
       if (dividendsData.data?.dividends) {
-        dividendsData.data?.dividends.forEach(i => {
+        dividendsData.data?.dividends.forEach((i) => {
           const curr = getAccount(i.accountId).toLowerCase()
           if (!summation[i.shareholderId]) {
             summation[i.shareholderId] = {
@@ -58,7 +61,7 @@ const EquityChart: FC = () => {
         })
       }
 
-      Object.keys(summation).forEach(k => {
+      Object.keys(summation).forEach((k) => {
         const ars = summation[+k]['ars']
         const usd = summation[+k]['usd']
         datapoints.push({

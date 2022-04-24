@@ -3,8 +3,11 @@ package fx
 import (
 	"context"
 	"database/sql"
-	"github.com/go-playground/validator/v10"
+	"errors"
 	"time"
+
+	"github.com/constructoraundeux/backoffice/errs"
+	"github.com/go-playground/validator/v10"
 )
 
 type FX struct {
@@ -47,7 +50,12 @@ func (fxm fxModel) Get() (*FX, error) {
 	var fx FX
 	err := fxm.DB.QueryRowContext(ctx, query, "ARS").Scan(&fx.Currency, &fx.Rate, &fx.UpdatedAt)
 	if err != nil {
-		return nil, err
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, errs.ErrRecordNotFound
+		default:
+			return nil, err
+		}
 	}
 
 	return &fx, nil
