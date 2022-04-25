@@ -12,6 +12,7 @@ require (
 	github.com/tomasen/realip v0.0.0-20180522021738-f0c99a92ddce
 	gitlab.com/germanDV/axgos v0.1.1
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
+	golang.org/x/time v0.0.0-20220411224347-583f2d630306
 )
 
 require (

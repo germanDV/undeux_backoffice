@@ -34,7 +34,12 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 	rates := fx.New(db, l)
 
 	// Create middleware chain
-	generalMdw := alice.New(handler.Logger, handler.SecurityHeaders, handler.RecoverPanic)
+	generalMdw := alice.New(
+		handler.Logger,
+		handler.RateLimiter,
+		handler.SecurityHeaders,
+		handler.RecoverPanic,
+	)
 
 	// API Routes: Other
 	r.HandlerFunc(http.MethodGet, "/api/health", handlers.Health)
