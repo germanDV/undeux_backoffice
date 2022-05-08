@@ -1,11 +1,13 @@
 import { compareAsc, compareDesc } from 'date-fns'
-import { GridValueFormatterParams } from "@mui/x-data-grid";
+import { GridValueFormatterParams } from '@mui/x-data-grid'
 
 /**
  * Converts the Date obj to a string with format
  * "yyyy-mm-dd"
  */
-export function dateToString(date: Date): string {
+export function dateToString(date: Date | string): string {
+  if (typeof date === 'string') return date
+
   const yyyy = date.getUTCFullYear()
 
   const m = date.getUTCMonth() + 1
