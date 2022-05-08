@@ -26,6 +26,7 @@ type iController interface {
 	PayDividend(w http.ResponseWriter, r *http.Request)
 	ListDividends(w http.ResponseWriter, r *http.Request)
 	DeleteDividend(w http.ResponseWriter, r *http.Request)
+	All(w http.ResponseWriter, r *http.Request)
 }
 
 type iModel interface {

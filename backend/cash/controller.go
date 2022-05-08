@@ -401,3 +401,41 @@ func (cc cashController) DeleteDividend(w http.ResponseWriter, r *http.Request) 
 
 	handlers.WriteJSON(w, handlers.Envelope{"msg": "Dividend deleted successfully"}, http.StatusOK)
 }
+
+// TODO: add support to filter by date
+func (cc cashController) All(w http.ResponseWriter, r *http.Request) {
+	payments, err := cc.Model.GetPayments()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	collections, err := cc.Model.GetCollections()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	investments, err := cc.Model.GetInvestments()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	dividends, err := cc.Model.GetDividends()
+	if err != nil {
+		handlers.WriteJSON(w, handlers.Envelope{"error": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+
+	handlers.WriteJSON(
+		w,
+		handlers.Envelope{
+			"payments":    payments,
+			"collections": collections,
+			"investments": investments,
+			"dividends":   dividends,
+		},
+		http.StatusOK,
+	)
+}

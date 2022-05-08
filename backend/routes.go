@@ -2,9 +2,10 @@ package main
 
 import (
 	"database/sql"
-	"github.com/constructoraundeux/backoffice/fx"
 	"log"
 	"net/http"
+
+	"github.com/constructoraundeux/backoffice/fx"
 
 	"github.com/constructoraundeux/backoffice/account"
 	"github.com/constructoraundeux/backoffice/cash"
@@ -224,6 +225,11 @@ func routes(db *sql.DB, l *log.Logger) http.Handler {
 		http.MethodDelete,
 		"/api/cash/dividends/:id",
 		users.Controller.Auth("admin", bank.Controller.DeleteDividend),
+	)
+	r.HandlerFunc(
+		http.MethodGet,
+		"/api/cash/all",
+		users.Controller.Auth("admin", bank.Controller.All),
 	)
 
 	// API Routes: Accounts

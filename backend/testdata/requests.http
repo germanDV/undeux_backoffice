@@ -6,7 +6,7 @@ POST http://localhost:8080/api/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "german@undeux.com",
+  "email": "german@undeux.io",
   "password": "pondosclavosamisalas"
 }
 
@@ -255,6 +255,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDc5MDM1O
 DELETE http://localhost:8080/api/cash/dividends/2 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDc5MDM1ODQsImlhdCI6MTY0NzgxNzE4NCwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.7lwEzoUVFY52IgY_twMK5XfmCv9eyHuin6erHHA_nPE
+
+### Fetch all cash transactions
+GET http://localhost:8080/api/cash/all HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTIxMjU1MTEsImlhdCI6MTY1MjAzOTExMSwicm9sZSI6ImFkbWluIiwic3ViIjoxfQ.fMBY86V7F_wV2gObnjc8ciEP4O1C4BrF19YRo9r4S08
 
 ### Update FX
 POST http://localhost:8080/api/fx HTTP/1.1
