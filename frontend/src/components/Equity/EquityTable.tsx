@@ -19,7 +19,12 @@ type TableEntry = {
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 50, align: 'center' },
-  { field: 'date', headerName: 'Fecha', width: 200, valueFormatter: displayDateGridCell },
+  {
+    field: 'date',
+    headerName: 'Fecha',
+    width: 200,
+    valueFormatter: displayDateGridCell,
+  },
   { field: 'amount', headerName: 'Importe', width: 150, align: 'right' },
   { field: 'account', headerName: 'Cuenta', width: 80, align: 'center' },
   { field: 'category', headerName: 'Tipo', width: 200, align: 'left' },
@@ -39,8 +44,8 @@ const EquityTable = (): JSX.Element | null => {
     let invs: TableEntry[] = []
     let divs: TableEntry[] = []
 
-    if (investmentsData.data?.investments)  {
-      invs = investmentsData.data.investments.map(i => ({
+    if (investmentsData.data?.investments) {
+      invs = investmentsData.data.investments.map((i) => ({
         id: `I:${i.id}`,
         date: i.date,
         amount: formatAmount(i.amount),
@@ -50,8 +55,8 @@ const EquityTable = (): JSX.Element | null => {
       }))
     }
 
-    if (dividendsData.data?.dividends)  {
-      divs = dividendsData.data.dividends.map(i => ({
+    if (dividendsData.data?.dividends) {
+      divs = dividendsData.data.dividends.map((i) => ({
         id: `D:${i.id}`,
         date: i.date,
         amount: formatAmount(-i.amount),
@@ -112,7 +117,6 @@ const EquityTable = (): JSX.Element | null => {
           onSelectionModelChange={handleSelectionChange}
           selectionModel={selectionModel}
         />
-
       </div>
       <LoadingButton
         type="submit"
