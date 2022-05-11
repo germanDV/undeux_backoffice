@@ -8,7 +8,12 @@ import { useGetProjectName } from 'lib/hooks/project'
 import { useGetVendorName } from 'lib/hooks/vendor'
 import { useGetCustomerName } from 'lib/hooks/customer'
 import { useGetShareholderName } from 'lib/hooks/shareholder'
-import { formatAmount, displayDateGridCell, sortByDateDesc } from 'lib/helpers'
+import {
+  formatAmount,
+  displayDateGridCell,
+  sortByDateDesc,
+  sortAmounts,
+} from 'lib/helpers'
 
 type TableEntry = {
   category: 'INV.' | 'DIV.' | 'PAGO' | 'COBRO'
@@ -29,7 +34,13 @@ const columns: GridColDef[] = [
     width: 150,
     valueFormatter: displayDateGridCell,
   },
-  { field: 'amount', headerName: 'Importe', width: 150, align: 'right' },
+  {
+    field: 'amount',
+    headerName: 'Importe',
+    width: 150,
+    align: 'right',
+    sortComparator: sortAmounts,
+  },
   { field: 'account', headerName: 'Cuenta', width: 100, align: 'center' },
   { field: 'project', headerName: 'Proyecto', width: 250 },
   { field: 'party', headerName: 'Party', width: 250 },
